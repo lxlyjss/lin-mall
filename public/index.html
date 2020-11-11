@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="font-size: 37.5px;">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,6 +12,20 @@
       <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
     <div id="app"></div>
+    <script>
+      // 设置 rem 函数
+      var setRem = function() {
+        var htmlWidth = window.screen.width;
+        // 得到html的Dom元素
+        var htmlDom = document.getElementsByTagName("html")[0];
+        // 设置根元素字体大小
+        htmlDom.style.fontSize = htmlWidth / 10 + "px";
+      };
+      // 初始化
+      setRem();
+      window.addEventListener("resize", setRem);
+      window.addEventListener("orientationchange", setRem);
+    </script>
     <!-- built files will be auto injected -->
   </body>
 </html>

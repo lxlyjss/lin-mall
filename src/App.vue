@@ -1,13 +1,18 @@
 <template>
-  <div id="app">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-    <router-view />
+  <div id="page">
+    <router-view v-if="!$route.meta.keepAlive" />
+    <keep-alive>
+      <router-view v-if="$route.meta.keepAlive" />
+    </keep-alive>
   </div>
 </template>
 
 <style lang="scss">
+@import "~@/scss/base.scss";
+
 #app {
-  margin: 0;
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 </style>
