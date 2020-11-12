@@ -34,8 +34,18 @@ import { reactive, toRefs, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
 import { Swipe, SwipeItem, Image, Search, Icon, Tab, Tabs } from "vant";
 import infoItem from "@/components/home/infoItem.vue";
-import { getBannerList } from "@/api/home/index";
+import { getBannerList, getPositionList } from "@/api/home/index";
 
+interface State {
+  tabActive: number;
+  searchValue: string;
+  swipeList: {
+    imgUrl: string;
+    id: number;
+    title: string;
+  }[];
+  infoList: any[];
+}
 export default {
   components: {
     VanSwipe: Swipe,
@@ -49,69 +59,11 @@ export default {
   },
   setup() {
     const router = useRouter();
-    const state = reactive({
+    const state: State = reactive({
       tabActive: 0,
       searchValue: "",
-      swipeList: [
-        {
-          imgUrl:
-            "http://oss.xinlinyun.top/ke/upload/image/2018/03/26/19927c9ea0a8a5b391fee204075c9bd0.png",
-        },
-        {
-          imgUrl:
-            "http://oss.xinlinyun.top/ke/upload/image/2018/03/26/19927c9ea0a8a5b391fee204075c9bd0.png",
-        },
-        {
-          imgUrl:
-            "http://oss.xinlinyun.top/ke/upload/image/2018/03/26/19927c9ea0a8a5b391fee204075c9bd0.png",
-        },
-        {
-          imgUrl:
-            "http://oss.xinlinyun.top/ke/upload/image/2018/03/26/19927c9ea0a8a5b391fee204075c9bd0.png",
-        },
-      ],
-      infoList: [
-        {
-          position: "产品经理",
-          city: "北京",
-          address: "甜水园",
-          experience: "1-3年",
-          needEducation: "本科",
-          company: {
-            companyId: 12,
-            name: "新丰科技",
-            labels: ["互联网", "信息"],
-            logo:
-              "http://oss.xinlinyun.top/ke/upload/image/2018/03/26/19927c9ea0a8a5b391fee204075c9bd0.png",
-            financingStage: "A轮",
-            size: "300-500",
-            types: ["移动互联网", "企业服务"],
-          },
-          minSalary: "10",
-          maxSalary: "20",
-          id: 1,
-        },
-        {
-          position: "产品经理",
-          city: "北京",
-          address: "甜水园",
-          experience: "1-3年",
-          needEducation: "本科",
-          company: {
-            companyId: 12,
-            name: "新丰科技",
-            labels: ["互联网", "信息"],
-            logo:
-              "http://oss.xinlinyun.top/ke/upload/image/2018/03/26/19927c9ea0a8a5b391fee204075c9bd0.png",
-            financingStage: "A轮",
-            size: "300-500",
-            types: ["移动互联网", "企业服务"],
-          },
-          minSalary: "10",
-          maxSalary: "20",
-          id: 2,
-        },
-      ],
+      swipeList: [],
+      infoList: []
     });
     const getBanner = async () => {
       const {
@@ -119,16 +71,26 @@ export default {
       } = await getBannerList();
       state.swipeList = data.list;
     };
+    const getPosition = async () => {
+      const {
+        data: { msg, status, data },
+      } = await getPositionList();
+      console.log(data)
+      state.infoList = data.list;
+    };
     const toSearch = () => {
       router.push("/search");
     };
+    console.log(JSON.stringify(state.infoList));
     onMounted(() => {
       getBanner();
+      getPosition();
     });
     return {
       ...toRefs(state),
       toSearch,
       getBannerList,
+      getPosition
     };
   },
 };
