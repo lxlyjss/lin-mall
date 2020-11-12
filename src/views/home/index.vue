@@ -34,6 +34,7 @@ import { reactive, toRefs, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
 import { Swipe, SwipeItem, Image, Search, Icon, Tab, Tabs } from "vant";
 import infoItem from "@/components/home/infoItem.vue";
+import { getBannerList } from "@/api/home/index";
 
 export default {
   components: {
@@ -112,15 +113,22 @@ export default {
         },
       ],
     });
-    onMounted(() => {
-      console.log("dd");
-    });
+    const getBanner = async () => {
+      const {
+        data: { msg, status, data },
+      } = await getBannerList();
+      state.swipeList = data.list;
+    };
     const toSearch = () => {
       router.push("/search");
     };
+    onMounted(() => {
+      getBanner();
+    });
     return {
       ...toRefs(state),
       toSearch,
+      getBannerList,
     };
   },
 };
