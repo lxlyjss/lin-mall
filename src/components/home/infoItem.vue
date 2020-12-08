@@ -4,7 +4,7 @@
       <div class="title-left">{{ info.position }}</div>
       <div class="title-right">
         <span>{{ info.minSalary }}</span
-        >- <span>{{ info.maxSalary }}</span
+        >-<span>{{ info.maxSalary }}</span
         >K
       </div>
     </div>
@@ -13,7 +13,7 @@
       {{ info.needEducation }}
     </div>
     <div class="labels">
-      <van-tag v-for="tag in info.company.labels" :key="tag" type="primary">{{
+      <van-tag v-for="tag in info.company.labels" :key="tag" type="default">{{
         tag
       }}</van-tag>
     </div>
@@ -51,11 +51,14 @@ export default {
 <style lang="scss" scoped>
 .info-item {
   padding: 20px;
-  margin-bottom: 10px;
+  margin-bottom: 7px;
   background-color: $white;
   .title {
     display: flex;
     justify-content: space-between;
+    .title-left {
+      font-weight: 900;
+    }
     .title-right {
       color: $red;
       font-weight: 600;
@@ -69,12 +72,15 @@ export default {
     .van-tag {
       margin-right: 10px;
       padding: 2px 4px;
+      font-size: 10px;
+      color: #999;
+      background-color: #f0f0f0;
     }
   }
   .company-info {
     display: flex;
     justify-content: flex-start;
-    margin-top: 10px;
+    margin-top: 20px;
     align-items: center;
     .logo {
       width: 40px;
