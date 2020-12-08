@@ -17,7 +17,7 @@
         tag
       }}</van-tag>
     </div>
-    <div class="company-info">
+    <div class="company-info" @click="toCompanyPage">
       <div class="logo">
         <van-image :src="info.company.logo" />
       </div>
@@ -32,8 +32,8 @@
   </div>
 </template>
 <script lang="ts">
-import Vue from "vue";
 import { Tag, Image } from "vant";
+import { useRouter } from "vue-router";
 
 export default {
   props: {
@@ -45,6 +45,17 @@ export default {
   components: {
     VanTag: Tag,
     VanImage: Image,
+  },
+  setup() {
+    const router = useRouter();
+    const toCompanyPage = () => {
+      router.push({
+        path: "/company"
+      })
+    };
+    return {
+      toCompanyPage,
+    };
   },
 };
 </script>

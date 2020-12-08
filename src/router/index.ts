@@ -1,8 +1,10 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import home from './home';
+import company from "./company"
 
 const routes: Array<RouteRecordRaw> = [
-  ...home
+  ...home,
+  ...company
 ];
 
 const router = createRouter({
