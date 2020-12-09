@@ -1,5 +1,6 @@
 module.exports = {
   productionSourceMap: false,
+  publicPath: "./",
   //反向代理的配置
   devServer: {
     proxy: {

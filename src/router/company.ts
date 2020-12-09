@@ -3,10 +3,6 @@ const company = () =>
 
 export default [
   {
-    path: "/",
-    redirect: "/home"
-  },
-  {
     path: "/company",
     name: "company",
     component: company,

@@ -27,21 +27,34 @@
           tag
         }}</van-tag>
       </div>
-      <div></div>
+      <div class="intro">
+        北京拉大锯辣椒水地方了了卡时代峻峰克拉克时段了福利卡时段分开辣三丁福利卡计算的发
+      </div>
+      <p class="title">公司官网</p>
+      <p>
+        <a href="https://www.baidu.com">https://www.baidu.com</a>
+      </p>
+      <p class="title">公司地址</p>
+      <van-image />
+      <p class="title">工商信息</p>
+      <div class="company-bussiness">
+        <p><span>公司全称</span><span>海南的咖啡机拉卡世纪东方</span></p>
+        <p><span>成立时间</span><span>2020-10-22</span></p>
+        <p><span>注册资金</span><span>4000万人民币</span></p>
+        <p><span>法人代表</span><span>李丹</span></p>
+      </div>
+      <div class="bottom-btn">
+        <van-button type="danger">在职招聘（22）</van-button>
+      </div>
     </div>
-    <div class="bottom-container">
-      <p>已经到底啦~看看别的吧</p>
-    </div>
-    <return-top />
   </div>
 </template>
 <script lang="ts">
 import { reactive, toRefs, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
-import { Swipe, SwipeItem, Image, Tag } from "vant";
+import { Swipe, SwipeItem, Image, Tag, Button } from "vant";
 import infoItem from "@/components/home/infoItem.vue";
 import { getBannerList, getPositionList } from "@/api/home/index";
-import ReturnTop from "@/components/common/returnTop.vue";
 
 interface State {
   tabActive: number;
@@ -58,8 +71,8 @@ export default {
     VanSwipe: Swipe,
     VanSwipeItem: SwipeItem,
     VanImage: Image,
-    ReturnTop,
-    VanTag: Tag
+    VanTag: Tag,
+    VanButton: Button
   },
   setup() {
     const router = useRouter();
@@ -155,6 +168,22 @@ export default {
       /deep/ .van-tag {
         background-color: #fff;
         color: #999;
+        margin-right: 5px;
+        padding: 2px 4px;
+      }
+    }
+    .company-bussiness {
+      border: 1px solid #ccc;
+      padding: 10px;
+      span:first-of-type {
+        color: $gray-6;
+        margin-right: 20px;
+      }
+    }
+    .bottom-btn {
+      padding: 15px;
+      .van-button {
+        width: 100%;
       }
     }
   }
