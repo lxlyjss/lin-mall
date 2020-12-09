@@ -2,11 +2,13 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import home from './home';
 import company from "./company"
 import position from "./position"
+import search from "./search"
 
 const routes: Array<RouteRecordRaw> = [
   ...home,
   ...company,
-  ...position
+  ...position,
+  ...search
 ];
 
 const router = createRouter({

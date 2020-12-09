@@ -1,4 +1,5 @@
 module.exports = {
+  lintOnSave: false,
   productionSourceMap: false,
   publicPath: "./",
   //反向代理的配置
@@ -31,7 +32,7 @@ module.exports = {
       sass: {
         // prependData: `@import "@/scss/base.scss";`
         // sass-loader超过v8版本之后的写法
-        additionalData: `@import "@/scss/base.scss";`,
+        additionalData: '@import "@/scss/base.scss";',
       },
     },
   },

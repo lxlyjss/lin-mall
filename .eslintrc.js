@@ -1,14 +1,18 @@
 module.exports = {
   root: true,
   env: {
-    node: true
+    node: true,
   },
-  extends: ["plugin:vue/essential", "@vue/typescript"],
+  extends: ["plugin:vue/essential", "@vue/prettier", "@vue/typescript"],
   rules: {
-    "no-console": process.env.VUE_APP_ENV === "prod" ? "error" : "off",
-    "no-debugger": process.env.VUE_APP_ENV === "prod" ? "error" : "off"
+    "no-console": process.env.NODE_ENV === "production" ? "error" : "off",
+    "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off",
+    "no-mixed-spaces-and-tabs": [0, false],
+    "no-tabs": 0,
+    "eol-last": 0,
+    "space-before-function-paren": 0,
   },
   parserOptions: {
-    parser: "@typescript-eslint/parser"
-  }
+    parser: "babel-eslint",
+  },
 };
