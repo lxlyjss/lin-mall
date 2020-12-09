@@ -32,7 +32,6 @@
   </div>
 </template>
 <script lang="ts">
-import { Tag, Image } from "vant";
 import { useRouter } from "vue-router";
 
 export default {
@@ -41,10 +40,6 @@ export default {
       type: Object,
       default: () => {},
     },
-  },
-  components: {
-    VanTag: Tag,
-    VanImage: Image,
   },
   setup() {
     const router = useRouter();

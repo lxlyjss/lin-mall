@@ -7,7 +7,10 @@
 import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
+import { UseVant } from "@/utils/useVant";
+import "vant/lib/button/style";
 
-createApp(App)
-  .use(router)
-  .mount("#app");
+const app = createApp(App);
+app.use(router);
+app.mount("#app");
+new UseVant(app);

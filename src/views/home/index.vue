@@ -43,7 +43,6 @@
 <script lang="ts">
 import { reactive, toRefs, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
-import { Swipe, SwipeItem, Image, Search, Icon, Tab, Tabs, Button } from "vant";
 import infoItem from "@/components/home/infoItem.vue";
 import { getBannerList, getPositionList } from "@/api/home/index";
 import ReturnTop from "@/components/common/returnTop.vue";
@@ -60,15 +59,7 @@ interface State {
 }
 export default {
   components: {
-    VanSwipe: Swipe,
-    VanSwipeItem: SwipeItem,
-    VanImage: Image,
-    VanSearch: Search,
-    VanIcon: Icon,
-    VanTab: Tab,
-    VanTabs: Tabs,
     infoItem,
-    VanButton: Button,
     ReturnTop
   },
   setup() {

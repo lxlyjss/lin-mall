@@ -14,15 +14,16 @@
         <span>搜公司</span>
       </div>
       <div class="filter-right">
-        <span>北京</span>
-        <span>公司</span>
+        <span @click="showFilterCity">北京</span>
+        <span @click="showFilterCompany">公司</span>
       </div>
     </div>
     <ul class="info-list" v-if="hasSearched">
       <info-item v-for="item in infoList" :key="item.id" :info="item" />
     </ul>
     <!-- 筛选公司 -->
-    <filterCompany  />
+    <filter-company v-model:value="filterCompanyShow" @input="onInput" />
+    <filter-city v-model:value="filterCompanyShow" />
   </div>
 </template>
 <script lang="ts">
@@ -30,18 +31,21 @@ import { reactive, toRefs, onMounted, computed } from "vue";
 import { Tag, Search, Popup } from "vant";
 import infoItem from "@/components/home/infoItem.vue";
 import filterCompany from "@/components/search/filterCompany.vue";
+import FilterCity from '@/components/search/filterCity.vue';
 
 export default {
   components: {
     VanSearch: Search,
     infoItem,
-    filterCompany
+    filterCompany,
+    FilterCity
   },
   setup() {
     const state = reactive({
       searchValue: "",
       hasSearched: false,
       filterCompanyShow: true,
+      filterCityShow: true,
       infoList: [
         {
           position: "产品经理",
@@ -88,8 +92,21 @@ export default {
     onMounted(() => {
       console.log("dd");
     });
+    const showFilterCity = () => {
+      state.filterCityShow = true
+      console.log("kkjk")
+    }
+    const showFilterCompany = () => {
+      state.filterCompanyShow = true
+      console.log("322")
+    }
+    const onInput = () => {
+      console.log("input")
+    }
     return {
       ...toRefs(state),
+      showFilterCompany,
+      showFilterCity
     };
   },
 };

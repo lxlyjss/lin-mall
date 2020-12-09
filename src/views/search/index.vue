@@ -35,14 +35,11 @@
 </template>
 <script lang="ts">
 import { reactive, toRefs, onMounted, computed } from "vue";
-import { Tag, Search } from "vant";
 import infoItem from "@/components/home/infoItem.vue";
 
 export default {
   components: {
-    VanSearch: Search,
     infoItem,
-    VanTag: Tag
   },
   setup() {
     const state = reactive({

@@ -9,7 +9,6 @@
 </template>
 <script lang="ts">
 import { reactive, toRefs, onMounted } from "vue";
-import { Image } from "vant";
 
 export default {
   setup() {
@@ -36,10 +35,7 @@ export default {
       onScroll,
       toTop,
     };
-  },
-  components: {
-    VanImage: Image,
-  },
+  }
 };
 </script>
 <style lang="scss" scoped>

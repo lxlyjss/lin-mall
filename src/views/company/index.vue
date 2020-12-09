@@ -52,7 +52,6 @@
 <script lang="ts">
 import { reactive, toRefs, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
-import { Swipe, SwipeItem, Image, Tag, Button } from "vant";
 import infoItem from "@/components/home/infoItem.vue";
 import { getBannerList, getPositionList } from "@/api/home/index";
 
@@ -67,13 +66,6 @@ interface State {
   infoList: any[];
 }
 export default {
-  components: {
-    VanSwipe: Swipe,
-    VanSwipeItem: SwipeItem,
-    VanImage: Image,
-    VanTag: Tag,
-    VanButton: Button
-  },
   setup() {
     const router = useRouter();
     const state: State = reactive({

@@ -58,8 +58,8 @@ export default {
     });
     watch(
       () => props.value,
-      (old, newVal) => {
-        console.log(old, newVal);
+      (n, o) => {
+        console.log(n, o);
       }
     );
     onMounted(() => {
@@ -108,14 +108,12 @@ export default {
   .filter-tag {
     justify-content: center;
     background-color: #fff;
-    min-width: 152px;
-    height: 56px;
+    min-width: 80px;
+    height: 20px;
     color: #585858;
-    padding: 20px 20px;
-    font-size: 24px;
-    border-radius: 10px;
+    font-size: 10px;
     border: 2px solid #e6e6e6;
-    margin-left: 20px;
+    margin-left: 10px;
     margin-bottom: 20px;
     vertical-align: middle;
     &.active {

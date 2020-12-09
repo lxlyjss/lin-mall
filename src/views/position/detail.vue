@@ -70,13 +70,11 @@
 </template>
 <script lang="ts">
 import { reactive, toRefs, onMounted, computed } from "vue";
-import { Tag, Search } from "vant";
 import lessonItem from "@/components/position/lessonItem.vue";
 
 export default {
   components: {
     lessonItem,
-    VanTag: Tag,
   },
   setup() {
     const state = reactive({

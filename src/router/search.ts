@@ -5,10 +5,6 @@ const searchResult = () =>
 
 export default [
   {
-    path: "/search",
-    redirect: "/search-index",
-  },
-  {
     path: "/search-index",
     name: "searchIndex",
     component: searchIndex,
