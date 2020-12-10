@@ -148,10 +148,14 @@
       width: 118px;
       height: 47px;
       margin-right: 5px;
+      border: 1px solid #f86a68;
+      color: #F86A68;
     }
     .van-button:last-of-type {
       width: 222px;
       height: 47px;
+      background: linear-gradient(90deg, #f86a68, #f99168);
+      border-color: transparent;
     }
   }
 }

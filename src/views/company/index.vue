@@ -3,7 +3,7 @@
     <div class="header-container">
       <van-swipe loop autoplay="3000" indicator-color="#fff">
         <van-swipe-item v-for="(item, index) in swipeList" :key="index">
-          <van-image fit="cover" :src="item.imgUrl" />
+          <van-image fit="cover" :src="item.imgUrl" @click="previewImage(index)" />
         </van-swipe-item>
       </van-swipe>
       <div class="image-count">
@@ -14,8 +14,8 @@
     <div class="body">
       <div class="company-info">
         <div class="info-left">
-          <p>字节跳动</p>
-          <p>北京|c轮 200人以上|文娱|内容</p>
+          <p class="info-title">字节跳动</p>
+          <p class="subtitle">北京|c轮 200人以上|文娱|内容</p>
         </div>
         <div class="info-right">
           <van-image src="" />
@@ -23,19 +23,29 @@
       </div>
       <p class="title">公司介绍</p>
       <div class="labels">
-        <van-tag v-for="tag in company.labels" :key="tag" plain type="default">{{
+        <van-tag v-for="tag in company.labels" :key="tag" type="default">{{
           tag
         }}</van-tag>
       </div>
       <div class="intro">
-        北京拉大锯辣椒水地方了了卡时代峻峰克拉克时段了福利卡时段分开辣三丁福利卡计算的发
+        北京字节跳动科技有限公司，成立于2012年3月，是最早将人工
+        智能应用于移动互联网场景的科技企业之一，是中国北京的一家
+        信息科技公司，地址位于北京市海淀区知春路甲48号 [1] 。公司
+        以建设“全球创作与交流平台”为愿景 [2] 。字节跳动的全球化布 局始于2015年
+        [3] ，“技术出海”是字节跳动全球化发展的核心战 略 [4]
+        ，其旗下产品有今日头条，西瓜视频，抖音，火山小视频，
+        皮皮虾，懂车帝，悟空问答等。
       </div>
       <p class="title">公司官网</p>
-      <p>
+      <p class="company-link">
         <a href="https://www.baidu.com">https://www.baidu.com</a>
       </p>
       <p class="title">公司地址</p>
-      <van-image />
+      <van-image
+        class="company-map"
+        fit="cover"
+        src="http://oss.xinlinyun.top/ke/upload/image/2018/03/26/19927c9ea0a8a5b391fee204075c9bd0.png"
+      />
       <p class="title">工商信息</p>
       <div class="company-bussiness">
         <p><span>公司全称</span><span>海南的咖啡机拉卡世纪东方</span></p>
@@ -54,6 +64,8 @@ import { reactive, toRefs, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
 import positionItem from "@/components/home/positionItem.vue";
 import { getBannerList, getPositionList } from "@/api/home/index";
+import { client } from "@/utils/utils";
+import { ImagePreview } from "vant";
 
 interface State {
   tabActive: number;
@@ -74,8 +86,8 @@ export default {
       swipeList: [],
       infoList: [],
       company: {
-        labels: ["标签1", "biadj", "dkjkfdjka"]
-      }
+        labels: ["标签1", "biadj", "dkjkfdjka"],
+      },
     });
     const getBanner = async () => {
       const {
@@ -93,7 +105,25 @@ export default {
     const toSearch = () => {
       router.push("/search");
     };
-    console.log(JSON.stringify(state.infoList));
+    const previewImage = (index: number) => {
+      const imageList: string[] = state.swipeList.map((item: any) => item.imgUrl);
+      if (client.weixinwebview) {
+        (window as any).WeixinJSBridge &&
+          (window as any).WeixinJSBridge.invoke("imagePreview", {
+            urls: imageList,
+            current: imageList[index]
+          });
+      } else {
+        ImagePreview({
+          //@ts-ignore
+          swipeTo: () => {},
+          images: imageList,
+          startPosition: index,
+          closeable: true,
+          loop: false
+        });
+      }
+    }
     onMounted(() => {
       getBanner();
       getPosition();
@@ -103,121 +133,9 @@ export default {
       toSearch,
       getBannerList,
       getPosition,
+      previewImage
     };
   },
 };
 </script>
-<style lang="scss" scoped>
-.home-page {
-  background-color: $gray-1;
-  position: relative;
-  min-height: 100vh;
-  .header-container {
-    position: relative;
-    .image-count {
-      left: 20px;
-      position: absolute;
-      bottom: 20px;
-      color: #fff;
-      .van-image {
-        width: 20px;
-        height: 15px;
-      }
-    }
-  }
-
-  .van-swipe {
-    width: 100%;
-    height: 160px;
-    .van-image {
-      width: 100%;
-      height: 100%;
-    }
-  }
-  .body {
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
-    background-color: #fff;
-    margin-top: -15px;
-    position: relative;
-    overflow: hidden;
-    z-index: 9;
-    padding: 15px;
-    .company-info {
-      display: flex;
-      justify-content: space-between;
-      .info-right {
-        .van-image {
-          width: 30px;
-          height: 30px;
-        }
-      }
-    }
-    .title {
-      margin-top: 30px;
-    }
-    .labels {
-      /deep/ .van-tag {
-        background-color: #fff;
-        color: #999;
-        margin-right: 5px;
-        padding: 2px 4px;
-      }
-    }
-    .company-bussiness {
-      border: 1px solid #ccc;
-      padding: 10px;
-      span:first-of-type {
-        color: $gray-6;
-        margin-right: 20px;
-      }
-    }
-    .bottom-btn {
-      padding: 15px;
-      .van-button {
-        width: 100%;
-      }
-    }
-  }
-
-  .tab-container {
-    background-color: $white;
-    color: #333;
-    padding: 15px 15px 0;
-    font-size: 16px;
-    display: flex;
-    justify-content: space-between;
-    .left-btn {
-      display: flex;
-      align-items: center;
-    }
-    .right-btn {
-      /deep/ .van-tabs__nav {
-        .van-tab {
-          width: 50px;
-        }
-        .van-tabs__line {
-          width: 20px;
-          background-color: #1989fa;
-          bottom: 24px;
-        }
-      }
-    }
-  }
-  .bottom-container {
-    width: 100%;
-    padding: 15px;
-    box-sizing: border-box;
-    .van-button {
-      width: 100%;
-      background-color: red;
-    }
-    p {
-      font-size: 10px;
-      color: #d2d0d0;
-      text-align: center;
-      margin-top: 60px;
-    }
-  }
-}
-</style>
+<style lang="scss" scoped src="./index.scss"></style>

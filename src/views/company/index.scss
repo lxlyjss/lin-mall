@@ -1,0 +1,140 @@
+.home-page {
+  background-color: $gray-1;
+  position: relative;
+  min-height: 100vh;
+  .header-container {
+    position: relative;
+    .image-count {
+      left: 20px;
+      position: absolute;
+      bottom: 20px;
+      color: #fff;
+      .van-image {
+        width: 20px;
+        height: 15px;
+      }
+    }
+  }
+
+  .van-swipe {
+    width: 100%;
+    height: 160px;
+    .van-image {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  .body {
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    background-color: #fff;
+    margin-top: -15px;
+    position: relative;
+    overflow: hidden;
+    z-index: 9;
+    padding: 40px 15px 15px;
+    .company-info {
+      display: flex;
+      justify-content: space-between;
+
+      .info-left {
+        flex: 0 0 200px;
+        .info-title {
+          font-size: 16px;
+          font-weight: bold;
+          color: #333333;
+          margin-bottom: 6px;
+        }
+        .subtitle {
+          font-size: 11px;
+          font-weight: 400;
+          color: #999999;
+        }
+      }
+      .info-right {
+        flex: 0 0 100px;
+        text-align: center;
+        .van-image {
+          width: 46px;
+          height: 46px;
+        }
+      }
+    }
+    .title {
+      margin-top: 30px;
+      font-size: 14px;
+      font-weight: bold;
+      color: #333333;
+    }
+    .labels {
+      margin-top: 10px;
+      /deep/ .van-tag {
+        font-size: 10px;
+        font-weight: 400;
+        color: #666666;
+        background-color: #fff;
+        margin-right: 5px;
+        padding: 2px 4px;
+        border: 1px solid rgba(177, 177, 177, 0.5);
+        border-radius: 2px;
+      }
+    }
+    .intro {
+      font-size: 12px;
+      font-weight: 400;
+      color: #666666;
+      line-height: 19px;
+      margin-top: 18px;
+    }
+    .company-link {
+      font-size: 12px;
+      font-weight: 400;
+      color: #2a54dd;
+      line-height: 24px;
+    }
+    .company-map {
+      width: 335px;
+      height: 112px;
+      margin-top: 15px;
+    }
+    .company-bussiness {
+      border: 1px solid #999999;
+      padding: 17px 12px;
+      font-size: 11px;
+      font-weight: 400;
+      color: #333333;
+      margin-top: 20px;
+      p {
+        margin-bottom: 10px;
+      }
+      span:first-of-type {
+        color: #999999;
+        margin-right: 20px;
+      }
+    }
+    .bottom-btn {
+      margin-top: 38px;
+      .van-button {
+        width: 100%;
+        border: none;
+        background: linear-gradient(90deg, #f86a68, #f99168);
+      }
+    }
+  }
+
+  .bottom-container {
+    width: 100%;
+    padding: 15px;
+    box-sizing: border-box;
+    .van-button {
+      width: 100%;
+      background-color: red;
+    }
+    p {
+      font-size: 10px;
+      color: #d2d0d0;
+      text-align: center;
+      margin-top: 60px;
+    }
+  }
+}
