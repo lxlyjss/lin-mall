@@ -1,5 +1,5 @@
 <template>
-  <van-popup v-model:show="show" position="right" closeable @close="onClose">
+  <div class="category-container">
     <div class="filter-conteainer">
       <div class="filter-left">
         <van-sidebar v-model="activeKey">
@@ -39,10 +39,10 @@
         </div>
       </div>
     </div>
-  </van-popup>
+  </div>
 </template>
 <script lang="ts">
-import { reactive, toRef, toRefs, watch, onActivated, onMounted } from "vue";
+import { reactive, toRefs, onMounted } from "vue";
 import selectTag from "@/components/common/selectTag.vue";
 
 export default {
@@ -61,57 +61,48 @@ export default {
       activeKey: "",
     });
     state.show = props.value;
-    watch(
-      () => props.value,
-      (n: any, o: any) => {
-        console.log("kjkjk")
-        state.show = n;
-      }
-    );
     onMounted(() => {
       console.log("onMounted");
     });
-    const onClose = () => {
-      ctx.emit("onclose");
-    };
     return {
       ...toRefs(state),
-      onClose,
     };
   },
-};
+}
 </script>
 <style lang="scss" scoped>
-.filter-conteainer {
-  height: 100vh;
-  width: 80vw;
-  position: relative;
-  overflow-y: auto;
-  display: flex;
-  .filter-left {
-    height: 100%;
-    width: 80px;
-    .city-item {
-      padding: 10px;
-    }
-  }
-  .filter-right {
-    height: 100%;
-    width: calc(100% - 80px);
-  }
-  section {
-    padding: 20px 15px 0;
-  }
-  .bottom-btn {
+.category-container {
+  .filter-conteainer {
+    height: 100vh;
+    width: 80vw;
+    position: relative;
+    overflow-y: auto;
     display: flex;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 50px;
-    .van-button {
-      width: 50%;
+    .filter-left {
+      height: 100%;
+      width: 80px;
+      .city-item {
+        padding: 10px;
+      }
+    }
+    .filter-right {
+      height: 100%;
+      width: calc(100% - 80px);
+    }
+    section {
+      padding: 20px 15px 0;
+    }
+    .bottom-btn {
+      display: flex;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
       height: 50px;
+      .van-button {
+        width: 50%;
+        height: 50px;
+      }
     }
   }
 }

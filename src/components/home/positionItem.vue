@@ -1,5 +1,5 @@
 <template>
-  <div class="info-item">
+  <div class="position-item">
     <div class="title">
       <div class="title-left">{{ info.position }}</div>
       <div class="title-right">
@@ -55,7 +55,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.info-item {
+.position-item {
   padding: 20px;
   margin-bottom: 7px;
   background-color: $white;

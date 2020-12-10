@@ -18,35 +18,40 @@
         <span @click="showFilterCompany">公司</span>
       </div>
     </div>
-    <ul class="info-list" v-if="hasSearched">
-      <info-item v-for="item in infoList" :key="item.id" :info="item" />
+    <ul class="position-list">
+      <position-item v-for="item in positionList" :key="item.id" :info="item" />
+    </ul>
+    <ul class="company-list">
+      <company-item v-for="item in companyList" :key="item.id" :info="item" />
     </ul>
     <!-- 筛选公司 -->
-    <filter-company v-model:value="filterCompanyShow" @input="onInput" />
-    <filter-city v-model:value="filterCompanyShow" />
+    <filter-company v-model:value="filterCompanyShow" @onclose="onClose" />
+    <filter-city v-model:value="filterCityShow" @onclose="onClose" />
   </div>
 </template>
 <script lang="ts">
 import { reactive, toRefs, onMounted, computed } from "vue";
 import { Tag, Search, Popup } from "vant";
-import infoItem from "@/components/home/infoItem.vue";
+import positionItem from "@/components/home/positionItem.vue";
+import companyItem from "@/components/home/companyItem.vue";
 import filterCompany from "@/components/search/filterCompany.vue";
-import FilterCity from '@/components/search/filterCity.vue';
+import FilterCity from "@/components/search/filterCity.vue";
 
 export default {
   components: {
     VanSearch: Search,
-    infoItem,
+    positionItem,
+    companyItem,
     filterCompany,
-    FilterCity
+    FilterCity,
   },
   setup() {
     const state = reactive({
       searchValue: "",
       hasSearched: false,
-      filterCompanyShow: true,
-      filterCityShow: true,
-      infoList: [
+      filterCompanyShow: false,
+      filterCityShow: false,
+      positionList: [
         {
           position: "产品经理",
           city: "北京",
@@ -88,25 +93,41 @@ export default {
           id: 2,
         },
       ],
+      companyList: [
+        {
+          value: 3,
+          companyId: 12,
+          name: "新丰科技",
+          labels: ["互联网", "信息"],
+          logo:
+            "http://oss.xinlinyun.top/ke/upload/image/2018/03/26/19927c9ea0a8a5b391fee204075c9bd0.png",
+          financingStage: "A轮",
+          size: "300-500",
+          types: ["移动互联网", "企业服务"],
+          id: 2,
+        },
+      ],
     });
     onMounted(() => {
       console.log("dd");
     });
     const showFilterCity = () => {
-      state.filterCityShow = true
-      console.log("kkjk")
-    }
+      state.filterCityShow = true;
+      console.log("kkjk");
+    };
     const showFilterCompany = () => {
-      state.filterCompanyShow = true
-      console.log("322")
-    }
-    const onInput = () => {
-      console.log("input")
-    }
+      state.filterCompanyShow = true;
+      console.log("kkjk");
+    };
+    const onClose = () => {
+      state.filterCityShow = false;
+      state.filterCompanyShow = false;
+    };
     return {
       ...toRefs(state),
       showFilterCompany,
-      showFilterCity
+      showFilterCity,
+      onClose,
     };
   },
 };

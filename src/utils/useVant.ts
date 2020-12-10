@@ -11,6 +11,7 @@ import {
   Icon,
   Tab,
   Tabs,
+  Rate
 } from "vant";
 
 const vantList = [
@@ -26,6 +27,7 @@ const vantList = [
   Icon,
   Tab,
   Tabs,
+  Rate
 ];
 /**
  * 批量按需引入vant组件

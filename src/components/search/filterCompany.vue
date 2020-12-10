@@ -1,5 +1,5 @@
 <template>
-  <van-popup v-model:show="show" position="right" closeable>
+  <van-popup v-model:show="show" position="right" closeable @close="onClose">
     <div class="filter-conteainer">
       <section>
         <p>公司规模</p>
@@ -33,21 +33,38 @@
   </van-popup>
 </template>
 <script lang="ts">
-import { reactive, toRef, toRefs } from "vue";
+import { reactive, toRef, toRefs, watch, onMounted } from "vue";
 import selectTag from "@/components/common/selectTag.vue";
 
 export default {
   components: {
     selectTag
   },
-  setup() {
+  props: {
+    value: Boolean
+  },
+  setup(props: any, ctx: any) {
     const state = reactive({
       show: false,
       tagList: ["标签1", "标签12", "标签13"],
       selectList: [],
     });
+    state.show = props.value;
+    watch(
+      () => props.value,
+      (n: any, o: any) => {
+        state.show = n;
+      }
+    );
+    onMounted(() => {
+      console.log("onMounted");
+    });
+    const onClose = () => {
+      ctx.emit("onclose");
+    };
     return {
       ...toRefs(state),
+      onClose
     };
   },
 };

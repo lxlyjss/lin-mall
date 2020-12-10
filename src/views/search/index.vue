@@ -35,11 +35,11 @@
 </template>
 <script lang="ts">
 import { reactive, toRefs, onMounted, computed } from "vue";
-import infoItem from "@/components/home/infoItem.vue";
+import positionItem from "@/components/home/positionItem.vue";
 
 export default {
   components: {
-    infoItem,
+    positionItem,
   },
   setup() {
     const state = reactive({

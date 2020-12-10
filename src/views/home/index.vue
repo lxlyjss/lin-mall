@@ -43,7 +43,7 @@
 <script lang="ts">
 import { reactive, toRefs, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
-import infoItem from "@/components/home/infoItem.vue";
+import positionItem from "@/components/home/positionItem.vue";
 import { getBannerList, getPositionList } from "@/api/home/index";
 import ReturnTop from "@/components/common/returnTop.vue";
 
@@ -59,7 +59,7 @@ interface State {
 }
 export default {
   components: {
-    infoItem,
+    positionItem,
     ReturnTop
   },
   setup() {
