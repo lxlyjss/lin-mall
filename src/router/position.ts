@@ -4,7 +4,7 @@ console.log(positionDetail);
 
 export default [
   {
-    path: "/positionDetail",
+    path: "/position-detail",
     name: "positionDetail",
     component: positionDetail
   },

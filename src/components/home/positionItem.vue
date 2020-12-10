@@ -1,21 +1,23 @@
 <template>
   <div class="position-item">
-    <div class="title">
-      <div class="title-left">{{ info.position }}</div>
-      <div class="title-right">
-        <span>{{ info.minSalary }}</span
-        >-<span>{{ info.maxSalary }}</span
-        >K
+    <div class="position-detail" @click="toPositionDetail">
+      <div class="title">
+        <div class="title-left">{{ info.position }}</div>
+        <div class="title-right">
+          <span>{{ info.minSalary }}</span
+          >-<span>{{ info.maxSalary }}</span
+          >K
+        </div>
       </div>
-    </div>
-    <div class="subtitle">
-      {{ info.city }} | {{ info.address }} | {{ info.experience }} |
-      {{ info.needEducation }}
-    </div>
-    <div class="labels">
-      <van-tag v-for="tag in info.company.labels" :key="tag" type="default">{{
-        tag
-      }}</van-tag>
+      <div class="subtitle">
+        {{ info.city }} | {{ info.address }} | {{ info.experience }} |
+        {{ info.needEducation }}
+      </div>
+      <div class="labels">
+        <van-tag v-for="tag in info.company.labels" :key="tag" type="default">{{
+          tag
+        }}</van-tag>
+      </div>
     </div>
     <div class="company-info" @click="toCompanyPage">
       <div class="logo">
@@ -45,11 +47,17 @@ export default {
     const router = useRouter();
     const toCompanyPage = () => {
       router.push({
-        path: "/company"
-      })
+        path: "/company",
+      });
     };
+    const toPositionDetail = () => {
+      router.push({
+        path: "/position-detail"
+      })
+    }
     return {
       toCompanyPage,
+      toPositionDetail
     };
   },
 };
@@ -66,21 +74,21 @@ export default {
       font-weight: 900;
     }
     .title-right {
-      color: $red;
+      color: #f21e2e;
       font-weight: 600;
     }
   }
   .subtitle {
-    font-size: 14px;
+    font-size: 11px;
     color: #999;
   }
   .labels {
     .van-tag {
       margin-right: 10px;
-      padding: 2px 4px;
+      padding: 2px 6px;
       font-size: 10px;
       color: #999;
-      background-color: #f0f0f0;
+      background-color: #f8f8f8;
     }
   }
   .company-info {
@@ -99,6 +107,9 @@ export default {
     .right-info {
       font-size: 14px;
       margin-left: 10px;
+      .c-999 {
+        font-size: 11px;
+      }
     }
   }
 }

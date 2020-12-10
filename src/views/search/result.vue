@@ -1,21 +1,33 @@
 <template>
   <div class="search-result-page">
-    <div class="search-box">
-      <van-search
-        shape="round"
-        v-model="searchValue"
-        show-action
-        placeholder="请输入搜索关键词"
-      />
-    </div>
-    <div class="search-filter">
-      <div class="filter-left">
-        <span>搜职位</span>
-        <span>搜公司</span>
+    <div class="search-header">
+      <div class="search-box">
+        <van-search
+          shape="round"
+          v-model="searchValue"
+          show-action
+          placeholder="请输入搜索关键词"
+        />
       </div>
-      <div class="filter-right">
-        <span @click="showFilterCity">北京</span>
-        <span @click="showFilterCompany">公司</span>
+      <div class="search-filter">
+        <div class="filter-left">
+          <span
+            class="tab-item"
+            :class="{ active: currentTab == 0 }"
+            @click="changeTag(0)"
+            >搜职位</span
+          >
+          <span
+            class="tab-item"
+            :class="{ active: currentTab == 1 }"
+            @click="changeTag(1)"
+            >搜公司</span
+          >
+        </div>
+        <div class="filter-right">
+          <span @click="showFilterCity">北京</span>
+          <span @click="showFilterCompany">公司</span>
+        </div>
       </div>
     </div>
     <ul class="position-list">
@@ -51,6 +63,7 @@ export default {
       hasSearched: false,
       filterCompanyShow: false,
       filterCityShow: false,
+      currentTab: 0,
       positionList: [
         {
           position: "产品经理",
@@ -106,6 +119,18 @@ export default {
           types: ["移动互联网", "企业服务"],
           id: 2,
         },
+        {
+          value: 3,
+          companyId: 12,
+          name: "新丰科技",
+          labels: ["互联网", "信息"],
+          logo:
+            "http://oss.xinlinyun.top/ke/upload/image/2018/03/26/19927c9ea0a8a5b391fee204075c9bd0.png",
+          financingStage: "A轮",
+          size: "300-500",
+          types: ["移动互联网", "企业服务"],
+          id: 2,
+        },
       ],
     });
     onMounted(() => {
@@ -123,11 +148,15 @@ export default {
       state.filterCityShow = false;
       state.filterCompanyShow = false;
     };
+    const changeTag = (val: number) => {
+      state.currentTab = val;
+    };
     return {
       ...toRefs(state),
       showFilterCompany,
       showFilterCity,
       onClose,
+      changeTag
     };
   },
 };
@@ -137,24 +166,50 @@ export default {
   background-color: $gray-1;
   position: relative;
   min-height: 100vh;
+  padding-top: 100px;
+  .search-header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    left: 0;
+    background-color: #fff;
+    z-index: 99;
+  }
   .search-box {
     width: calc(100% - 20px);
     background-color: $white;
     padding: 10px;
     border-bottom: 1px solid $gray-3;
   }
-  .search-tags {
-    padding: 20px;
-    .title {
-      font-weight: 600;
-      margin-bottom: 5px;
+  .search-filter {
+    height: 48px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    box-sizing: border-box;
+    background-color: #fff;
+    border-bottom: 1px solid rgba(114, 114, 114, 0.12);
+    .filter-left {
+      .tab-item {
+        font-size: 14px;
+        font-weight: 400;
+        color: #b5b7b9;
+        margin-right: 20px;
+        &.active {
+          font-size: 15px;
+          font-weight: bold;
+          color: #333333;
+        }
+      }
     }
-    .tags {
-      margin-bottom: 20px;
-      .van-tag {
-        padding: 2px 4px;
-        background-color: $gray-3;
-        color: $gray-6;
+    .filter-right {
+      span {
+        font-size: 11px;
+        font-weight: 400;
+        color: #b5b7b9;
+        margin-left: 15px;
       }
     }
   }

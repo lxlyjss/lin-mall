@@ -1,45 +1,48 @@
 <template>
   <div class="position-detail">
     <div class="position-header">
-      <p>产品经理</p>
-      <p>本科|2年工作经验以上|有优秀项目</p>
-      <p><img src="~@/assets/common/location-gray.png" />北京海淀</p>
+      <p class="title">
+        <span>产品经理</span>
+        <span class="money">10-20K</span>
+      </p>
+      <p class="subtitle">本科|2年工作经验以上|有优秀项目</p>
+      <p class="subtitle"><van-icon name="location-o" />北京海淀</p>
     </div>
     <div class="body">
       <section>
         <p class="title">职位亮点</p>
-        <van-tag
-          v-for="tag in position.labels"
-          :key="tag"
-          plain
-          type="default"
-          >{{ tag }}</van-tag
-        >
+        <van-tag v-for="tag in position.labels" :key="tag" type="default">{{
+          tag
+        }}</van-tag>
       </section>
       <section>
         <p class="title">职位描述</p>
-        <p>发展空间大，阿拉时代峻峰可垃圾袋说服力卡</p>
+        <p class="desc">发展空间大，阿拉时代峻峰可垃圾袋说服力卡</p>
       </section>
       <section>
         <p class="title">岗位职责</p>
-        <p>发展空间大，阿拉时代峻峰可垃圾袋说服力卡</p>
+        <p class="desc">发展空间大，阿拉时代峻峰可垃圾袋说服力卡</p>
       </section>
       <section>
         <p class="title">岗位要求</p>
-        <p>发展空间大，阿拉时代峻峰可垃圾袋说服力卡</p>
+        <p class="desc">发展空间大，阿拉时代峻峰可垃圾袋说服力卡</p>
       </section>
       <section>
         <p class="title">岗位要求</p>
-        <p>发展空间大，阿拉时代峻峰可垃圾袋说服力卡</p>
+        <p class="desc">发展空间大，阿拉时代峻峰可垃圾袋说服力卡</p>
       </section>
     </div>
     <div class="company-info">
       <p class="line-title">公司信息</p>
       <div class="info-detail">
-        <p class="company-title">字节跳动</p>
-        <p class="subtitle">A轮|200人以上|互联网、金融</p>
-        <p class="comment-count">已有34条评价</p>
-        <van-image src="" class="company-logo" />
+        <div class="info-left">
+          <p class="company-title">字节跳动</p>
+          <p class="subtitle">A轮|200人以上|互联网、金融</p>
+          <p class="subtitle">已有34条评价</p>
+        </div>
+        <div class="info-right">
+          <van-image src="" class="company-logo" />
+        </div>
       </div>
       <div class="company-address">
         <p>
@@ -85,9 +88,9 @@ export default {
       },
       lessonList: [
         {
-          title: "kjkjkjkk"
-        }
-      ]
+          title: "kjkjkjkk",
+        },
+      ],
     });
     onMounted(() => {
       console.log("dd");
@@ -98,10 +101,4 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
-.position-detail {
-  width: 100%;
-  padding: 15px;
-  box-sizing: border-box;
-}
-</style>
+<style lang="scss" scoped src="./detail.scss"></style>

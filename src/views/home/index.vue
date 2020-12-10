@@ -31,7 +31,7 @@
       </div>
     </div>
     <ul class="info-list">
-      <info-item v-for="item in infoList" :key="item.id" :info="item" />
+      <position-item v-for="item in infoList" :key="item.id" :info="item" />
     </ul>
     <div class="bottom-container">
       <van-button type="danger" round>更多职位</van-button>

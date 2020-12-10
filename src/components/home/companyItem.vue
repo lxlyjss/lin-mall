@@ -5,16 +5,19 @@
         <van-image :src="info.logo" />
       </div>
       <div class="content-right">
-        <p class="title">字节跳动</p>
+        <p class="title van-ellipsis">字节跳动</p>
         <p class="subtitle">
-          面试评分<van-rate v-model="info.value" />在职招聘<span>322</span>
+          面试评分<van-rate color="#ffd21e" v-model="info.value" />在职招聘<span>322</span>
         </p>
         <p class="subtitle">A轮|200人以上|移动互联网、金融</p>
       </div>
     </div>
     <div class="company-footer">
       <p class="footer-text">
-        <van-icon name="fire" />正在热招234个<span>产品经理</span>相关职位
+        <van-icon
+          color="#ed0020"
+          name="fire"
+        />正在热招234个<span>产品经理</span>相关职位
       </p>
     </div>
   </div>
@@ -69,52 +72,27 @@ export default {
         font-size: 11px;
         font-weight: 400;
         color: #999999;
-      }
-    }
-    .company-footer {
-      .footer-text {
-        font-size: 11px;
-        font-weight: 400;
-        color: #999999;
+        display: flex;
+        align-items: center;
+        .van-rate {
+          margin: 2px 2px 0;
+        }
       }
     }
   }
-  .title {
-    display: flex;
-    justify-content: space-between;
-    .title-left {
-      font-weight: 900;
-    }
-    .title-right {
-      color: $red;
-      font-weight: 600;
-    }
-  }
-  .labels {
-    .van-tag {
-      margin-right: 10px;
-      padding: 2px 4px;
-      font-size: 10px;
-      color: #999;
-      background-color: #f0f0f0;
-    }
-  }
-  .company-info {
-    display: flex;
-    justify-content: flex-start;
-    margin-top: 20px;
-    align-items: center;
-    .logo {
-      width: 40px;
-      height: 40px;
-      .van-image {
-        width: 40px;
-        height: 40px;
+  .company-footer {
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px solid #efefef;
+    .footer-text {
+      font-size: 11px;
+      font-weight: 400;
+      color: #999999;
+      display: flex;
+      align-items: center;
+      span {
+        color: #ed0020;
       }
-    }
-    .right-info {
-      font-size: 14px;
-      margin-left: 10px;
     }
   }
 }

@@ -1,0 +1,97 @@
+.position-detail {
+  width: 100%;
+  padding: 15px 0;
+  box-sizing: border-box;
+  .position-header {
+    margin: 0 15px;
+    padding: 16px 20px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px 0 $gray-3;
+    .title {
+      font-size: 16px;
+      font-weight: bold;
+      color: #333333;
+      margin-bottom: 14px;
+      display: flex;
+      justify-content: space-between;
+      .money {
+        font-size: 14px;
+        font-weight: bold;
+        color: #f21e2e;
+      }
+    }
+    .subtitle {
+      font-size: 11px;
+      font-weight: 400;
+      color: #999999;
+      display: flex;
+      align-items: center;
+      margin-bottom: 5px;
+    }
+  }
+  .body {
+    padding: 15px 20px;
+    border-bottom: 7px solid #f6f6f6;
+    section {
+      margin-bottom: 30px;
+      .van-tag {
+        margin-right: 10px;
+        padding: 2px 6px;
+        font-size: 10px;
+        color: #999;
+        background-color: #f8f8f8;
+      }
+      .title {
+        font-size: 14px;
+        font-weight: bold;
+        color: #333333;
+        margin-bottom: 10px;
+      }
+      .desc {
+        font-size: 12px;
+        font-weight: 400;
+        color: #999999;
+      }
+    }
+  }
+  .company-info {
+    padding: 15px 20px;
+    .line-title {
+      font-size: 14px;
+      font-weight: bold;
+      color: #333333;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #999999;
+    }
+    .info-detail {
+      padding-top: 50px;
+      display: flex;
+      justify-content: space-between;
+      .info-left {
+        flex: 0 0 200px;
+        width: 200px;
+        .company-title {
+          font-size: 14px;
+          font-weight: 400;
+          color: #333333;
+          margin-bottom: 15px;
+        }
+        .subtitle {
+          font-size: 11px;
+          font-weight: 400;
+          color: #999999;
+          margin-bottom: 10px;
+        }
+      }
+      .info-right {
+        flex: 0 0 100px;
+        width: 100px;
+        .van-image {
+          width: 50px;
+          height: 50px;
+        }
+      }
+    }
+  }
+}
