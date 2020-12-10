@@ -54,7 +54,7 @@
         <p><span>法人代表</span><span>李丹</span></p>
       </div>
       <div class="bottom-btn">
-        <van-button type="danger">在职招聘（22）</van-button>
+        <van-button type="danger" @click="toPositionList">在职招聘（22）</van-button>
       </div>
     </div>
   </div>
@@ -105,6 +105,9 @@ export default {
     const toSearch = () => {
       router.push("/search");
     };
+    const toPositionList = () => {
+      router.push("/company-position")
+    }
     const previewImage = (index: number) => {
       const imageList: string[] = state.swipeList.map((item: any) => item.imgUrl);
       if (client.weixinwebview) {
@@ -133,7 +136,8 @@ export default {
       toSearch,
       getBannerList,
       getPosition,
-      previewImage
+      previewImage,
+      toPositionList
     };
   },
 };

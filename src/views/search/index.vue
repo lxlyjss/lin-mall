@@ -8,6 +8,10 @@
         placeholder="请输入搜索关键词"
       />
     </div>
+    <div class="search-category">
+      <span>按分类搜索</span>
+      <span @click="toCategoryPage">护士/护理 <van-icon name="arrow"/></span>
+    </div>
     <div class="search-tags">
       <div class="history-search">
         <p class="title">历史搜索</p>
@@ -35,6 +39,7 @@
 </template>
 <script lang="ts">
 import { reactive, toRefs, onMounted, computed } from "vue";
+import { useRouter } from "vue-router";
 import positionItem from "@/components/home/positionItem.vue";
 
 export default {
@@ -42,6 +47,7 @@ export default {
     positionItem,
   },
   setup() {
+    const router = useRouter()
     const state = reactive({
       searchValue: "",
       hasSearched: false,
@@ -88,11 +94,15 @@ export default {
         },
       ],
     });
+    const toCategoryPage = () => {
+      router.push("/search-category")
+    }
     onMounted(() => {
       console.log("dd");
     });
     return {
       ...toRefs(state),
+      toCategoryPage
     };
   },
 };
@@ -108,18 +118,45 @@ export default {
     padding: 10px;
     border-bottom: 1px solid $gray-3;
   }
+  .search-category {
+    height: 45px;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    margin-bottom: 7px;
+    span:first-of-type {
+      font-size: 15px;
+      font-weight: bold;
+      color: #333333;
+    }
+    span:last-of-type {
+      font-size: 14px;
+      font-weight: 400;
+      color: #b5b7b9;
+      display: flex;
+      align-items: center;
+    }
+  }
   .search-tags {
     padding: 20px;
+    background-color: #fff;
     .title {
       font-weight: 600;
-      margin-bottom: 5px;
+      margin-bottom: 19px;
     }
     .tags {
       margin-bottom: 20px;
       .van-tag {
-        padding: 2px 4px;
-        background-color: $gray-3;
+        background: #f8f8f8;
+        border-radius: 20px;
+        padding: 8px 12px;
         color: $gray-6;
+        font-size: 13px;
+        line-height: 13px;
+        font-weight: 400;
+        color: #666666;
       }
     }
   }

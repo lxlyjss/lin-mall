@@ -84,7 +84,7 @@ export default {
       state.infoList = data.list;
     };
     const toSearch = () => {
-      router.push("/search");
+      router.push("/search-index");
     };
     console.log(JSON.stringify(state.infoList));
     onMounted(() => {
