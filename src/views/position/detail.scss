@@ -55,15 +55,16 @@
       }
     }
   }
+  .line-title {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333333;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #999999;
+  }
   .company-info {
     padding: 15px 20px;
-    .line-title {
-      font-size: 14px;
-      font-weight: bold;
-      color: #333333;
-      padding-bottom: 10px;
-      border-bottom: 1px solid #999999;
-    }
+    border-bottom: 7px solid #f6f6f6;
     .info-detail {
       padding-top: 50px;
       display: flex;
@@ -87,11 +88,70 @@
       .info-right {
         flex: 0 0 100px;
         width: 100px;
+        text-align: center;
         .van-image {
           width: 50px;
           height: 50px;
         }
       }
+    }
+    .company-address {
+      margin-top: 30px;
+      p:nth-of-type(1) {
+        font-size: 12px;
+        font-weight: bold;
+        color: #333333;
+        img {
+          width: 11px;
+          height: 11px;
+          margin-right: 5px;
+        }
+      }
+      p:nth-of-type(2) {
+        font-size: 11px;
+        font-weight: 400;
+        color: #999999;
+      }
+    }
+    .tips-content {
+      padding: 14px 9px;
+      background: #f8f8f8;
+      border-radius: 2px;
+      margin-top: 26px;
+      p:nth-of-type(1) {
+        font-size: 12px;
+        font-weight: 400;
+        color: #f21e2e;
+        margin-bottom: 11px;
+        display: flex;
+        align-items: center;
+        img {
+          width: 14px;
+          height: 14px;
+          margin-right: 4px;
+        }
+      }
+      p:nth-of-type(2) {
+        font-size: 11px;
+        font-weight: 400;
+        color: #999999;
+        line-height: 18px;
+      }
+    }
+  }
+  .lesson-container {
+    padding: 20px;
+  }
+  .bottom-container {
+    text-align: center;
+    .van-button:first-of-type {
+      width: 118px;
+      height: 47px;
+      margin-right: 5px;
+    }
+    .van-button:last-of-type {
+      width: 222px;
+      height: 47px;
     }
   }
 }
