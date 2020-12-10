@@ -10,7 +10,7 @@
         />
       </section>
       <section>
-        <p>融资阶段</p>
+        <p class="title">融资阶段</p>
         <selectTag
           :list="tagList"
           v-model:selectList="selectList"
@@ -18,7 +18,7 @@
         />
       </section>
       <section>
-        <p>行业领域</p>
+        <p class="title">行业领域</p>
         <selectTag
           :list="tagList"
           v-model:selectList="selectList"

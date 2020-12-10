@@ -10,7 +10,7 @@
       </div>
       <div class="filter-right">
         <section>
-          <p>公司规模</p>
+          <p class="title">公司规模</p>
           <selectTag
             :list="tagList"
             v-model:selectList="selectList"
@@ -18,7 +18,7 @@
           />
         </section>
         <section>
-          <p>融资阶段</p>
+          <p class="title">融资阶段</p>
           <selectTag
             :list="tagList"
             v-model:selectList="selectList"
@@ -26,7 +26,7 @@
           />
         </section>
         <section>
-          <p>行业领域</p>
+          <p class="title">行业领域</p>
           <selectTag
             :list="tagList"
             v-model:selectList="selectList"
@@ -64,7 +64,7 @@ export default {
     watch(
       () => props.value,
       (n: any, o: any) => {
-        console.log("kjkjk")
+        console.log("kjkjk");
         state.show = n;
       }
     );
@@ -90,14 +90,27 @@ export default {
   display: flex;
   .filter-left {
     height: 100%;
-    width: 80px;
+    width: 112px;
+    background-color: #f8f8f8;
+    .van-sidebar {
+      width: 100%;
+    }
     .city-item {
-      padding: 10px;
+      padding: 15px 5px;
+      text-align: center;
+      &::before {
+        height: 100%;
+        width: 5px;
+      }
     }
   }
   .filter-right {
     height: 100%;
-    width: calc(100% - 80px);
+    width: calc(100% - 112px);
+    flex: 0 0 calc(100% - 112px);
+    .title {
+      margin-bottom: 10px;
+    }
   }
   section {
     padding: 20px 15px 0;

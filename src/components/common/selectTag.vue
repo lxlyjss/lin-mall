@@ -22,7 +22,7 @@ interface Data {
 }
 export default {
   components: {
-    VanTag: Tag
+    VanTag: Tag,
   },
   props: {
     // 选择模式，raido：单选，checkbox：多选
@@ -50,6 +50,7 @@ export default {
       default: (): string[] => [],
     },
   },
+  emits: ["change", "input"],
   setup(props: any, ctx: any) {
     const state: any = reactive({
       selectList: [],
@@ -96,29 +97,33 @@ export default {
       ...toRefs(state),
       getActive,
       getDisabled,
-      selectTag
-    }
-  }
+      selectTag,
+    };
+  },
 };
 </script>
 <style lang="scss" scoped>
 .tag-list {
-  margin-left: -20px;
-  margin-bottom: -20px;
+  margin-left: -10px;
+  margin-bottom: -10px;
   .filter-tag {
     justify-content: center;
     background-color: #fff;
-    min-width: 80px;
-    height: 20px;
-    color: #585858;
-    font-size: 10px;
-    border: 2px solid #e6e6e6;
+    min-width: 69px;
+    height: 28px;
     margin-left: 10px;
     margin-bottom: 20px;
     vertical-align: middle;
+    background: #f8f8f8;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #666666;
+    box-sizing: border-box;
+
     &.active {
-      background-color: #f25b4e;
-      color: #fff;
+      color: #f25b4e;
+      background-color: #fff;
       border: 1px solid #f25b4e;
     }
     &.round {

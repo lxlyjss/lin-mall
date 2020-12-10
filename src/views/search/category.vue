@@ -10,33 +10,13 @@
       </div>
       <div class="filter-right">
         <section>
-          <p>公司规模</p>
+          <p class="title">热门职位</p>
           <selectTag
             :list="tagList"
-            v-model:selectList="selectList"
             type="radio"
+            @change="onTagChange"
           />
         </section>
-        <section>
-          <p>融资阶段</p>
-          <selectTag
-            :list="tagList"
-            v-model:selectList="selectList"
-            type="radio"
-          />
-        </section>
-        <section>
-          <p>行业领域</p>
-          <selectTag
-            :list="tagList"
-            v-model:selectList="selectList"
-            type="radio"
-          />
-        </section>
-        <div class="bottom-btn">
-          <van-button plain>重置</van-button>
-          <van-button type="danger">确定</van-button>
-        </div>
       </div>
     </div>
   </div>
@@ -44,6 +24,7 @@
 <script lang="ts">
 import { reactive, toRefs, onMounted } from "vue";
 import selectTag from "@/components/common/selectTag.vue";
+import { useRouter } from "vue-router";
 
 export default {
   components: {
@@ -54,6 +35,7 @@ export default {
   },
   emits: ["onclose"],
   setup(props: any, ctx: any) {
+    const router = useRouter()
     const state = reactive({
       show: false,
       tagList: ["标签1", "标签12", "标签13"],
@@ -61,11 +43,22 @@ export default {
       activeKey: "",
     });
     state.show = props.value;
+    const onTagChange = (data: any) => {
+      console.log(data);
+      if (!data.length) return;
+      router.push({
+        path: "/search-result",
+        query: {
+          searchVal: data[0]
+        }
+      })
+    }
     onMounted(() => {
       console.log("onMounted");
     });
     return {
       ...toRefs(state),
+      onTagChange
     };
   },
 }
@@ -74,20 +67,32 @@ export default {
 .category-container {
   .filter-conteainer {
     height: 100vh;
-    width: 80vw;
     position: relative;
     overflow-y: auto;
     display: flex;
     .filter-left {
       height: 100%;
-      width: 80px;
+      width: 112px;
+      background-color: #F8F8F8;
+      .van-sidebar {
+        width: 100%;
+      }
       .city-item {
-        padding: 10px;
+        padding: 15px 5px;
+        text-align: center;
+        &::before {
+          height: 100%;
+          width: 5px;
+        }
       }
     }
     .filter-right {
       height: 100%;
-      width: calc(100% - 80px);
+      width: calc(100% - 112px);
+      flex: 0 0 calc(100% - 112px);
+      .title {
+        margin-bottom: 10px;
+      }
     }
     section {
       padding: 20px 15px 0;
