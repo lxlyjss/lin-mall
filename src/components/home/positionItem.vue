@@ -97,11 +97,11 @@ export default {
     margin-top: 20px;
     align-items: center;
     .logo {
-      width: 40px;
-      height: 40px;
+      width: 32px;
+      height: 32px;
       .van-image {
-        width: 40px;
-        height: 40px;
+        width: 32px;
+        height: 32px;
       }
     }
     .right-info {

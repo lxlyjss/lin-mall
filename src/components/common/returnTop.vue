@@ -8,7 +8,7 @@
   </div>
 </template>
 <script lang="ts">
-import { reactive, toRefs, onMounted } from "vue";
+import { reactive, toRefs, onMounted, onUnmounted } from "vue";
 
 export default {
   setup() {
@@ -30,6 +30,9 @@ export default {
     onMounted(() => {
       window.addEventListener("scroll", onScroll, false);
     });
+    onUnmounted(() => {
+      window.removeEventListener("scroll", onScroll, false);
+    })
     return {
       ...toRefs(state),
       onScroll,

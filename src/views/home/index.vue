@@ -1,8 +1,8 @@
 <template>
   <div class="home-page">
-    <div class="header-box">
-      <div class="header-left">
-        <van-image :src="require('@/assets/home/home.png')" />
+    <div class="header-box" :style="getStyle(headerOpacity)">
+      <div class="header-left" :style="getTextStyle(headerOpacity)">
+        <van-icon name="wap-home" />
         中民知慧教育
       </div>
       <div class="search-box" @click="toSearch">
@@ -20,7 +20,7 @@
       </van-swipe-item>
     </van-swipe>
     <div class="tab-container">
-      <div class="left-btn">
+      <div class="left-btn" @click="toCategoryPage">
         职位分类 <van-icon name="arrow" color="#333"></van-icon>
       </div>
       <div class="right-btn">
@@ -41,7 +41,7 @@
   </div>
 </template>
 <script lang="ts">
-import { reactive, toRefs, onMounted, computed } from "vue";
+import { reactive, toRefs, onMounted, computed, onUnmounted } from "vue";
 import { useRouter } from "vue-router";
 import positionItem from "@/components/home/positionItem.vue";
 import { getBannerList, getPositionList } from "@/api/home/index";
@@ -56,11 +56,12 @@ interface State {
     title: string;
   }[];
   infoList: any[];
+  headerOpacity: number;
 }
 export default {
   components: {
     positionItem,
-    ReturnTop
+    ReturnTop,
   },
   setup() {
     const router = useRouter();
@@ -69,6 +70,7 @@ export default {
       searchValue: "",
       swipeList: [],
       infoList: [],
+      headerOpacity: 0,
     });
     const getBanner = async () => {
       const {
@@ -86,16 +88,45 @@ export default {
     const toSearch = () => {
       router.push("/search-index");
     };
-    console.log(JSON.stringify(state.infoList));
+    const onScroll = (e: any) => {
+      const scrollTop: number =
+        document.body.scrollTop || document.documentElement.scrollTop;
+      const opacity: number = Math.floor((scrollTop / 150) * 100) / 100;
+      state.headerOpacity = opacity > 1 ? 1 : opacity;
+    };
+    const getStyle = (opacity: number) => {
+      return {
+        backgroundColor: `rgba(${opacity * 255}, ${opacity * 255}, ${opacity *
+          255}, ${opacity + 0.3})`,
+        boxShadow: opacity >= 1 ? "0 0 5px 0 #ccc" : "",
+      };
+    };
+    const getTextStyle = (opacity: number) => {
+      return {
+        color: `rgba(${(1 - opacity) * 255}, ${(1 - opacity) * 255}, ${(1 -
+          opacity) *
+          255}, 1)`,
+      };
+    };
+    const toCategoryPage = () => {
+      router.push("/search-category")
+    }
     onMounted(() => {
+      window.addEventListener("scroll", onScroll, false);
       getBanner();
       getPosition();
+    });
+    onUnmounted(() => {
+      window.removeEventListener("scroll", onScroll, false);
     });
     return {
       ...toRefs(state),
       toSearch,
       getBannerList,
       getPosition,
+      getStyle,
+      getTextStyle,
+      toCategoryPage
     };
   },
 };
@@ -182,7 +213,8 @@ export default {
     box-sizing: border-box;
     .van-button {
       width: 100%;
-      background-color: red;
+      background: linear-gradient(90deg, #f86a68, #f99168);
+      border: none;
     }
     p {
       font-size: 10px;

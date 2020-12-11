@@ -3,7 +3,11 @@
     <div class="header-container">
       <van-swipe loop autoplay="3000" indicator-color="#fff">
         <van-swipe-item v-for="(item, index) in swipeList" :key="index">
-          <van-image fit="cover" :src="item.imgUrl" @click="previewImage(index)" />
+          <van-image
+            fit="cover"
+            :src="item.imgUrl"
+            @click="previewImage(index)"
+          />
         </van-swipe-item>
       </van-swipe>
       <div class="image-count">
@@ -41,10 +45,12 @@
         <a href="https://www.baidu.com">https://www.baidu.com</a>
       </p>
       <p class="title">公司地址</p>
-      <van-image
+      <AMap
+        ref="AMapRef"
         class="company-map"
-        fit="cover"
-        src="http://oss.xinlinyun.top/ke/upload/image/2018/03/26/19927c9ea0a8a5b391fee204075c9bd0.png"
+        :mapOptions="mapOptions"
+        @click="toMapDetail"
+        @complete="onAMapComplete"
       />
       <p class="title">工商信息</p>
       <div class="company-bussiness">
@@ -54,18 +60,21 @@
         <p><span>法人代表</span><span>李丹</span></p>
       </div>
       <div class="bottom-btn">
-        <van-button type="danger" @click="toPositionList">在职招聘（22）</van-button>
+        <van-button type="danger" @click="toPositionList"
+          >在职招聘（22）</van-button
+        >
       </div>
     </div>
   </div>
 </template>
 <script lang="ts">
-import { reactive, toRefs, onMounted, computed } from "vue";
+import { reactive, toRefs, onMounted, computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import positionItem from "@/components/home/positionItem.vue";
 import { getBannerList, getPositionList } from "@/api/home/index";
 import { client } from "@/utils/utils";
 import { ImagePreview } from "vant";
+import AMap from "@/components/common/AMap.vue";
 
 interface State {
   tabActive: number;
@@ -78,9 +87,17 @@ interface State {
   infoList: any[];
 }
 export default {
-  setup() {
+  components: {
+    AMap,
+  },
+  setup(props: any, ctx: any) {
     const router = useRouter();
     const state: State = reactive({
+      mapOptions: {
+        center: [116.397428, 39.90923], //中心点坐标
+        // zoomEnable: false,
+        // dragEnable: false,
+      },
       tabActive: 0,
       searchValue: "",
       swipeList: [],
@@ -89,6 +106,7 @@ export default {
         labels: ["标签1", "biadj", "dkjkfdjka"],
       },
     });
+    const AMapRef = ref(null);
     const getBanner = async () => {
       const {
         data: { msg, status, data },
@@ -106,15 +124,17 @@ export default {
       router.push("/search");
     };
     const toPositionList = () => {
-      router.push("/company-position")
-    }
+      router.push("/company-position");
+    };
     const previewImage = (index: number) => {
-      const imageList: string[] = state.swipeList.map((item: any) => item.imgUrl);
+      const imageList: string[] = state.swipeList.map(
+        (item: any) => item.imgUrl
+      );
       if (client.weixinwebview) {
         (window as any).WeixinJSBridge &&
           (window as any).WeixinJSBridge.invoke("imagePreview", {
             urls: imageList,
-            current: imageList[index]
+            current: imageList[index],
           });
       } else {
         ImagePreview({
@@ -123,10 +143,24 @@ export default {
           images: imageList,
           startPosition: index,
           closeable: true,
-          loop: false
+          loop: false,
         });
       }
-    }
+    };
+    const toMapDetail = () => {
+      console.log("sdf");
+      (AMapRef.value as any).openInfoWindow({
+        anchor: 'top-left',
+        content: "北京-朝阳区-来广营朝来科技园11号楼",
+      });
+    };
+    const onAMapComplete = () => {
+      console.log("finish");
+      (AMapRef.value as any).openInfoWindow({
+        anchor: 'top-left',
+        content: "北京-朝阳区-来广营朝来科技园11号楼",
+      });
+    };
     onMounted(() => {
       getBanner();
       getPosition();
@@ -137,7 +171,10 @@ export default {
       getBannerList,
       getPosition,
       previewImage,
-      toPositionList
+      toPositionList,
+      toMapDetail,
+      onAMapComplete,
+      AMapRef,
     };
   },
 };

@@ -29,6 +29,11 @@
           <span @click="showFilterCompany">公司</span>
         </div>
       </div>
+      <div class="filter-tag">
+        <van-tag v-for="tag in filter.labels" :key="tag" type="primary">{{
+          tag
+        }}</van-tag>
+      </div>
     </div>
     <ul class="position-list">
       <position-item v-for="item in positionList" :key="item.id" :info="item" />
@@ -64,6 +69,19 @@ export default {
       filterCompanyShow: false,
       filterCityShow: false,
       currentTab: 0,
+      filter: {
+        labels: [
+          "不限",
+          "地铁",
+          "学区房",
+          "不限",
+          "地铁",
+          "学区房",
+          "不限",
+          "地铁",
+          "学区房",
+        ],
+      },
       positionList: [
         {
           position: "产品经理",
@@ -156,7 +174,7 @@ export default {
       showFilterCompany,
       showFilterCity,
       onClose,
-      changeTag
+      changeTag,
     };
   },
 };
@@ -166,7 +184,7 @@ export default {
   background-color: $gray-1;
   position: relative;
   min-height: 100vh;
-  padding-top: 100px;
+  padding-top: 134px;
   .search-header {
     position: fixed;
     top: 0;
@@ -210,6 +228,23 @@ export default {
         font-weight: 400;
         color: #b5b7b9;
         margin-left: 15px;
+      }
+    }
+  }
+  .filter-tag {
+    padding: 10px 20px;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    box-shadow: 0 2px 3px 0 #ddd;
+    .van-tag {
+      min-width: 30px;
+      justify-content: center;
+      padding: 3px 7px;
+      margin-right: 10px;
+      font-size: 10px;
+      &:last-of-type {
+        margin-right: 30px;
       }
     }
   }
