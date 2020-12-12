@@ -148,17 +148,20 @@ export default {
       }
     };
     const toMapDetail = () => {
-      console.log("sdf");
       (AMapRef.value as any).openInfoWindow({
         anchor: 'top-left',
         content: "北京-朝阳区-来广营朝来科技园11号楼",
       });
+      router.push("/company-location")
     };
     const onAMapComplete = () => {
       console.log("finish");
       (AMapRef.value as any).openInfoWindow({
         anchor: 'top-left',
         content: "北京-朝阳区-来广营朝来科技园11号楼",
+      });
+      (AMapRef.value as any).addMarker({
+        position: [116.39, 39.9]
       });
     };
     onMounted(() => {
