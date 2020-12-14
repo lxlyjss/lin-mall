@@ -11,11 +11,7 @@
       <div class="filter-right">
         <section>
           <p class="title">热门职位</p>
-          <selectTag
-            :list="tagList"
-            type="radio"
-            @change="onTagChange"
-          />
+          <selectTag :list="tagList" type="radio" @change="onTagChange" />
         </section>
       </div>
     </div>
@@ -26,6 +22,7 @@ import { reactive, toRefs, onMounted } from "vue";
 import selectTag from "@/components/common/selectTag.vue";
 import { useRouter } from "vue-router";
 import { getCategory } from "@/api/search/category";
+import { Toast } from "vant";
 
 export default {
   components: {
@@ -36,33 +33,47 @@ export default {
   },
   emits: ["onclose"],
   setup(props: any, ctx: any) {
-    const router = useRouter()
+    const router = useRouter();
     const state = reactive({
       show: false,
       tagList: ["标签1", "标签12", "标签13"],
       selectList: [],
       activeKey: "",
+      hotTag: [],
+      categories: [],
     });
     state.show = props.value;
+    const getCategoryData = async () => {
+      let {
+        data: { data, code },
+      } = await getCategory();
+      console.log(data);
+      if (code !== 200) {
+        Toast("数据错误");
+        return;
+      }
+    };
     const onTagChange = (data: any) => {
       console.log(data);
       if (!data.length) return;
       router.push({
         path: "/search-result",
         query: {
-          searchVal: data[0]
-        }
-      })
-    }
+          searchVal: data[0],
+        },
+      });
+    };
     onMounted(() => {
       console.log("onMounted");
+      getCategoryData();
     });
     return {
       ...toRefs(state),
-      onTagChange
+      getCategoryData,
+      onTagChange,
     };
   },
-}
+};
 </script>
 <style lang="scss" scoped>
 .category-container {
@@ -74,7 +85,7 @@ export default {
     .filter-left {
       height: 100%;
       width: 112px;
-      background-color: #F8F8F8;
+      background-color: #f8f8f8;
       .van-sidebar {
         width: 100%;
       }

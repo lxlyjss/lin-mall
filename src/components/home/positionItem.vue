@@ -2,19 +2,19 @@
   <div class="position-item">
     <div class="position-detail" @click="toPositionDetail">
       <div class="title">
-        <div class="title-left">{{ info.position }}</div>
+        <div class="title-left">{{ info.name }}</div>
         <div class="title-right">
-          <span>{{ info.minSalary }}</span
-          >-<span>{{ info.maxSalary }}</span
+          <span>{{ info.money_start }}</span
+          >-<span>{{ info.money_end }}</span
           >K
         </div>
       </div>
       <div class="subtitle">
-        {{ info.city }} | {{ info.address }} | {{ info.experience }} |
-        {{ info.needEducation }}
+        {{ info.work_city }} | {{ info.work_space }} | {{ info.work_year_tag }} |
+        {{ info.school_level }}
       </div>
       <div class="labels">
-        <van-tag v-for="tag in info.company.labels" :key="tag" type="default">{{
+        <van-tag v-for="tag in info.tags" :key="tag" type="default">{{
           tag
         }}</van-tag>
       </div>
@@ -26,8 +26,8 @@
       <div class="right-info">
         <p>{{ info.company.name }}</p>
         <p class="c-999">
-          {{ info.company.financingStage }} | {{ info.company.size }} |
-          {{ info.company.types.join("，") }}
+          {{ info.company.financing_level }} | {{ info.company.office_worker_num }} |
+          {{ info.company.tags.join("，") }}
         </p>
       </div>
     </div>

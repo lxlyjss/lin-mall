@@ -1,0 +1,96 @@
+.home-page {
+  background-color: $gray-1;
+  position: relative;
+  min-height: 100vh;
+  .header-box {
+    width: 100%;
+    box-sizing: border-box;
+    height: 41px;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: space-between;
+    padding: 0 15px;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 4;
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      color: #fff;
+      width: 60%;
+      font-weight: 900;
+      .van-image {
+        width: 20px;
+        height: 20px;
+        margin-right: 5px;
+      }
+      .van-icon {
+        font-size: 20px;
+      }
+    }
+    .search-box {
+      width: 40%;
+      background-color: transparent;
+      .van-search {
+        width: 140px;
+        height: 20px;
+        background-color: transparent;
+        transform: scale(0.7) translateX(20px);
+      }
+    }
+  }
+
+  .van-swipe {
+    width: 100%;
+    height: 200px;
+    .van-image {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  .tab-container {
+    background-color: $white;
+    color: #333;
+    padding: 15px 15px 0;
+    font-size: 16px;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #EFEFEF;
+    .left-btn {
+      display: flex;
+      align-items: center;
+    }
+    .right-btn {
+      /deep/ .van-tabs__nav {
+        .van-tab {
+          width: 50px;
+        }
+        .van-tabs__line {
+          width: 20px;
+          background-color: #1989fa;
+          bottom: 24px;
+        }
+      }
+    }
+  }
+  .bottom-container {
+    width: 100%;
+    padding: 15px;
+    box-sizing: border-box;
+    .van-button {
+      width: 100%;
+      background: linear-gradient(90deg, #f86a68, #f99168);
+      border: none;
+    }
+    p {
+      font-size: 10px;
+      color: #d2d0d0;
+      text-align: center;
+      margin-top: 60px;
+    }
+  }
+}

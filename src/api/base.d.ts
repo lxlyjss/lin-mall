@@ -4,9 +4,8 @@
  * msg：异常信息
  */
 export interface RES<T> {
-  status: number;
+  code: number;
   data: T;
-  msg: string;
 }
 export interface PAGE<T> {
   current_page: number;

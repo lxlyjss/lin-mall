@@ -15,8 +15,8 @@
       </div>
     </div>
     <van-swipe loop autoplay="3000" indicator-color="#fff">
-      <van-swipe-item v-for="(item, index) in swipeList" :key="index">
-        <van-image fit="cover" :src="item.imgUrl" />
+      <van-swipe-item v-for="(item) in swipeList" :key="item.id">
+        <van-image fit="cover" :src="item.image_url" @click="locationHref(item.connect_url)" />
       </van-swipe-item>
     </van-swipe>
     <div class="tab-container">
@@ -31,10 +31,10 @@
       </div>
     </div>
     <ul class="info-list">
-      <position-item v-for="item in infoList" :key="item.id" :info="item" />
+      <position-item v-for="item in jobList" :key="item.id" :info="item" />
     </ul>
     <div class="bottom-container">
-      <van-button type="danger" round>更多职位</van-button>
+      <van-button type="danger" round @click="toSearch">更多职位</van-button>
       <p>已经到底啦~看看别的吧</p>
     </div>
     <return-top />
@@ -52,7 +52,7 @@ interface State {
   tabActive: number;
   searchValue: string;
   swipeList: TYPES.banners[];
-  infoList: any[];
+  jobList: any[];
   headerOpacity: number;
 }
 export default {
@@ -66,14 +66,16 @@ export default {
       tabActive: 0,
       searchValue: "",
       swipeList: [],
-      infoList: [],
+      jobList: [],
       headerOpacity: 0,
     });
     const getHomeData = async () => {
       const {
-        data: { msg, status, data },
+        data: { code, data },
       } = await getHomeDataInfo();
       state.swipeList = data.banners;
+      state.jobList = data.jobs;
+      console.log(data)
     };
     const toSearch = () => {
       router.push("/search-index");
@@ -98,6 +100,9 @@ export default {
           255}, 1)`,
       };
     };
+    const locationHref = (url: string) => {
+      location.href = url;
+    }
     const toCategoryPage = () => {
       router.push("/search-category")
     }
@@ -114,102 +119,10 @@ export default {
       getHomeData,
       getStyle,
       getTextStyle,
-      toCategoryPage
+      toCategoryPage,
+      locationHref
     };
   },
 };
 </script>
-<style lang="scss" scoped>
-.home-page {
-  background-color: $gray-1;
-  position: relative;
-  min-height: 100vh;
-  .header-box {
-    width: 100%;
-    box-sizing: border-box;
-    height: 41px;
-    background-color: rgba(0, 0, 0, 0.4);
-    display: flex;
-    justify-content: space-between;
-    padding: 0 15px;
-    align-items: center;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 4;
-
-    .header-left {
-      display: flex;
-      align-items: center;
-      font-size: 14px;
-      color: #fff;
-      width: 60%;
-      font-weight: 900;
-      .van-image {
-        width: 20px;
-        height: 20px;
-        margin-right: 5px;
-      }
-    }
-    .search-box {
-      width: 40%;
-      background-color: transparent;
-      .van-search {
-        width: 140px;
-        height: 20px;
-        background-color: transparent;
-        transform: scale(0.7) translateX(20px);
-      }
-    }
-  }
-
-  .van-swipe {
-    width: 100%;
-    height: 200px;
-    .van-image {
-      width: 100%;
-      height: 100%;
-    }
-  }
-  .tab-container {
-    background-color: $white;
-    color: #333;
-    padding: 15px 15px 0;
-    font-size: 16px;
-    display: flex;
-    justify-content: space-between;
-    .left-btn {
-      display: flex;
-      align-items: center;
-    }
-    .right-btn {
-      /deep/ .van-tabs__nav {
-        .van-tab {
-          width: 50px;
-        }
-        .van-tabs__line {
-          width: 20px;
-          background-color: #1989fa;
-          bottom: 24px;
-        }
-      }
-    }
-  }
-  .bottom-container {
-    width: 100%;
-    padding: 15px;
-    box-sizing: border-box;
-    .van-button {
-      width: 100%;
-      background: linear-gradient(90deg, #f86a68, #f99168);
-      border: none;
-    }
-    p {
-      font-size: 10px;
-      color: #d2d0d0;
-      text-align: center;
-      margin-top: 60px;
-    }
-  }
-}
-</style>
+<style lang="scss" scoped src="./index.scss"></style>

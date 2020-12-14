@@ -25,7 +25,7 @@ instance.interceptors.response.use(
   (response) => {
     console.log(response);
     const res = response.data;
-    if (res.status === 0) {
+    if (response.status === 200 || response.status === 302 || response.status === 304) {
       return response;
     } else {
       Toast("请求失败，请重试~");

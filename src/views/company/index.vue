@@ -73,7 +73,7 @@
 import { reactive, toRefs, onMounted, computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import positionItem from "@/components/home/positionItem.vue";
-import { getHomeDataInfo } from "@/api/home/index";
+import { getCompany } from "@/api/search/company";
 import * as TYPES from "@/api/home/index.d";
 import { client } from "@/utils/utils";
 import { ImagePreview } from "vant";
@@ -101,16 +101,15 @@ export default {
       searchValue: "",
       swipeList: [],
       infoList: [],
-      company: {
-        labels: ["标签1", "biadj", "dkjkfdjka"],
-      },
+      company: {},
     });
     const AMapRef = ref(null);
-    const getHomeData = async () => {
+    const getCompanyInfo = async () => {
       const {
-        data: { msg, status, data },
-      } = await getHomeDataInfo();
-      state.swipeList = data.banners;
+        data: { code, data },
+      } = await getCompany();
+      // state.company = data;
+      console.log(data)
     };
     const toSearch = () => {
       router.push("/search");
@@ -154,12 +153,12 @@ export default {
       });
     };
     onMounted(() => {
-      getHomeData();
+      getCompanyInfo();
     });
     return {
       ...toRefs(state),
       toSearch,
-      getHomeData,
+      getCompanyInfo,
       previewImage,
       toPositionList,
       toMapDetail,
