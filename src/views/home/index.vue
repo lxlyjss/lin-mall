@@ -44,17 +44,14 @@
 import { reactive, toRefs, onMounted, computed, onUnmounted } from "vue";
 import { useRouter } from "vue-router";
 import positionItem from "@/components/home/positionItem.vue";
-import { getBannerList, getPositionList } from "@/api/home/index";
+import { getHomeDataInfo } from "@/api/home/index";
+import * as TYPES from "@/api/home/index.d";
 import ReturnTop from "@/components/common/returnTop.vue";
 
 interface State {
   tabActive: number;
   searchValue: string;
-  swipeList: {
-    imgUrl: string;
-    id: number;
-    title: string;
-  }[];
+  swipeList: TYPES.banners[];
   infoList: any[];
   headerOpacity: number;
 }
@@ -72,18 +69,11 @@ export default {
       infoList: [],
       headerOpacity: 0,
     });
-    const getBanner = async () => {
+    const getHomeData = async () => {
       const {
         data: { msg, status, data },
-      } = await getBannerList();
-      state.swipeList = data.list;
-    };
-    const getPosition = async () => {
-      const {
-        data: { msg, status, data },
-      } = await getPositionList();
-      console.log(data);
-      state.infoList = data.list;
+      } = await getHomeDataInfo();
+      state.swipeList = data.banners;
     };
     const toSearch = () => {
       router.push("/search-index");
@@ -113,8 +103,7 @@ export default {
     }
     onMounted(() => {
       window.addEventListener("scroll", onScroll, false);
-      getBanner();
-      getPosition();
+      getHomeData();
     });
     onUnmounted(() => {
       window.removeEventListener("scroll", onScroll, false);
@@ -122,8 +111,7 @@ export default {
     return {
       ...toRefs(state),
       toSearch,
-      getBannerList,
-      getPosition,
+      getHomeData,
       getStyle,
       getTextStyle,
       toCategoryPage

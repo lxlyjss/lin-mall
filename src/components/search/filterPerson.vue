@@ -2,7 +2,7 @@
   <van-popup v-model:show="show" position="right" closeable @close="onClose">
     <div class="filter-conteainer">
       <section>
-        <p class="title">公司规模</p>
+        <p class="title">期望薪资</p>
         <selectTag
           :list="scaleList"
           v-model:value="currentScale"
@@ -11,7 +11,7 @@
         />
       </section>
       <section>
-        <p class="title">融资阶段</p>
+        <p class="title">工作经验</p>
         <selectTag
           :list="financingList"
           v-model:value="currentFinancing"
@@ -20,7 +20,16 @@
         />
       </section>
       <section>
-        <p class="title">行业领域</p>
+        <p class="title">学历要求</p>
+        <selectTag
+          :list="areaList"
+          v-model:value="currentArea"
+          @change="onAreaChange"
+          type="radio"
+        />
+      </section>
+      <section>
+        <p class="title">时间要求</p>
         <selectTag
           :list="areaList"
           v-model:value="currentArea"

@@ -57,15 +57,13 @@ export default {
       totalList: [],
       disabled: [],
     });
+    state.selectList = props.value || [];
     watch(
       () => props.value,
       (n, o) => {
-        console.log(n, o);
+        state.selectList = n;
       }
     );
-    onMounted(() => {
-      state.selectList = props.value || [];
-    });
     const getActive = (tag: string) => {
       return state.selectList.some((select: any) => select == tag);
     };
@@ -108,11 +106,11 @@ export default {
   margin-bottom: -10px;
   .filter-tag {
     justify-content: center;
-    background-color: #fff;
-    min-width: 69px;
+    width: auto;
+    min-width: 50px;
     height: 28px;
     margin-left: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     vertical-align: middle;
     background: #f8f8f8;
     border-radius: 3px;
@@ -120,6 +118,8 @@ export default {
     font-weight: 400;
     color: #666666;
     box-sizing: border-box;
+    padding: 0 8px;
+    border: 1px solid #f8f8f8;
 
     &.active {
       color: #f25b4e;

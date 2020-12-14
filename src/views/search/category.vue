@@ -25,6 +25,7 @@
 import { reactive, toRefs, onMounted } from "vue";
 import selectTag from "@/components/common/selectTag.vue";
 import { useRouter } from "vue-router";
+import { getCategory } from "@/api/search/category";
 
 export default {
   components: {

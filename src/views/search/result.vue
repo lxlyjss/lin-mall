@@ -25,8 +25,18 @@
           >
         </div>
         <div class="filter-right">
-          <span @click="showFilterCity">北京</span>
-          <span @click="showFilterCompany">公司</span>
+          <span class="van-ellipsis" @click="showFilterCity">
+            <span class="has-text" v-if="filterCity">{{ filterCity }}</span>
+            <span v-else>地区</span>
+          </span>
+          <span class="van-ellipsis" @click="showFilterPerson">
+            <span class="has-text" v-if="filterPerson">{{ filterPerson }}</span>
+            <span v-else>要求</span>
+          </span>
+          <span class="van-ellipsis" @click="showFilterCompany">
+            <span class="has-text" v-if="filterCompany">{{ filterCompany }}</span>
+            <span v-else>公司</span>
+          </span>
         </div>
       </div>
       <div class="filter-tag">
@@ -42,8 +52,23 @@
       <company-item v-for="item in companyList" :key="item.id" :info="item" />
     </ul>
     <!-- 筛选公司 -->
-    <filter-company v-model:value="filterCompanyShow" @onclose="onClose" />
-    <filter-city v-model:value="filterCityShow" @onclose="onClose" />
+    <filter-company
+      v-model:value="filterCompanyShow"
+      @onclose="onClose"
+      @complete="onCompanySubmit"
+    />
+    <!-- 筛选地区 -->
+    <filter-city
+      v-model:value="filterCityShow"
+      @onclose="onClose"
+      @complete="onCitySubmit"
+    />
+    <!-- 筛选人的要求 -->
+    <filter-person
+      v-model:value="filterPersonShow"
+      @onclose="onClose"
+      @complete="onPersonSubmit"
+    />
   </div>
 </template>
 <script lang="ts">
@@ -53,6 +78,7 @@ import positionItem from "@/components/home/positionItem.vue";
 import companyItem from "@/components/home/companyItem.vue";
 import filterCompany from "@/components/search/filterCompany.vue";
 import FilterCity from "@/components/search/filterCity.vue";
+import FilterPerson from "@/components/search/filterPerson.vue";
 
 export default {
   components: {
@@ -61,6 +87,7 @@ export default {
     companyItem,
     filterCompany,
     FilterCity,
+    FilterPerson
   },
   setup() {
     const state = reactive({
@@ -68,6 +95,10 @@ export default {
       hasSearched: false,
       filterCompanyShow: false,
       filterCityShow: false,
+      filterPersonShow: false,
+      filterCompany: "",
+      filterPerson: "",
+      filterCity: "",
       currentTab: 0,
       filter: {
         labels: [
@@ -156,11 +187,12 @@ export default {
     });
     const showFilterCity = () => {
       state.filterCityShow = true;
-      console.log("kkjk");
     };
     const showFilterCompany = () => {
       state.filterCompanyShow = true;
-      console.log("kkjk");
+    };
+    const showFilterPerson = () => {
+      state.filterPersonShow = true;
     };
     const onClose = () => {
       state.filterCityShow = false;
@@ -169,12 +201,28 @@ export default {
     const changeTag = (val: number) => {
       state.currentTab = val;
     };
+    const onCompanySubmit = (value: string[]) => {
+      console.log(value);
+      state.filterCompany = value.join("-");
+    }
+    const onCitySubmit = (value: string[]) => {
+      console.log(value);
+      state.filterCity = value.join("-");
+    }
+    const onPersonSubmit = (value: string[]) => {
+      console.log(value);
+      state.filterPerson = value.join("-");
+    }
     return {
       ...toRefs(state),
       showFilterCompany,
       showFilterCity,
+      showFilterPerson,
       onClose,
       changeTag,
+      onCompanySubmit,
+      onCitySubmit,
+      onPersonSubmit
     };
   },
 };
@@ -223,11 +271,16 @@ export default {
       }
     }
     .filter-right {
-      span {
+      display: flex;
+      .van-ellipsis {
         font-size: 11px;
         font-weight: 400;
         color: #b5b7b9;
         margin-left: 15px;
+        max-width: 70px;
+        .has-text {
+          color: red;
+        }
       }
     }
   }

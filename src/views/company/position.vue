@@ -6,7 +6,7 @@
 <script lang="ts">
 import { reactive, toRefs } from "vue";
 import positionItem from "@/components/home/positionItem.vue";
-import { getPositionList } from "@/api/home/index";
+// import { getPositionList } from "@/api/home/index";
 
 interface State {
   positionList: any
@@ -20,11 +20,11 @@ export default {
       positionList: []
     });
     const getPosition = async () => {
-      const {
-        data: { msg, status, data },
-      } = await getPositionList();
-      console.log(data);
-      state.positionList = data.list;
+      // const {
+      //   data: { msg, status, data },
+      // } = await getPositionList();
+      // console.log(data);
+      // state.positionList = data.list;
     };
     getPosition()
     return {

@@ -7,9 +7,6 @@ import { RES } from "@/api/base";
  * /mock 请求mock地址
  * /api 请求正常地址
  */
-export const getBannerList = async () => {
-  return await request.get<RES<TYPES.getBannerListRes>>("/mock/home/getBannerList")
-}
-export const getPositionList = async () => {
-  return await request.get<RES<TYPES.getPositionListRes>>("/mock/home/getPositionList")
+export const getHomeDataInfo = async () => {
+  return await request.get<RES<TYPES.getHomeDataInfoRes>>("/api/h5/home")
 }

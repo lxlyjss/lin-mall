@@ -45,13 +45,15 @@
         <a href="https://www.baidu.com">https://www.baidu.com</a>
       </p>
       <p class="title">公司地址</p>
-      <AMap
-        ref="AMapRef"
-        class="company-map"
-        :mapOptions="mapOptions"
-        @click="toMapDetail"
-        @complete="onAMapComplete"
-      />
+      <div class="company-map" @click="toMapDetail">
+        <AMap
+          ref="AMapRef"
+          class="company-map"
+          :mapOptions="mapOptions"
+          @complete="onAMapComplete"
+        />
+      </div>
+
       <p class="title">工商信息</p>
       <div class="company-bussiness">
         <p><span>公司全称</span><span>海南的咖啡机拉卡世纪东方</span></p>
@@ -71,7 +73,8 @@
 import { reactive, toRefs, onMounted, computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import positionItem from "@/components/home/positionItem.vue";
-import { getBannerList, getPositionList } from "@/api/home/index";
+import { getHomeDataInfo } from "@/api/home/index";
+import * as TYPES from "@/api/home/index.d";
 import { client } from "@/utils/utils";
 import { ImagePreview } from "vant";
 import AMap from "@/components/common/AMap.vue";
@@ -79,11 +82,7 @@ import AMap from "@/components/common/AMap.vue";
 interface State {
   tabActive: number;
   searchValue: string;
-  swipeList: {
-    imgUrl: string;
-    id: number;
-    title: string;
-  }[];
+  swipeList: TYPES.banners[];
   infoList: any[];
 }
 export default {
@@ -95,8 +94,8 @@ export default {
     const state: State = reactive({
       mapOptions: {
         center: [116.397428, 39.90923], //中心点坐标
-        // zoomEnable: false,
-        // dragEnable: false,
+        zoomEnable: false,
+        dragEnable: false,
       },
       tabActive: 0,
       searchValue: "",
@@ -107,18 +106,11 @@ export default {
       },
     });
     const AMapRef = ref(null);
-    const getBanner = async () => {
+    const getHomeData = async () => {
       const {
         data: { msg, status, data },
-      } = await getBannerList();
-      state.swipeList = data.list;
-    };
-    const getPosition = async () => {
-      const {
-        data: { msg, status, data },
-      } = await getPositionList();
-      console.log(data);
-      state.infoList = data.list;
+      } = await getHomeDataInfo();
+      state.swipeList = data.banners;
     };
     const toSearch = () => {
       router.push("/search");
@@ -148,31 +140,26 @@ export default {
       }
     };
     const toMapDetail = () => {
-      (AMapRef.value as any).openInfoWindow({
-        anchor: 'top-left',
-        content: "北京-朝阳区-来广营朝来科技园11号楼",
-      });
-      router.push("/company-location")
+      console.log("kkk");
+      router.push("/company-location");
     };
     const onAMapComplete = () => {
       console.log("finish");
       (AMapRef.value as any).openInfoWindow({
-        anchor: 'top-left',
+        anchor: "top-left",
         content: "北京-朝阳区-来广营朝来科技园11号楼",
       });
       (AMapRef.value as any).addMarker({
-        position: [116.39, 39.9]
+        position: [116.39, 39.9],
       });
     };
     onMounted(() => {
-      getBanner();
-      getPosition();
+      getHomeData();
     });
     return {
       ...toRefs(state),
       toSearch,
-      getBannerList,
-      getPosition,
+      getHomeData,
       previewImage,
       toPositionList,
       toMapDetail,
