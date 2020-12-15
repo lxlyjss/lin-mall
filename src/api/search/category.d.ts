@@ -7,18 +7,13 @@ export interface getCategoryRes {
   categories: {
     name: string;
     id: number;
-    parent_id: string;
     children: {
       name: string;
       id: number;
-      parent_id: string;
     }[];
   }[];
   hot_tags: {
     name: string;
     id: number;
-    parent_id: string;
-    click_num: number;
-    type: string;
   }[];
 }

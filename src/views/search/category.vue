@@ -2,10 +2,13 @@
   <div class="category-container">
     <div class="filter-conteainer">
       <div class="filter-left">
-        <van-sidebar v-model="activeKey">
-          <van-sidebar-item class="city-item" title="标签名称" />
-          <van-sidebar-item class="city-item" title="标签名称" />
-          <van-sidebar-item class="city-item" title="标签名称" />
+        <van-sidebar v-model="activeKey" @change="onSideChange">
+          <van-sidebar-item
+            class="city-item"
+            v-for="item in categories"
+            :key="item.id"
+            :title="item.name"
+          />
         </van-sidebar>
       </div>
       <div class="filter-right">
@@ -22,8 +25,18 @@ import { reactive, toRefs, onMounted } from "vue";
 import selectTag from "@/components/common/selectTag.vue";
 import { useRouter } from "vue-router";
 import { getCategory } from "@/api/search/category";
+import { getCategoryRes } from "@/api/search/category.d";
 import { Toast } from "vant";
 
+interface State {
+  categories: getCategoryRes["categories"];
+  show: boolean;
+  activeKey: string;
+  tagList: {
+    name: string;
+    id: number;
+  }[];
+}
 export default {
   components: {
     selectTag,
@@ -34,13 +47,18 @@ export default {
   emits: ["onclose"],
   setup(props: any, ctx: any) {
     const router = useRouter();
-    const state = reactive({
+    const state: State = reactive({
       show: false,
-      tagList: ["标签1", "标签12", "标签13"],
-      selectList: [],
       activeKey: "",
-      hotTag: [],
-      categories: [],
+      tagList: [],
+      categories: [
+        {
+          name: "热门职位",
+          id: 99999,
+          children: [],
+          sort: 0,
+        },
+      ],
     });
     state.show = props.value;
     const getCategoryData = async () => {
@@ -52,6 +70,10 @@ export default {
         Toast("数据错误");
         return;
       }
+      const categories = data.categories || [];
+      state.categories = state.categories.concat(categories);
+      state.categories[0].children = data.hot_tags;
+      state.tagList = state.categories[0].children.map((item: any) => item.name);
     };
     const onTagChange = (data: any) => {
       console.log(data);
@@ -63,6 +85,10 @@ export default {
         },
       });
     };
+    const onSideChange = (value: number) => {
+      console.log(value);
+      state.tagList = state.categories[value].children.map((item: any) => item.name);
+    }
     onMounted(() => {
       console.log("onMounted");
       getCategoryData();
@@ -71,6 +97,7 @@ export default {
       ...toRefs(state),
       getCategoryData,
       onTagChange,
+      onSideChange
     };
   },
 };

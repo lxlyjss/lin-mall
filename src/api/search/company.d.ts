@@ -17,3 +17,9 @@ export interface getCompanyRes {
   law_people: string;
   job_num: number;
 }
+export interface getCompanyParams {
+  page: number;
+  per_page: number;
+  city_name: string;
+  keyword: string;
+}

@@ -105,11 +105,11 @@ export default {
     });
     const AMapRef = ref(null);
     const getCompanyInfo = async () => {
-      const {
-        data: { code, data },
-      } = await getCompany();
+      // const {
+      //   data: { code, data },
+      // } = await getCompany();
       // state.company = data;
-      console.log(data)
+      // console.log(data)
     };
     const toSearch = () => {
       router.push("/search");

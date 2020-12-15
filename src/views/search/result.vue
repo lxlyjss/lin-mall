@@ -7,6 +7,7 @@
           v-model="searchValue"
           show-action
           placeholder="请输入搜索关键词"
+          @input="onSearch"
         />
       </div>
       <div class="search-filter">
@@ -34,7 +35,9 @@
             <span v-else>要求</span>
           </span>
           <span class="van-ellipsis" @click="showFilterCompany">
-            <span class="has-text" v-if="filterCompany">{{ filterCompany }}</span>
+            <span class="has-text" v-if="filterCompany">{{
+              filterCompany
+            }}</span>
             <span v-else>公司</span>
           </span>
         </div>
@@ -73,13 +76,32 @@
 </template>
 <script lang="ts">
 import { reactive, toRefs, onMounted, computed } from "vue";
-import { Tag, Search, Popup } from "vant";
+import { Tag, Search, Popup, Toast } from "vant";
 import positionItem from "@/components/home/positionItem.vue";
 import companyItem from "@/components/home/companyItem.vue";
 import filterCompany from "@/components/search/filterCompany.vue";
 import FilterCity from "@/components/search/filterCity.vue";
 import FilterPerson from "@/components/search/filterPerson.vue";
+import { getCompany } from "@/api/search/company";
+import { throttle } from "@/utils/utils";
 
+interface State {
+  searchValue: string;
+  page: number;
+  hasSearched: boolean;
+  filterCompanyShow: boolean;
+  filterCityShow: boolean;
+  filterPersonShow: boolean;
+  filterCompany: string;
+  filterPerson: string;
+  filterCity: string;
+  currentTab: number;
+  filter: {
+    labels: string[];
+  };
+  positionList: any;
+  companyList: any;
+}
 export default {
   components: {
     VanSearch: Search,
@@ -87,11 +109,12 @@ export default {
     companyItem,
     filterCompany,
     FilterCity,
-    FilterPerson
+    FilterPerson,
   },
   setup() {
-    const state = reactive({
+    const state: State = reactive({
       searchValue: "",
+      page: 1,
       hasSearched: false,
       filterCompanyShow: false,
       filterCityShow: false,
@@ -113,78 +136,28 @@ export default {
           "学区房",
         ],
       },
-      positionList: [
-        {
-          position: "产品经理",
-          city: "北京",
-          address: "甜水园",
-          experience: "1-3年",
-          needEducation: "本科",
-          company: {
-            companyId: 12,
-            name: "新丰科技",
-            labels: ["互联网", "信息"],
-            logo:
-              "http://oss.xinlinyun.top/ke/upload/image/2018/03/26/19927c9ea0a8a5b391fee204075c9bd0.png",
-            financingStage: "A轮",
-            size: "300-500",
-            types: ["移动互联网", "企业服务"],
-          },
-          minSalary: "10",
-          maxSalary: "20",
-          id: 1,
-        },
-        {
-          position: "产品经理",
-          city: "北京",
-          address: "甜水园",
-          experience: "1-3年",
-          needEducation: "本科",
-          company: {
-            companyId: 12,
-            name: "新丰科技",
-            labels: ["互联网", "信息"],
-            logo:
-              "http://oss.xinlinyun.top/ke/upload/image/2018/03/26/19927c9ea0a8a5b391fee204075c9bd0.png",
-            financingStage: "A轮",
-            size: "300-500",
-            types: ["移动互联网", "企业服务"],
-          },
-          minSalary: "10",
-          maxSalary: "20",
-          id: 2,
-        },
-      ],
-      companyList: [
-        {
-          value: 3,
-          companyId: 12,
-          name: "新丰科技",
-          labels: ["互联网", "信息"],
-          logo:
-            "http://oss.xinlinyun.top/ke/upload/image/2018/03/26/19927c9ea0a8a5b391fee204075c9bd0.png",
-          financingStage: "A轮",
-          size: "300-500",
-          types: ["移动互联网", "企业服务"],
-          id: 2,
-        },
-        {
-          value: 3,
-          companyId: 12,
-          name: "新丰科技",
-          labels: ["互联网", "信息"],
-          logo:
-            "http://oss.xinlinyun.top/ke/upload/image/2018/03/26/19927c9ea0a8a5b391fee204075c9bd0.png",
-          financingStage: "A轮",
-          size: "300-500",
-          types: ["移动互联网", "企业服务"],
-          id: 2,
-        },
-      ],
+      positionList: [],
+      companyList: [],
     });
     onMounted(() => {
       console.log("dd");
     });
+    const getPositionList = async () => {
+      const {
+        data: { data, code },
+      } = await getCompany({
+        keyword: state.searchValue,
+        city_name: state.filterCity,
+        page: state.page,
+        per_page: 10,
+      });
+      console.log(data);
+      if (code !== 200) {
+        Toast("数据错误");
+        return;
+      }
+    };
+    getPositionList();
     const showFilterCity = () => {
       state.filterCityShow = true;
     };
@@ -204,15 +177,20 @@ export default {
     const onCompanySubmit = (value: string[]) => {
       console.log(value);
       state.filterCompany = value.join("-");
-    }
+    };
     const onCitySubmit = (value: string[]) => {
       console.log(value);
       state.filterCity = value.join("-");
-    }
+    };
     const onPersonSubmit = (value: string[]) => {
       console.log(value);
       state.filterPerson = value.join("-");
-    }
+    };
+
+    const onSearch = () => {
+      console.log("input")
+      throttle(getPositionList, 1000);
+    };
     return {
       ...toRefs(state),
       showFilterCompany,
@@ -222,7 +200,8 @@ export default {
       changeTag,
       onCompanySubmit,
       onCitySubmit,
-      onPersonSubmit
+      onPersonSubmit,
+      onSearch,
     };
   },
 };
