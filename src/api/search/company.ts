@@ -8,5 +8,7 @@ import { RES, PAGE } from "@/api/base";
  * /api 请求正常地址
  */
 export const getCompany = async (params: TYPES.getCompanyParams) => {
-  return await request.get<RES<PAGE<TYPES.getCompanyRes>>>("/api/h5/company")
+  return await request.get<RES<PAGE<TYPES.getCompanyRes>>>("/api/h5/company", {
+    params
+  })
 }

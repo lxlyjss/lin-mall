@@ -8,23 +8,28 @@ const instance = axios.create({
   timeout: 20000,
 });
 instance.interceptors.request.use(
-  (config) => {
+  (config: any) => {
     console.log(config);
     // 如果接口地址包含mock字段，则走mock地址
     if (config.url && config.url.indexOf("mock") > -1) {
       instance.defaults.baseURL = `${process.env.VUE_APP_MOCK_API_URL}/api`;
     }
+    Toast.loading({
+      message: "请求中...",
+      loadingType: "spinner"
+    })
     return config;
   },
-  (error) => {
+  (error: any) => {
     console.log(error);
     return Promise.reject(error);
   }
 );
 instance.interceptors.response.use(
-  (response) => {
+  (response: any) => {
     console.log(response);
     const res = response.data;
+    Toast.clear()
     if (response.status === 200 || response.status === 302 || response.status === 304) {
       return response;
     } else {
@@ -32,7 +37,7 @@ instance.interceptors.response.use(
       return Promise.reject(response);
     }
   },
-  (error) => {
+  (error: any) => {
     console.log(error);
     return Promise.reject(error);
   }

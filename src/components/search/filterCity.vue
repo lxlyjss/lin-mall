@@ -72,7 +72,6 @@ export default {
   },
   emits: ["onclose", "complete"],
   setup(props: any, ctx: any) {
-    console.log(area);
     const state: State = reactive({
       show: false,
       address: {
@@ -131,9 +130,6 @@ export default {
     });
     // 是否可以点击确定按钮
     const getDisabledStatus: any = computed(() => {
-      console.log(state.address.province);
-      console.log(state.address.city);
-      console.log(state.address.county);
       return (
         state.address.province[0] &&
         state.address.city[0] &&
@@ -181,15 +177,9 @@ export default {
       state.currentCountyList = [];
     };
     const submit = () => {
-      console.log(
-        Object.keys(state.address).map((item: any) => state.address[item][0])
-      );
       ctx.emit("complete", Object.keys(state.address).map((item: any) => state.address[item][0]))
       onClose();
     };
-    onMounted(() => {
-      console.log("onMounted");
-    });
     const onClose = () => {
       ctx.emit("onclose");
     };

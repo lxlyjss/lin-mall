@@ -30,7 +30,7 @@
             <span class="has-text" v-if="filterCity">{{ filterCity }}</span>
             <span v-else>地区</span>
           </span>
-          <span class="van-ellipsis" @click="showFilterPerson">
+          <span class="van-ellipsis" @click="showFilterPerson" v-if="currentTab == 0">
             <span class="has-text" v-if="filterPerson">{{ filterPerson }}</span>
             <span v-else>要求</span>
           </span>
@@ -43,17 +43,42 @@
         </div>
       </div>
       <div class="filter-tag">
-        <van-tag v-for="tag in filter.labels" :key="tag" type="primary">{{
-          tag
-        }}</van-tag>
+        <van-tag
+          v-for="tag in filter.labels"
+          @click="selectTag(tag)"
+          :key="tag"
+          :type="activeTag == tag ? 'primary' : 'default'"
+          >{{ tag }}</van-tag
+        >
       </div>
     </div>
-    <ul class="position-list">
-      <position-item v-for="item in positionList" :key="item.id" :info="item" />
-    </ul>
-    <ul class="company-list">
-      <company-item v-for="item in companyList" :key="item.id" :info="item" />
-    </ul>
+    <div class="data-list">
+      <van-list
+        v-model:loading="loading"
+        :finished="finished"
+        :finished-text="positionList.length > 0 ? '没有更多了' : ''"
+        @load="onLoad"
+      >
+        <ul class="company-list" v-if="currentTab == 1">
+          <company-item
+            v-for="item in companyList"
+            :key="item.id"
+            :info="item"
+          />
+        </ul>
+        <ul class="position-list" v-else>
+          <position-item
+            v-for="item in positionList"
+            :key="item.id"
+            :info="item"
+          />
+        </ul>
+        <van-empty
+          v-if="positionList.length == 0 && dataReady && !loading"
+          :description="currentTab == 1 ? '暂无匹配的公司' : '暂无匹配的职位'"
+        ></van-empty>
+      </van-list>
+    </div>
     <!-- 筛选公司 -->
     <filter-company
       v-model:value="filterCompanyShow"
@@ -83,12 +108,14 @@ import filterCompany from "@/components/search/filterCompany.vue";
 import FilterCity from "@/components/search/filterCity.vue";
 import FilterPerson from "@/components/search/filterPerson.vue";
 import { getCompany } from "@/api/search/company";
-import { throttle } from "@/utils/utils";
+import { debounce } from "@/utils/utils";
+import { useRouter, useRoute } from "vue-router";
 
 interface State {
   searchValue: string;
   page: number;
   hasSearched: boolean;
+  activeTag: string;
   filterCompanyShow: boolean;
   filterCityShow: boolean;
   filterPersonShow: boolean;
@@ -99,8 +126,12 @@ interface State {
   filter: {
     labels: string[];
   };
+  loading: boolean;
+  finished: boolean;
+  error: boolean;
   positionList: any;
   companyList: any;
+  dataReady: boolean;
 }
 export default {
   components: {
@@ -112,10 +143,16 @@ export default {
     FilterPerson,
   },
   setup() {
+    const route = useRoute();
+    console.log(route.query);
     const state: State = reactive({
       searchValue: "",
       page: 1,
       hasSearched: false,
+      activeTag: "不限",
+      loading: false,
+      finished: false,
+      error: false,
       filterCompanyShow: false,
       filterCityShow: false,
       filterPersonShow: false,
@@ -128,36 +165,47 @@ export default {
           "不限",
           "地铁",
           "学区房",
-          "不限",
+          "33",
           "地铁",
           "学区房",
-          "不限",
+          "22",
           "地铁",
           "学区房",
         ],
       },
       positionList: [],
       companyList: [],
+      dataReady: false,
     });
     onMounted(() => {
       console.log("dd");
     });
-    const getPositionList = async () => {
-      const {
-        data: { data, code },
-      } = await getCompany({
-        keyword: state.searchValue,
-        city_name: state.filterCity,
-        page: state.page,
-        per_page: 10,
-      });
-      console.log(data);
-      if (code !== 200) {
-        Toast("数据错误");
-        return;
+    const getCompanyList = async (flag?: boolean) => {
+      try {
+        const {
+          data: { data, code },
+        } = await getCompany({
+          keyword: state.searchValue,
+          city_name: state.filterCity,
+          page: state.page,
+          per_page: 10,
+        });
+        console.log(data);
+        if (code !== 200) {
+          Toast("数据错误");
+          state.error = true;
+          return;
+        }
+        state.dataReady = true;
+        state.companyList = flag
+          ? state.companyList.concat(data.data)
+          : data.data;
+        state.finished = !data.next_page_url;
+      } catch (err) {
+        state.error = true;
+        Toast("网络连接失败，请稍后重试！");
       }
     };
-    getPositionList();
     const showFilterCity = () => {
       state.filterCityShow = true;
     };
@@ -168,11 +216,14 @@ export default {
       state.filterPersonShow = true;
     };
     const onClose = () => {
+      console.log("close")
       state.filterCityShow = false;
       state.filterCompanyShow = false;
+      state.filterPersonShow = false;
     };
     const changeTag = (val: number) => {
       state.currentTab = val;
+      getData();
     };
     const onCompanySubmit = (value: string[]) => {
       console.log(value);
@@ -181,16 +232,34 @@ export default {
     const onCitySubmit = (value: string[]) => {
       console.log(value);
       state.filterCity = value.join("-");
+      getData()
     };
     const onPersonSubmit = (value: string[]) => {
       console.log(value);
       state.filterPerson = value.join("-");
     };
-
-    const onSearch = () => {
-      console.log("input")
-      throttle(getPositionList, 1000);
+    const selectTag = (val: string) => {
+      state.activeTag = val;
+      getData();
     };
+    const getData = async () => {
+      state.page = 1;
+      state.loading = true;
+      await getCompanyList();
+      console.log(state.loading);
+      state.loading = false;
+    };
+    const onLoad = async () => {
+      state.page++;
+      state.loading = true;
+      await getCompanyList(true);
+      state.loading = false;
+    };
+    const onSearch = debounce(getCompanyList, 1000);
+    state.searchValue = route.query.searchVal as string;
+    if (state.searchValue) {
+      getData();
+    }
     return {
       ...toRefs(state),
       showFilterCompany,
@@ -202,6 +271,8 @@ export default {
       onCitySubmit,
       onPersonSubmit,
       onSearch,
+      selectTag,
+      onLoad,
     };
   },
 };
@@ -211,7 +282,7 @@ export default {
   background-color: $gray-1;
   position: relative;
   min-height: 100vh;
-  padding-top: 134px;
+  padding-top: 150px;
   .search-header {
     position: fixed;
     top: 0;
@@ -256,7 +327,7 @@ export default {
         font-weight: 400;
         color: #b5b7b9;
         margin-left: 15px;
-        max-width: 70px;
+        max-width: 60px;
         .has-text {
           color: red;
         }
@@ -270,13 +341,19 @@ export default {
     overflow-x: auto;
     box-shadow: 0 2px 3px 0 #ddd;
     .van-tag {
-      min-width: 30px;
+      min-width: 40px;
       justify-content: center;
-      padding: 3px 7px;
+      padding: 3px 5px;
       margin-right: 10px;
       font-size: 10px;
+      background-color: #f5f5f5;
+      color: #999999;
       &:last-of-type {
         margin-right: 30px;
+      }
+      &--primary {
+        background-color: rgba(46, 70, 248, 0.7);
+        color: #fff;
       }
     }
   }

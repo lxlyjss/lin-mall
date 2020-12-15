@@ -33,13 +33,14 @@ export const client = {
  * @param delay 延迟执行时长
  */
 export const debounce = function(fn: Function, delay: number) {
-  let timer: any = null; //借助闭包
+  let timeout: any;
   return function() {
-    if (timer) {
-      clearTimeout(timer);
-    }
-    timer = setTimeout(fn, delay); // 简化写法
-  };
+    clearTimeout(timeout) // 如果持续触发，那么就清除定时器，定时器的回调就不会执行。
+    timeout = setTimeout(() => {
+      // @ts-ignore
+      fn.apply(this, arguments)
+    }, delay)
+  }
 };
 /**
  * 节流函数

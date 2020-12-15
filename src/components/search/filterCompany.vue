@@ -38,6 +38,8 @@
 <script lang="ts">
 import { reactive, toRef, toRefs, watch, onMounted } from "vue";
 import selectTag from "@/components/common/selectTag.vue";
+import { getFilterCompany } from "@/api/search/getEnum";
+import { Toast } from "vant";
 
 interface State {
   show: boolean;
@@ -59,17 +61,9 @@ export default {
   setup(props: any, ctx: any) {
     const state: State = reactive({
       show: false,
-      scaleList: ["不限", "20人", "20-100人", "100-200人", "200-500人"],
-      financingList: ["不限", "天使轮", "A轮", "B轮", "C轮", "未融资"],
-      areaList: [
-        "不限",
-        "移动互联网",
-        "电商",
-        "金融",
-        "企业服务",
-        "教育",
-        "医疗",
-      ],
+      scaleList: [],
+      financingList: [],
+      areaList: [],
       currentScale: [],
       currentFinancing: [],
       currentArea: []
@@ -81,6 +75,19 @@ export default {
         state.show = n;
       }
     );
+    const getFilterPersonData = async () => {
+      const {
+        data: { data, code },
+      } = await getFilterCompany();
+      console.log(data);
+      if (code !== 200) {
+        Toast("接收数据失败！");
+        return;
+      }
+      state.scaleList = data.office_worker_num.map((item: any) => item.name)
+      state.financingList = data.financing_level.map((item: any) => item.name)
+      state.areaList = data.industry_attribute.map((item: any) => item.name)
+    };
     const onScaleChange = (value: string[]) => {
       console.log(value)
       state.currentScale = value;
@@ -109,6 +116,7 @@ export default {
     const onClose = () => {
       ctx.emit("onclose");
     };
+    getFilterPersonData()
     return {
       ...toRefs(state),
       onClose,

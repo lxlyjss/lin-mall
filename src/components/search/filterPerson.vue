@@ -4,36 +4,36 @@
       <section>
         <p class="title">期望薪资</p>
         <selectTag
-          :list="scaleList"
-          v-model:value="currentScale"
-          @change="onScaleChange"
+          :list="salaryList"
+          v-model:value="currentSalary"
+          @change="onSalaryChange"
           type="radio"
         />
       </section>
       <section>
         <p class="title">工作经验</p>
         <selectTag
-          :list="financingList"
-          v-model:value="currentFinancing"
-          @change="onFinancingChange"
+          :list="workTimeList"
+          v-model:value="currentWorkTime"
+          @change="onWorkTimeChange"
           type="radio"
         />
       </section>
       <section>
         <p class="title">学历要求</p>
         <selectTag
-          :list="areaList"
-          v-model:value="currentArea"
-          @change="onAreaChange"
+          :list="schoolLevelList"
+          v-model:value="currentSchoolLevel"
+          @change="onSchoolLevelChange"
           type="radio"
         />
       </section>
       <section>
         <p class="title">时间要求</p>
         <selectTag
-          :list="areaList"
-          v-model:value="currentArea"
-          @change="onAreaChange"
+          :list="workNatureList"
+          v-model:value="currentWorkNature"
+          @change="onWorkNatureChange"
           type="radio"
         />
       </section>
@@ -47,15 +47,19 @@
 <script lang="ts">
 import { reactive, toRef, toRefs, watch, onMounted } from "vue";
 import selectTag from "@/components/common/selectTag.vue";
+import { getFilterPerson } from "@/api/search/getEnum";
+import { Toast } from "vant";
 
 interface State {
   show: boolean;
-  scaleList: string[];
-  financingList: string[];
-  areaList: string[];
-  currentScale: string[];
-  currentFinancing: string[];
-  currentArea: string[];
+  salaryList: string[];
+  workTimeList: string[];
+  schoolLevelList: string[];
+  workNatureList: string[];
+  currentSalary: string[];
+  currentWorkTime: string[];
+  currentSchoolLevel: string[];
+  currentWorkNature: string[];
 }
 export default {
   components: {
@@ -68,20 +72,14 @@ export default {
   setup(props: any, ctx: any) {
     const state: State = reactive({
       show: false,
-      scaleList: ["不限", "20人", "20-100人", "100-200人", "200-500人"],
-      financingList: ["不限", "天使轮", "A轮", "B轮", "C轮", "未融资"],
-      areaList: [
-        "不限",
-        "移动互联网",
-        "电商",
-        "金融",
-        "企业服务",
-        "教育",
-        "医疗",
-      ],
-      currentScale: [],
-      currentFinancing: [],
-      currentArea: []
+      salaryList: [],
+      workTimeList: [],
+      schoolLevelList: [],
+      workNatureList: [],
+      currentSalary: [],
+      currentWorkTime: [],
+      currentSchoolLevel: [],
+      currentWorkNature: [],
     });
     state.show = props.value;
     watch(
@@ -90,42 +88,67 @@ export default {
         state.show = n;
       }
     );
-    const onScaleChange = (value: string[]) => {
-      console.log(value)
-      state.currentScale = value;
-    }
-    const onFinancingChange = (value: string[]) => {
-      console.log(value)
-      state.currentFinancing = value;
-    }
-    const onAreaChange = (value: string[]) => {
-      console.log(value)
-      state.currentArea = value;
-    }
+    const getFilterPersonData = async () => {
+      const {
+        data: { data, code },
+      } = await getFilterPerson();
+      console.log(data);
+      if (code !== 200) {
+        Toast("接收数据失败！");
+        return;
+      }
+      state.salaryList = data.money.map((item: any) => item.name)
+      state.workTimeList = data.work_time.map((item: any) => item.name)
+      state.schoolLevelList = data.school_level.map((item: any) => item.name)
+      state.workNatureList = data.work_nature.map((item: any) => item.name)
+    };
+    const onSalaryChange = (value: string[]) => {
+      console.log(value);
+      state.currentSalary = value;
+    };
+    const onWorkTimeChange = (value: string[]) => {
+      console.log(value);
+      state.currentWorkTime = value;
+    };
+    const onSchoolLevelChange = (value: string[]) => {
+      console.log(value);
+      state.currentSchoolLevel = value;
+    };
+    const onWorkNatureChange = (value: string[]) => {
+      console.log(value);
+      state.currentWorkNature = value;
+    };
     const reset = () => {
-      state.currentScale = []
-      state.currentFinancing = []
-      state.currentArea = []
-    }
+      state.currentSalary = [];
+      state.currentWorkTime = [];
+      state.currentSchoolLevel = [];
+      state.currentWorkNature = [];
+    };
     const submit = () => {
-      console.log(state.currentScale, state.currentFinancing, state.currentArea)
-      ctx.emit("complete", [state.currentScale[0], state.currentFinancing[0], state.currentArea[0]])
-      onClose()
-    }
+      ctx.emit("complete", [
+        state.currentSalary[0],
+        state.currentWorkTime[0],
+        state.currentSchoolLevel[0],
+        state.currentWorkNature[0],
+      ]);
+      onClose();
+    };
     onMounted(() => {
       console.log("onMounted");
     });
     const onClose = () => {
       ctx.emit("onclose");
     };
+    getFilterPersonData();
     return {
       ...toRefs(state),
       onClose,
-      onScaleChange,
-      onFinancingChange,
-      onAreaChange,
+      onSalaryChange,
+      onWorkTimeChange,
+      onSchoolLevelChange,
+      onWorkNatureChange,
       reset,
-      submit
+      submit,
     };
   },
 };
