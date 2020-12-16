@@ -20,8 +20,8 @@
         <div class="info-left">
           <p class="info-title">{{ company.simple_name }}</p>
           <p class="subtitle">
-            {{ company.city_name }}|{{ company.financing_level }}
-            {{ company.office_worker_num }}|{{ company.tags.join("、") }}
+            {{ company.city_name }} | {{ company.financing_level }} |
+            {{ company.office_worker_num }} | {{ company.tags.join("、") }}
           </p>
         </div>
         <div class="info-right">
@@ -114,7 +114,12 @@ export default {
       router.push("/search");
     };
     const toPositionList = () => {
-      router.push("/company-position");
+      router.push({
+        path: "/company-position",
+        query: {
+          id: state.company.id
+        }
+      });
     };
     const previewImage = (index: number) => {
       const imageList: string[] = state.swipeList.map(
@@ -143,7 +148,7 @@ export default {
         path: "/company-location",
         query: {
           location: state.company.location,
-          address: state.company.city_name
+          address: state.company.address
         }
       });
     };
@@ -152,7 +157,7 @@ export default {
       console.log("finish");
       (AMapRef.value as any).openInfoWindow({
         anchor: "top-center",
-        content: `<p style='font-size: 12px;'>${state.company.city_name}</p>`,
+        content: `<p style='font-size: 12px;'>${state.company.address}</p>`,
         position: [location[0], location[1]]
       });
       (AMapRef.value as any).addMarker({

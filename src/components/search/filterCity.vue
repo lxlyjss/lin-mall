@@ -145,9 +145,9 @@ export default {
     // 省份改变
     const onProvinceChange = (value: string) => {
       const province: any = provinceList.value[value];
-      const provinceCode: string = province.code.slice(0, 3);
+      const provinceCode: string = province.code.slice(0, 2);
       state.currentCityList = cityList.value.filter(
-        (item: any) => item.code.slice(0, 3) == provinceCode
+        (item: any) => item.code.slice(0, 2) == provinceCode
       );
       state.currentCountyList = [];
       state.address.province = [province.name];

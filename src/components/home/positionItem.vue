@@ -10,7 +10,7 @@
         </div>
       </div>
       <div class="subtitle">
-        {{ info.work_city }} | {{ info.work_space }} | {{ info.work_year_tag }} |
+        {{ info.work_city }} | {{ info.work_space }} | {{ info.work_time }} |
         {{ info.school_level }}
       </div>
       <div class="labels">

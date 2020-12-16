@@ -6,7 +6,8 @@
 <script lang="ts">
 import { reactive, toRefs } from "vue";
 import positionItem from "@/components/home/positionItem.vue";
-// import { getPositionList } from "@/api/home/index";
+import { getCompanyPosition } from "@/api/search/company";
+import { useRoute } from "vue-router";
 
 interface State {
   positionList: any
@@ -16,15 +17,16 @@ export default {
     positionItem
   },
   setup() {
+    const route: any = useRoute()
     const state: State = reactive({
       positionList: []
     });
     const getPosition = async () => {
-      // const {
-      //   data: { msg, status, data },
-      // } = await getPositionList();
-      // console.log(data);
-      // state.positionList = data.list;
+      const id = route.query.id;
+      const {
+        data: { code, data },
+      } = await getCompanyPosition(id);
+      state.positionList = data;
     };
     getPosition()
     return {

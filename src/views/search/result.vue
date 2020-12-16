@@ -27,7 +27,7 @@
         </div>
         <div class="filter-right">
           <span class="van-ellipsis" @click="showFilterCity">
-            <span class="has-text" v-if="filterCity.length">{{ filterCity.join("-") }}</span>
+            <span class="has-text" v-if="filterCity.length">{{ filterCity[2] }}</span>
             <span v-else>地区</span>
           </span>
           <span
@@ -100,6 +100,7 @@
     <!-- 筛选人的要求 -->
     <filter-person
       v-model:value="filterPersonShow"
+      :requirements="requirements"
       @onclose="onClose"
       @complete="onPersonSubmit"
     />
@@ -117,6 +118,7 @@ import { getCompany } from "@/api/search/company";
 import { getPositionList } from "@/api/home/index";
 import { debounce } from "@/utils/utils";
 import { useRouter, useRoute } from "vue-router";
+import { getFilterPerson } from "@/api/search/getEnum";
 
 interface State {
   searchValue: string;
@@ -139,6 +141,7 @@ interface State {
   positionList: any;
   companyList: any;
   dataReady: boolean;
+  requirements: any;
 }
 export default {
   components: {
@@ -183,6 +186,7 @@ export default {
       positionList: [],
       companyList: [],
       dataReady: false,
+      requirements: {}
     });
     onMounted(() => {
       console.log("dd");
@@ -245,6 +249,17 @@ export default {
         state.error = true;
         Toast("网络连接失败，请稍后重试！");
       }
+    };
+    const getFilterPersonData = async () => {
+      const {
+        data: { data, code },
+      } = await getFilterPerson();
+      console.log(data);
+      if (code !== 200) {
+        Toast("接收数据失败！");
+        return;
+      }
+      state.requirements = data.requirements;
     };
     const showFilterCity = () => {
       state.filterCityShow = true;
@@ -316,6 +331,7 @@ export default {
     if (state.searchValue) {
       onRefresh();
     }
+    getFilterPersonData()
     return {
       ...toRefs(state),
       showFilterCompany,

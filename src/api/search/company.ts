@@ -17,3 +17,8 @@ export const getCompanyDetail = async (id: number) => {
     "/api/h5/company/" + id
   );
 };
+export const getCompanyPosition = async (id: number) => {
+  return await request.get<RES<TYPES.getCompanyPositionRes>>(
+    "/api/h5/job/company/" + id
+  );
+};

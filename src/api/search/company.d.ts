@@ -24,3 +24,4 @@ export interface getCompanyParams {
   keyword: string;
 }
 export interface getCompanyDetailRes {}
+export interface getCompanyPositionRes {}

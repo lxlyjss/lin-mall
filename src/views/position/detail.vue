@@ -9,7 +9,7 @@
       </p>
       <p class="subtitle">
         {{ position.school_level }}|{{ position.work_time }}|{{
-          position.job_requirement
+          position.work_nature
         }}
       </p>
       <p class="subtitle">
@@ -62,7 +62,7 @@
             company.city_name
           }}</span>
         </p>
-        <p>望京路33号朝来产业园</p>
+        <p>{{ company.address }}</p>
       </div>
       <div class="tips-content">
         <p><img src="@/assets/common/notice.png" /><span>提示</span></p>

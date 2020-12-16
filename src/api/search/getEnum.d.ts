@@ -1,17 +1,23 @@
 export interface getFilterPersonRes {
-  money: {
-    id: number;
-    name: string;
-  }[];
-  work_time: {
-    name: string;
-    id: number;
-  }[];
-  school_level: {
-    id: number;
-    name: string;
-  }[];
-  work_nature: {
+  requirements: {
+    money: {
+      id: number;
+      name: string;
+    }[];
+    work_time: {
+      name: string;
+      id: number;
+    }[];
+    school_level: {
+      id: number;
+      name: string;
+    }[];
+    work_nature: {
+      id: number;
+      name: string;
+    }[];
+  };
+  tags: {
     id: number;
     name: string;
   }[];

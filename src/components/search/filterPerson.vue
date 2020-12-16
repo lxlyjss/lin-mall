@@ -47,7 +47,6 @@
 <script lang="ts">
 import { reactive, toRef, toRefs, watch, onMounted } from "vue";
 import selectTag from "@/components/common/selectTag.vue";
-import { getFilterPerson } from "@/api/search/getEnum";
 import { Toast } from "vant";
 
 interface State {
@@ -68,6 +67,7 @@ export default {
   },
   props: {
     value: Boolean,
+    requirements: Object,
   },
   emits: ["onclose", "complete"],
   setup(props: any, ctx: any) {
@@ -81,7 +81,7 @@ export default {
       currentWorkTime: [],
       currentSchoolLevel: [],
       currentWorkNature: [],
-      oldSelect: []
+      oldSelect: [],
     });
     state.show = props.value;
     watch(
@@ -90,20 +90,12 @@ export default {
         state.show = n;
       }
     );
-    const getFilterPersonData = async () => {
-      const {
-        data: { data, code },
-      } = await getFilterPerson();
-      console.log(data);
-      if (code !== 200) {
-        Toast("接收数据失败！");
-        return;
+    watch(
+      () => props.requirements,
+      (n: any, o: any) => {
+        setFilterData()
       }
-      state.salaryList = data.money.map((item: any) => item.name)
-      state.workTimeList = data.work_time.map((item: any) => item.name)
-      state.schoolLevelList = data.school_level.map((item: any) => item.name)
-      state.workNatureList = data.work_nature.map((item: any) => item.name)
-    };
+    );
     const onSalaryChange = (value: string[]) => {
       console.log(value);
       state.currentSalary = value;
@@ -137,6 +129,18 @@ export default {
       state.oldSelect = dataArr;
       onClose();
     };
+    const setFilterData = () => {
+      state.salaryList = props.requirements.money.map((item: any) => item.name);
+      state.workTimeList = props.requirements.work_time.map(
+        (item: any) => item.name
+      );
+      state.schoolLevelList = props.requirements.school_level.map(
+        (item: any) => item.name
+      );
+      state.workNatureList = props.requirements.work_nature.map(
+        (item: any) => item.name
+      );
+    }
     onMounted(() => {
       console.log("onMounted");
     });
@@ -147,7 +151,9 @@ export default {
       state.currentSchoolLevel = state.oldSelect[2] ? [state.oldSelect[2]] : [];
       state.currentWorkNature = state.oldSelect[3] ? [state.oldSelect[3]] : [];
     };
-    getFilterPersonData();
+    if (props.requirements.currentSalary) {
+      setFilterData()
+    }
     return {
       ...toRefs(state),
       onClose,
