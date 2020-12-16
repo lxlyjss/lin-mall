@@ -13,7 +13,7 @@
       </div>
       <div class="filter-right">
         <section>
-          <p class="title">热门职位</p>
+          <p class="title">{{ jobCate }}</p>
           <selectTag :list="tagList" type="radio" @change="onTagChange" />
         </section>
       </div>
@@ -36,6 +36,7 @@ interface State {
     name: string;
     id: number;
   }[];
+  jobCate: string;
 }
 export default {
   components: {
@@ -59,6 +60,7 @@ export default {
           sort: 0,
         },
       ],
+      jobCate: "热门职位"
     });
     state.show = props.value;
     const getCategoryData = async () => {
@@ -72,7 +74,7 @@ export default {
       }
       const categories = data.categories || [];
       state.categories = state.categories.concat(categories);
-      state.categories[0].children = data.hot_tags;
+      state.categories[0].children = data.hot_jobs;
       state.tagList = state.categories[0].children.map((item: any) => item.name);
     };
     const onTagChange = (data: any) => {
@@ -88,6 +90,7 @@ export default {
     const onSideChange = (value: number) => {
       console.log(value);
       state.tagList = state.categories[value].children.map((item: any) => item.name);
+      state.jobCate = state.categories[value].name;
     }
     onMounted(() => {
       console.log("onMounted");

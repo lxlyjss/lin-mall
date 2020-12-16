@@ -51,14 +51,23 @@
 import { reactive, toRefs, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
 import positionItem from "@/components/home/positionItem.vue";
+import { getCategory } from "@/api/search/category";
+import { getCategoryRes } from "@/api/search/category.d";
+import { Toast } from "vant";
 
+interface State {
+  searchValue: string;
+  historyList: string[];
+  hotJobs: string[];
+  hotCompany: string[];
+}
 export default {
   components: {
     positionItem,
   },
   setup() {
     const router = useRouter();
-    const state = reactive({
+    const state: State = reactive({
       searchValue: "",
       historyList: [],
       hotJobs: [],
@@ -75,6 +84,18 @@ export default {
         },
       });
       setHistoryData();
+    };
+    const getCategoryData = async () => {
+      let {
+        data: { data, code },
+      } = await getCategory();
+      console.log(data);
+      if (code !== 200) {
+        Toast("数据错误");
+        return;
+      }
+      state.hotJobs = data.hot_jobs.map((item: any) => item.name)
+      state.hotCompany = data.hot_companies.map((item: any) => item.simple_name)
     };
     const setHistoryData = () => {
       let historyData = getHistoryData();
@@ -103,6 +124,7 @@ export default {
       console.log("dd");
       state.historyList = getHistoryData();
     });
+    getCategoryData()
     return {
       ...toRefs(state),
       toCategoryPage,
