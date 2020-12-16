@@ -43,16 +43,22 @@ export default {
       default: () => {},
     },
   },
-  setup() {
+  setup(props: any) {
     const router = useRouter();
     const toCompanyPage = () => {
       router.push({
         path: "/company",
+        query: {
+          id: props.info.company.id
+        }
       });
     };
     const toPositionDetail = () => {
       router.push({
-        path: "/position-detail"
+        path: "/position-detail",
+        query: {
+          id: props.info.id
+        }
       })
     }
     return {

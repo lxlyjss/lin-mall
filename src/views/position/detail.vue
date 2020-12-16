@@ -2,60 +2,73 @@
   <div class="position-detail">
     <div class="position-header">
       <p class="title">
-        <span>产品经理</span>
-        <span class="money">10-20K</span>
+        <span>{{ position.name }}</span>
+        <span class="money"
+          >{{ position.money_start }}-{{ position.money_end }}K</span
+        >
       </p>
-      <p class="subtitle">本科|2年工作经验以上|有优秀项目</p>
-      <p class="subtitle"><van-icon name="location-o" />北京海淀</p>
+      <p class="subtitle">
+        {{ position.school_level }}|{{ position.work_time }}|{{
+          position.job_requirement
+        }}
+      </p>
+      <p class="subtitle">
+        <van-icon name="location-o" />{{ position.work_city }}
+        {{ position.work_space }}
+      </p>
     </div>
     <div class="body">
       <section>
         <p class="title">职位亮点</p>
-        <van-tag v-for="tag in position.labels" :key="tag" type="default">{{
-          tag
-        }}</van-tag>
+        <p class="desc">{{ position.job_content }}</p>
       </section>
-      <section>
+      <section v-if="position.tags">
         <p class="title">职位描述</p>
-        <p class="desc">发展空间大，阿拉时代峻峰可垃圾袋说服力卡</p>
+        <van-tag
+          v-for="tag in position.tags.split(',')"
+          :key="tag"
+          type="default"
+          >{{ tag }}</van-tag
+        >
       </section>
       <section>
         <p class="title">岗位职责</p>
-        <p class="desc">发展空间大，阿拉时代峻峰可垃圾袋说服力卡</p>
+        <p class="desc" v-html="position.job_duty"></p>
       </section>
       <section>
         <p class="title">岗位要求</p>
-        <p class="desc">发展空间大，阿拉时代峻峰可垃圾袋说服力卡</p>
-      </section>
-      <section>
-        <p class="title">岗位要求</p>
-        <p class="desc">发展空间大，阿拉时代峻峰可垃圾袋说服力卡</p>
+        <p class="desc" v-html="position.job_requirement"></p>
       </section>
     </div>
     <div class="company-info">
       <p class="line-title">公司信息</p>
-      <div class="info-detail">
+      <div class="info-detail" @click="toCompanyDetail">
         <div class="info-left">
-          <p class="company-title">字节跳动</p>
-          <p class="subtitle">A轮|200人以上|互联网、金融</p>
-          <p class="subtitle">已有34条评价</p>
+          <p class="company-title">{{ company.name }}</p>
+          <p class="subtitle">
+            {{ company.financing_level }}|{{ company.office_worker_num }}|{{
+              company.tags.join("、")
+            }}
+          </p>
+          <!-- <p class="subtitle">已有34条评价</p> -->
         </div>
         <div class="info-right">
-          <van-image src="" class="company-logo" />
+          <van-image :src="company.logo" class="company-logo" />
         </div>
       </div>
       <div class="company-address">
         <p>
-          <img src="@/assets/common/company-icon.png" /><span
-            >北京-朝阳区-大悦城</span
-          >
+          <img src="@/assets/common/company-icon.png" /><span>{{
+            company.city_name
+          }}</span>
         </p>
         <p>望京路33号朝来产业园</p>
       </div>
       <div class="tips-content">
         <p><img src="@/assets/common/notice.png" /><span>提示</span></p>
         <p>
-          求职教案拉斯肯德基发了就爱上了到附近拉卡世纪东方逻辑奥斯卡两地分居来看阿拉克丝点击范
+          求职过程中如遇到招聘方有收费，扣押证件的行为，请立即举报。
+          岗位要求海外上班，请提高警惕，谨防诈骗。
         </p>
       </div>
     </div>
@@ -74,17 +87,28 @@
 <script lang="ts">
 import { reactive, toRefs, onMounted, computed } from "vue";
 import lessonItem from "@/components/position/lessonItem.vue";
+import { getPositionDetail } from "@/api/home/index";
+import { useRoute, useRouter } from "vue-router";
+import { Toast } from "vant";
 
+interface State {
+  searchValue: string;
+  position: any;
+  company: any;
+  lessonList: any;
+}
 export default {
   components: {
     lessonItem,
   },
   setup() {
-    const state = reactive({
+    const route: any = useRoute();
+    const router: any = useRouter();
+    const state: State = reactive({
       searchValue: "",
-      hasSearched: false,
-      position: {
-        labels: ["kjk", "kk"],
+      position: {},
+      company: {
+        tags: [],
       },
       lessonList: [
         {
@@ -92,11 +116,34 @@ export default {
         },
       ],
     });
+    const getPositionData = async () => {
+      const id: number = +route.query.id || 0;
+      const {
+        data: { data, code },
+      } = await getPositionDetail(id);
+      if (code !== 200) {
+        Toast("获取数据失败！");
+        return;
+      }
+      console.log(data);
+      state.position = data;
+      state.company = data.company;
+    };
+    const toCompanyDetail = () => {
+      router.push({
+        path: "/company",
+        query: {
+          id: state.company.id
+        }
+      })
+    }
     onMounted(() => {
       console.log("dd");
     });
+    getPositionData();
     return {
       ...toRefs(state),
+      toCompanyDetail
     };
   },
 };

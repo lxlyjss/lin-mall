@@ -1,10 +1,8 @@
 import { getPositionList } from ".";
 
-/**
- * imgUrl: 图片地址
- * id：图片id
- * title：图片标题
- */
+export interface getHomeDataInfoParams {
+  keyword: number;
+}
 export interface company {
   id: number;
   simple_name: string;
@@ -117,4 +115,19 @@ export interface getPositionListRes {
     is_recommend: number;
     company: company;
   };
+}
+export interface getPositionRes {
+  id: number;
+  name: string;
+  tags: string[];
+  work_year_tag: string;
+  work_city: string[];
+  work_space: string;
+  school_level: string;
+  job_content: string;
+  company_id: number;
+  money_start: number;
+  money_end: number;
+  is_recommend: number;
+  company: company;
 }

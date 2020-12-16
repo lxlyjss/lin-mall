@@ -27,7 +27,7 @@ export default [
     name: "searchCategory",
     component: searchCategory,
     meta: {
-      title: "搜索职位",
+      title: "职位分类",
     },
   },
 ];

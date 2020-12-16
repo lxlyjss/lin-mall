@@ -23,3 +23,4 @@ export interface getCompanyParams {
   city_name: string;
   keyword: string;
 }
+export interface getCompanyDetailRes {}

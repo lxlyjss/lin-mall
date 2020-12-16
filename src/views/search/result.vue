@@ -27,7 +27,7 @@
         </div>
         <div class="filter-right">
           <span class="van-ellipsis" @click="showFilterCity">
-            <span class="has-text" v-if="filterCity">{{ filterCity }}</span>
+            <span class="has-text" v-if="filterCity.length">{{ filterCity.join("-") }}</span>
             <span v-else>地区</span>
           </span>
           <span
@@ -128,7 +128,7 @@ interface State {
   filterPersonShow: boolean;
   filterCompany: string[];
   filterPerson: string[];
-  filterCity: string;
+  filterCity: string[];
   currentTab: number;
   filter: {
     labels: string[];
@@ -165,7 +165,7 @@ export default {
       filterPersonShow: false,
       filterCompany: [],
       filterPerson: [],
-      filterCity: "",
+      filterCity: [],
       currentTab: 0,
       filter: {
         labels: [
@@ -193,7 +193,7 @@ export default {
           data: { data, code },
         } = await getCompany({
           keyword: state.searchValue,
-          city_name: state.filterCity,
+          city_name: state.filterCity[2],
           page: state.page,
           per_page: 10,
         });
@@ -221,7 +221,7 @@ export default {
           name: state.searchValue,
           page: state.page,
           per_page: 10,
-          work_city: state.filterCity,
+          work_city: state.filterCity[2],
           tag_id: state.activeTag,
           money: state.filterPerson[0],
           work_time: state.filterPerson[1],
@@ -276,7 +276,7 @@ export default {
     };
     const onCitySubmit = (value: string[]) => {
       console.log(value);
-      state.filterCity = value.join("-");
+      state.filterCity = value;
       onRefresh();
     };
     const onPersonSubmit = (value: string[]) => {

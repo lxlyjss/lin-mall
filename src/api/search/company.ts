@@ -9,6 +9,11 @@ import { RES, PAGE } from "@/api/base";
  */
 export const getCompany = async (params: TYPES.getCompanyParams) => {
   return await request.get<RES<PAGE<TYPES.getCompanyRes>>>("/api/h5/company", {
-    params
-  })
-}
+    params,
+  });
+};
+export const getCompanyDetail = async (id: number) => {
+  return await request.get<RES<TYPES.getCompanyDetailRes>>(
+    "/api/h5/company/" + id
+  );
+};

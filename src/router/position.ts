@@ -6,6 +6,9 @@ export default [
   {
     path: "/position-detail",
     name: "positionDetail",
-    component: positionDetail
+    component: positionDetail,
+    meta: {
+      title: "职位详情"
+    }
   },
 ];

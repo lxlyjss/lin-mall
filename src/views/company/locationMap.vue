@@ -11,6 +11,7 @@
 <script lang="ts">
 import { reactive, toRefs, ref } from "vue";
 import AMap from "@/components/common/AMap.vue";
+import { useRoute } from "vue-router";
 
 interface State {
   mapOptions: any;
@@ -20,6 +21,7 @@ export default {
     AMap,
   },
   setup() {
+    const route: any = useRoute();
     const state: State = reactive({
       mapOptions: {
         center: [116.397428, 39.90923], //中心点坐标
@@ -27,13 +29,15 @@ export default {
     });
     const AMapRef = ref(null);
     const onAMapComplete = () => {
+      const location = route.query.location.split(",");
+      const address = route.query.address;
       (AMapRef.value as any).addMarker({
-        position: [116.39, 39.9],
+        position: [location[0], location[1]]
       });
       (AMapRef.value as any).openInfoWindow({
-        content: "<p style='font-size: 12px;'>北京市望京阜通东大街方恒国际中心A座16层</p>",
-        anchor: "bottom-center",
-        position: [116.39, 39.9]
+        anchor: "top-center",
+        content: `<p style='font-size: 12px;'>${address}</p>`,
+        position: [location[0], location[1]]
       });
     };
     return {

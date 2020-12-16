@@ -6,6 +6,7 @@
         v-model="searchValue"
         show-action
         placeholder="请输入搜索关键词"
+        @search="onSearch"
       />
     </div>
     <div class="search-category">
@@ -13,28 +14,37 @@
       <span @click="toCategoryPage">护士/护理 <van-icon name="arrow"/></span>
     </div>
     <div class="search-tags">
-      <div class="history-search">
+      <div class="history-search" v-if="historyList.length">
         <p class="title">历史搜索</p>
         <div class="tags">
-          <van-tag>美术宝</van-tag>
+          <van-tag
+            v-for="item in historyList"
+            :key="item"
+            @click="selectTag(item)"
+            >{{ item }}</van-tag
+          >
         </div>
       </div>
-      <div class="hot-position">
+      <div class="hot-position" v-if="hotJobs.length">
         <p class="title">热门职位</p>
         <div class="tags">
-          <van-tag>美术宝</van-tag>
+          <van-tag v-for="item in hotJobs" :key="item" @click="selectTag(item)"
+            >{{ item }}</van-tag
+          >
         </div>
       </div>
-      <div class="hot-company">
+      <div class="hot-company" v-if="hotJobs.length">
         <p class="title">热门公司</p>
         <div class="tags">
-          <van-tag>美术宝</van-tag>
+          <van-tag
+            v-for="item in hotCompany"
+            :key="item"
+            @click="selectTag(item)"
+            >{{ item }}</van-tag
+          >
         </div>
       </div>
     </div>
-    <ul class="info-list" v-if="hasSearched">
-      <info-item v-for="item in infoList" :key="item.id" :info="item" />
-    </ul>
   </div>
 </template>
 <script lang="ts">
@@ -47,62 +57,57 @@ export default {
     positionItem,
   },
   setup() {
-    const router = useRouter()
+    const router = useRouter();
     const state = reactive({
       searchValue: "",
-      hasSearched: false,
-      infoList: [
-        {
-          position: "产品经理",
-          city: "北京",
-          address: "甜水园",
-          experience: "1-3年",
-          needEducation: "本科",
-          company: {
-            companyId: 12,
-            name: "新丰科技",
-            labels: ["互联网", "信息"],
-            logo:
-              "http://oss.xinlinyun.top/ke/upload/image/2018/03/26/19927c9ea0a8a5b391fee204075c9bd0.png",
-            financingStage: "A轮",
-            size: "300-500",
-            types: ["移动互联网", "企业服务"],
-          },
-          minSalary: "10",
-          maxSalary: "20",
-          id: 1,
-        },
-        {
-          position: "产品经理",
-          city: "北京",
-          address: "甜水园",
-          experience: "1-3年",
-          needEducation: "本科",
-          company: {
-            companyId: 12,
-            name: "新丰科技",
-            labels: ["互联网", "信息"],
-            logo:
-              "http://oss.xinlinyun.top/ke/upload/image/2018/03/26/19927c9ea0a8a5b391fee204075c9bd0.png",
-            financingStage: "A轮",
-            size: "300-500",
-            types: ["移动互联网", "企业服务"],
-          },
-          minSalary: "10",
-          maxSalary: "20",
-          id: 2,
-        },
-      ],
+      historyList: [],
+      hotJobs: [],
+      hotCompany: [],
     });
     const toCategoryPage = () => {
-      router.push("/search-category")
-    }
+      router.push("/search-category");
+    };
+    const onSearch = () => {
+      router.push({
+        path: "/search-result",
+        query: {
+          searchVal: state.searchValue,
+        },
+      });
+      setHistoryData();
+    };
+    const setHistoryData = () => {
+      let historyData = getHistoryData();
+      if (!historyData.some((item: string) => item == state.searchValue)) {
+        historyData.push(state.searchValue);
+      }
+      localStorage.setItem("historyList", JSON.stringify(historyData));
+    };
+    const getHistoryData = () => {
+      const historyData = localStorage.getItem("historyList");
+      if (historyData) {
+        let historyDataObj = JSON.parse(historyData);
+        return historyDataObj;
+      }
+      return [];
+    };
+    const selectTag = (val: string) => {
+      router.push({
+        path: "/search-result",
+        query: {
+          searchVal: val,
+        },
+      });
+    };
     onMounted(() => {
       console.log("dd");
+      state.historyList = getHistoryData();
     });
     return {
       ...toRefs(state),
-      toCategoryPage
+      toCategoryPage,
+      onSearch,
+      selectTag,
     };
   },
 };
@@ -157,6 +162,7 @@ export default {
         line-height: 13px;
         font-weight: 400;
         color: #666666;
+        margin-right: 10px;
       }
     }
   }

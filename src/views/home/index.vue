@@ -15,8 +15,12 @@
       </div>
     </div>
     <van-swipe loop autoplay="3000" indicator-color="#fff">
-      <van-swipe-item v-for="(item) in swipeList" :key="item.id">
-        <van-image fit="cover" :src="item.image_url" @click="locationHref(item.connect_url)" />
+      <van-swipe-item v-for="item in swipeList" :key="item.id">
+        <van-image
+          fit="cover"
+          :src="item.image_url"
+          @click="locationHref(item.connect_url)"
+        />
       </van-swipe-item>
     </van-swipe>
     <div class="tab-container">
@@ -24,7 +28,11 @@
         职位分类 <van-icon name="arrow" color="#333"></van-icon>
       </div>
       <div class="right-btn">
-        <van-tabs v-model="tabActive" title-inactive-color="#b5b7bb">
+        <van-tabs
+          v-model:active="tabActive"
+          title-inactive-color="#b5b7bb"
+          @change="onTabChange"
+        >
           <van-tab title="推荐"></van-tab>
           <van-tab title="最新"></van-tab>
         </van-tabs>
@@ -72,10 +80,12 @@ export default {
     const getHomeData = async () => {
       const {
         data: { code, data },
-      } = await getHomeDataInfo();
+      } = await getHomeDataInfo({
+        keyword: state.tabActive == 0 ? 1 : 2,
+      });
       state.swipeList = data.banners;
       state.jobList = data.jobs;
-      console.log(data)
+      console.log(data);
     };
     const toSearch = () => {
       router.push("/search-index");
@@ -102,10 +112,13 @@ export default {
     };
     const locationHref = (url: string) => {
       location.href = url;
-    }
+    };
     const toCategoryPage = () => {
-      router.push("/search-category")
-    }
+      router.push("/search-category");
+    };
+    const onTabChange = () => {
+      getHomeData();
+    };
     onMounted(() => {
       window.addEventListener("scroll", onScroll, false);
       getHomeData();
@@ -120,7 +133,8 @@ export default {
       getStyle,
       getTextStyle,
       toCategoryPage,
-      locationHref
+      locationHref,
+      onTabChange,
     };
   },
 };
