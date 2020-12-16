@@ -1,5 +1,5 @@
 <template>
-  <van-popup v-model:show="show" position="right" closeable @close="onClose">
+  <van-popup v-model:show="show" position="right" @close="onClose">
     <div class="filter-conteainer">
       <section>
         <p class="title">公司规模</p>
@@ -49,6 +49,7 @@ interface State {
   currentScale: string[];
   currentFinancing: string[];
   currentArea: string[];
+  oldSelect: string[];
 }
 export default {
   components: {
@@ -66,7 +67,8 @@ export default {
       areaList: [],
       currentScale: [],
       currentFinancing: [],
-      currentArea: []
+      currentArea: [],
+      oldSelect: [],
     });
     state.show = props.value;
     watch(
@@ -84,39 +86,52 @@ export default {
         Toast("接收数据失败！");
         return;
       }
-      state.scaleList = data.office_worker_num.map((item: any) => item.name)
-      state.financingList = data.financing_level.map((item: any) => item.name)
-      state.areaList = data.industry_attribute.map((item: any) => item.name)
+      state.scaleList = data.office_worker_num.map((item: any) => item.name);
+      state.financingList = data.financing_level.map((item: any) => item.name);
+      state.areaList = data.industry_attribute.map((item: any) => item.name);
     };
     const onScaleChange = (value: string[]) => {
-      console.log(value)
+      console.log(value);
       state.currentScale = value;
-    }
+    };
     const onFinancingChange = (value: string[]) => {
-      console.log(value)
+      console.log(value);
       state.currentFinancing = value;
-    }
+    };
     const onAreaChange = (value: string[]) => {
-      console.log(value)
+      console.log(value);
       state.currentArea = value;
-    }
+    };
     const reset = () => {
-      state.currentScale = []
-      state.currentFinancing = []
-      state.currentArea = []
-    }
+      state.currentScale = [];
+      state.currentFinancing = [];
+      state.currentArea = [];
+    };
     const submit = () => {
-      console.log(state.currentScale, state.currentFinancing, state.currentArea)
-      ctx.emit("complete", [state.currentScale[0], state.currentFinancing[0], state.currentArea[0]])
-      onClose()
-    }
+      console.log(
+        state.currentScale,
+        state.currentFinancing,
+        state.currentArea
+      );
+      const dataArr = [
+        state.currentScale[0],
+        state.currentFinancing[0],
+        state.currentArea[0],
+      ];
+      ctx.emit("complete", dataArr);
+      state.oldSelect = dataArr;
+      onClose();
+    };
     onMounted(() => {
       console.log("onMounted");
     });
     const onClose = () => {
       ctx.emit("onclose");
+      state.currentScale = state.oldSelect[0] ? [state.oldSelect[0]] : [];
+      state.currentFinancing = state.oldSelect[1] ? [state.oldSelect[1]] : [];
+      state.currentArea = state.oldSelect[2] ? [state.oldSelect[2]] : [];
     };
-    getFilterPersonData()
+    getFilterPersonData();
     return {
       ...toRefs(state),
       onClose,
@@ -124,7 +139,7 @@ export default {
       onFinancingChange,
       onAreaChange,
       reset,
-      submit
+      submit,
     };
   },
 };
@@ -134,7 +149,9 @@ export default {
   height: 100vh;
   width: 80vw;
   position: relative;
+  padding-bottom: 60px;
   overflow-y: auto;
+  box-sizing: border-box;
   section {
     padding: 20px 15px 0;
     .title {

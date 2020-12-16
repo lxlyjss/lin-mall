@@ -30,13 +30,19 @@
             <span class="has-text" v-if="filterCity">{{ filterCity }}</span>
             <span v-else>地区</span>
           </span>
-          <span class="van-ellipsis" @click="showFilterPerson" v-if="currentTab == 0">
-            <span class="has-text" v-if="filterPerson">{{ filterPerson }}</span>
+          <span
+            class="van-ellipsis"
+            @click="showFilterPerson"
+            v-if="currentTab == 0"
+          >
+            <span class="has-text" v-if="filterPerson.length">{{
+              filterPerson.join("-")
+            }}</span>
             <span v-else>要求</span>
           </span>
           <span class="van-ellipsis" @click="showFilterCompany">
-            <span class="has-text" v-if="filterCompany">{{
-              filterCompany
+            <span class="has-text" v-if="filterCompany.length">{{
+              filterCompany.join("-")
             }}</span>
             <span v-else>公司</span>
           </span>
@@ -108,6 +114,7 @@ import filterCompany from "@/components/search/filterCompany.vue";
 import FilterCity from "@/components/search/filterCity.vue";
 import FilterPerson from "@/components/search/filterPerson.vue";
 import { getCompany } from "@/api/search/company";
+import { getPositionList } from "@/api/home/index";
 import { debounce } from "@/utils/utils";
 import { useRouter, useRoute } from "vue-router";
 
@@ -119,8 +126,8 @@ interface State {
   filterCompanyShow: boolean;
   filterCityShow: boolean;
   filterPersonShow: boolean;
-  filterCompany: string;
-  filterPerson: string;
+  filterCompany: string[];
+  filterPerson: string[];
   filterCity: string;
   currentTab: number;
   filter: {
@@ -156,8 +163,8 @@ export default {
       filterCompanyShow: false,
       filterCityShow: false,
       filterPersonShow: false,
-      filterCompany: "",
-      filterPerson: "",
+      filterCompany: [],
+      filterPerson: [],
       filterCity: "",
       currentTab: 0,
       filter: {
@@ -206,6 +213,39 @@ export default {
         Toast("网络连接失败，请稍后重试！");
       }
     };
+    const getPositionListData = async (flag?: boolean) => {
+      try {
+        const {
+          data: { data, code },
+        } = await getPositionList({
+          name: state.searchValue,
+          page: state.page,
+          per_page: 10,
+          work_city: state.filterCity,
+          tag_id: state.activeTag,
+          money: state.filterPerson[0],
+          work_time: state.filterPerson[1],
+          school_level: state.filterPerson[2],
+          work_nature: state.filterPerson[3],
+          office_worker_num: state.filterCompany[0],
+          financing_level: state.filterCompany[1],
+        });
+        console.log(data);
+        if (code !== 200) {
+          Toast("数据错误");
+          state.error = true;
+          return;
+        }
+        state.dataReady = true;
+        state.companyList = flag
+          ? state.companyList.concat(data.data)
+          : data.data;
+        state.finished = !data.next_page_url;
+      } catch (err) {
+        state.error = true;
+        Toast("网络连接失败，请稍后重试！");
+      }
+    };
     const showFilterCity = () => {
       state.filterCityShow = true;
     };
@@ -216,49 +256,65 @@ export default {
       state.filterPersonShow = true;
     };
     const onClose = () => {
-      console.log("close")
+      console.log("close");
       state.filterCityShow = false;
       state.filterCompanyShow = false;
       state.filterPersonShow = false;
     };
     const changeTag = (val: number) => {
       state.currentTab = val;
-      getData();
+      onRefresh();
     };
     const onCompanySubmit = (value: string[]) => {
       console.log(value);
-      state.filterCompany = value.join("-");
+      if (!value[0] && !value[1] && !value[2]) {
+        state.filterCompany = [];
+      } else {
+        state.filterCompany = value;
+      }
+      onRefresh()
     };
     const onCitySubmit = (value: string[]) => {
       console.log(value);
       state.filterCity = value.join("-");
-      getData()
+      onRefresh();
     };
     const onPersonSubmit = (value: string[]) => {
       console.log(value);
-      state.filterPerson = value.join("-");
+      if (!value[0] && !value[1] && !value[2] && !value[3]) {
+        state.filterPerson = [];
+      } else {
+        state.filterPerson = value;
+      }
+      onRefresh();
     };
     const selectTag = (val: string) => {
       state.activeTag = val;
-      getData();
+      onRefresh();
     };
-    const getData = async () => {
-      state.page = 1;
-      state.loading = true;
-      await getCompanyList();
-      console.log(state.loading);
-      state.loading = false;
+    const getData = async (flag?: boolean) => {
+      if (state.currentTab == 0) {
+        await getPositionListData(flag);
+      } else {
+        await getCompanyList(flag);
+      }
     };
     const onLoad = async () => {
       state.page++;
       state.loading = true;
-      await getCompanyList(true);
+      await getData(true);
       state.loading = false;
     };
-    const onSearch = debounce(getCompanyList, 1000);
+    const onRefresh = async () => {
+      state.page = 1;
+      state.loading = true;
+      await getData();
+      state.loading = false;
+    }
+    const onSearch = debounce(onRefresh, 1000);
     state.searchValue = route.query.searchVal as string;
     if (state.searchValue) {
-      getData();
+      onRefresh();
     }
     return {
       ...toRefs(state),

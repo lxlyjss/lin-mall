@@ -57,7 +57,10 @@ export interface gerPositionListParams {
    * 每页个数。默认10
    */
   per_page: number;
-
+  /**
+   * 页数
+   */
+  page: number;
   /**
    * 工作城市.
    */
@@ -99,5 +102,19 @@ export interface gerPositionListParams {
   financing_level: string;
 }
 export interface getPositionListRes {
-  
+  data: {
+    id: number;
+    name: string;
+    tags: string[];
+    work_year_tag: string;
+    work_city: string[];
+    work_space: string;
+    school_level: string;
+    job_content: string;
+    company_id: number;
+    money_start: number;
+    money_end: number;
+    is_recommend: number;
+    company: company;
+  };
 }

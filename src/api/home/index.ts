@@ -12,5 +12,7 @@ export const getHomeDataInfo = async () => {
 }
 
 export const getPositionList = async (params: TYPES.gerPositionListParams) => {
-  return await request.get<RES<PAGE<TYPES.getPositionListRes>>>("/api/h5/job")
+  return await request.get<RES<PAGE<TYPES.getPositionListRes>>>("/api/h5/job", {
+    params
+  })
 }

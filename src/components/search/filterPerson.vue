@@ -1,5 +1,5 @@
 <template>
-  <van-popup v-model:show="show" position="right" closeable @close="onClose">
+  <van-popup v-model:show="show" position="right" @close="onClose">
     <div class="filter-conteainer">
       <section>
         <p class="title">期望薪资</p>
@@ -60,6 +60,7 @@ interface State {
   currentWorkTime: string[];
   currentSchoolLevel: string[];
   currentWorkNature: string[];
+  oldSelect: string[];
 }
 export default {
   components: {
@@ -80,6 +81,7 @@ export default {
       currentWorkTime: [],
       currentSchoolLevel: [],
       currentWorkNature: [],
+      oldSelect: []
     });
     state.show = props.value;
     watch(
@@ -125,12 +127,14 @@ export default {
       state.currentWorkNature = [];
     };
     const submit = () => {
-      ctx.emit("complete", [
+      const dataArr = [
         state.currentSalary[0],
         state.currentWorkTime[0],
         state.currentSchoolLevel[0],
         state.currentWorkNature[0],
-      ]);
+      ];
+      ctx.emit("complete", dataArr);
+      state.oldSelect = dataArr;
       onClose();
     };
     onMounted(() => {
@@ -138,6 +142,10 @@ export default {
     });
     const onClose = () => {
       ctx.emit("onclose");
+      state.currentSalary = state.oldSelect[0] ? [state.oldSelect[0]] : [];
+      state.currentWorkTime = state.oldSelect[1] ? [state.oldSelect[1]] : [];
+      state.currentSchoolLevel = state.oldSelect[2] ? [state.oldSelect[2]] : [];
+      state.currentWorkNature = state.oldSelect[3] ? [state.oldSelect[3]] : [];
     };
     getFilterPersonData();
     return {
@@ -158,7 +166,9 @@ export default {
   height: 100vh;
   width: 80vw;
   position: relative;
+  padding-bottom: 60px;
   overflow-y: auto;
+  box-sizing: border-box;
   section {
     padding: 20px 15px 0;
     .title {
