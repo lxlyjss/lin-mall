@@ -1,3 +1,5 @@
+import { getPositionList } from ".";
+
 /**
  * imgUrl: 图片地址
  * id：图片id
@@ -43,4 +45,59 @@ export interface getHomeDataInfoRes {
     company: company;
   }[];
   banners: banners[];
+}
+
+export interface gerPositionListParams {
+  /**
+   * 岗位名称。
+   */
+  name: string;
+
+  /**
+   * 每页个数。默认10
+   */
+  per_page: number;
+
+  /**
+   * 工作城市.
+   */
+  work_city: string;
+
+  /**
+   * 标签id，五险一金。 多个id，英文逗号分隔。
+   */
+  tag_id: string;
+
+  /**
+   * 岗位工资
+   */
+  money: string;
+
+  /**
+   * 工作经验。
+   */
+  work_time: string;
+
+  /**
+   * 学历。
+   */
+  school_level: string;
+
+  /**
+   * 工作性质。
+   */
+  work_nature: string;
+
+  /**
+   * 公司规模。
+   */
+  office_worker_num: string;
+
+  /**
+   * 融资轮。eg:A轮
+   */
+  financing_level: string;
+}
+export interface getPositionListRes {
+  
 }

@@ -1,6 +1,6 @@
 import request from "../request";
 import * as TYPES from "./index.d";
-import { RES } from "@/api/base";
+import { RES, PAGE } from "@/api/base";
 
 /**
  * 接口路径
@@ -9,4 +9,8 @@ import { RES } from "@/api/base";
  */
 export const getHomeDataInfo = async () => {
   return await request.get<RES<TYPES.getHomeDataInfoRes>>("/api/h5/home")
+}
+
+export const getPositionList = async (params: TYPES.gerPositionListParams) => {
+  return await request.get<RES<PAGE<TYPES.getPositionListRes>>>("/api/h5/job")
 }
