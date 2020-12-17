@@ -48,9 +48,9 @@
           </span>
         </div>
       </div>
-      <div class="filter-tag">
+      <div class="filter-tag" v-if="filterTagsNames.length">
         <van-tag
-          v-for="tag in filter.labels"
+          v-for="tag in filterTagsNames"
           @click="selectTag(tag)"
           :key="tag"
           :type="activeTag == tag ? 'primary' : 'default'"
@@ -132,9 +132,10 @@ interface State {
   filterPerson: string[];
   filterCity: string[];
   currentTab: number;
-  filter: {
-    labels: string[];
-  };
+  filterTags: {
+    name: string;
+    id: number;
+  }[];
   loading: boolean;
   finished: boolean;
   error: boolean;
@@ -170,19 +171,7 @@ export default {
       filterPerson: [],
       filterCity: [],
       currentTab: 0,
-      filter: {
-        labels: [
-          "不限",
-          "地铁",
-          "学区房",
-          "33",
-          "地铁",
-          "学区房",
-          "22",
-          "地铁",
-          "学区房",
-        ],
-      },
+      filterTags: [],
       positionList: [],
       companyList: [],
       dataReady: false,
@@ -191,6 +180,9 @@ export default {
     onMounted(() => {
       console.log("dd");
     });
+    const filterTagsNames: any = computed(() => {
+      return state.filterTags.map((item: any) => item.name)
+    })
     const getCompanyList = async (flag?: boolean) => {
       try {
         const {
@@ -260,6 +252,7 @@ export default {
         return;
       }
       state.requirements = data.requirements;
+      state.filterTags = data.tags;
     };
     const showFilterCity = () => {
       state.filterCityShow = true;
@@ -337,6 +330,7 @@ export default {
       showFilterCompany,
       showFilterCity,
       showFilterPerson,
+      filterTagsNames,
       onClose,
       changeTag,
       onCompanySubmit,
