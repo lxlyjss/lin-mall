@@ -3,7 +3,7 @@
   position: relative;
   min-height: 100vh;
   .header-box {
-    width: 100%;
+    width: 375px;
     box-sizing: border-box;
     height: 41px;
     background-color: rgba(0, 0, 0, 0.4);
@@ -13,8 +13,10 @@
     align-items: center;
     position: fixed;
     top: 0;
+    right: 0;
     left: 0;
     z-index: 4;
+    margin: 0 auto;
 
     .header-left {
       display: flex;

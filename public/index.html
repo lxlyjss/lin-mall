@@ -19,8 +19,15 @@
         var htmlWidth = window.screen.width;
         // 得到html的Dom元素
         var htmlDom = document.getElementsByTagName("html")[0];
-        // 设置根元素字体大小
-        htmlDom.style.fontSize = htmlWidth / 10 + "px";
+        // htmlDom.style.maxWidth = "760px";
+        if (htmlDom.clientWidth > 750) {
+          // 设置根元素字体大小
+          htmlDom.style.fontSize = "40px";
+        } else {
+          // 设置根元素字体大小
+          htmlDom.style.fontSize = htmlWidth / 10 + "px";
+        }
+        
       };
       // 初始化
       setRem();
