@@ -5,11 +5,12 @@
         <van-image :src="info.logo" />
       </div>
       <div class="content-right">
-        <p class="title van-ellipsis">字节跳动</p>
+        <p class="title van-ellipsis">{{ info.simple_name }}</p>
         <p class="subtitle">
-          面试评分<van-rate color="#ffd21e" v-model="info.value" />在职招聘<span>322</span>
+          <!-- 面试评分<van-rate color="#ffd21e" v-model="info.value" /> -->
+          在职招聘<span>{{ info.job_num }}</span>个
         </p>
-        <p class="subtitle">A轮|200人以上|移动互联网、金融</p>
+        <p class="subtitle">{{ info.financing_level }}|{{ info.office_worker_num }}|{{ info.tags && info.tags.join("、")}}</p>
       </div>
     </div>
     <div class="company-footer">
@@ -17,13 +18,13 @@
         <van-icon
           color="#ed0020"
           name="fire"
-        />正在热招234个<span>产品经理</span>相关职位
+        />正在热招{{ info.jobbing_num }}个<span>{{ searchVal }}</span>相关职位
       </p>
     </div>
   </div>
 </template>
 <script lang="ts">
-import { reactive } from "vue";
+import { reactive, toRefs, onMounted } from "vue";
 import { useRouter } from "vue-router";
 
 export default {
@@ -32,16 +33,27 @@ export default {
       type: Object,
       default: () => {},
     },
+    searchVal: {
+      type: String,
+      default: ""
+    }
   },
-  setup() {
+  setup(props: any) {
+    const state = reactive({
+      jobName: ""
+    })
     const router = useRouter();
     const toCompanyPage = () => {
       router.push({
         path: "/company",
       });
     };
+    onMounted(() => {
+      state.jobName = props.searchVal
+    })
     return {
       toCompanyPage,
+      ...toRefs(state)
     };
   },
 };

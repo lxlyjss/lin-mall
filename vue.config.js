@@ -1,3 +1,5 @@
+const CompressionPlugin = require("compression-webpack-plugin");
+
 module.exports = {
   lintOnSave: false,
   productionSourceMap: false,
@@ -36,5 +38,44 @@ module.exports = {
         additionalData: '@import "@/scss/base.scss";',
       },
     },
+  },
+  configureWebpack: (config) => {
+    if (process.env.VUE_APP_ENV !== "dev") {
+      config.optimization = {
+        runtimeChunk: "single",
+        splitChunks: {
+          chunks: "all",
+          maxInitialRequests: Infinity,
+          minSize: 20000,
+          cacheGroups: {
+            vendor: {
+              test: /[\\/]node_modules[\\/]/,
+              name(module) {
+                // get the name. E.g. node_modules/packageName/not/this/part.js
+                // or node_modules/packageName
+                const packageName = module.context.match(
+                  /[\\/]node_modules[\\/](.*?)([\\/]|$)/
+                )[1];
+                // npm package names are URL-safe, but some servers don't like @ symbols
+                return `lib.${packageName.replace("@", "")}`;
+              },
+            },
+          },
+        },
+      };
+    }
+  },
+  chainWebpack: (config) => {
+    if (process.env.NODE_ENV !== "production" && process.env.VUE_APP_ENV) {
+      config.output.filename("[name].[hash:8].js").end();
+      config.output.chunkFilename("[name]_[contenthash:8].js").end();
+    }
+    config.plugin("compressionPlugin").use(
+      new CompressionPlugin({
+        test: /\.js$|\.html$|.\css/, // 匹配文件名
+        threshold: 10240, // 对超过10k的数据压缩
+        deleteOriginalAssets: false, // 不删除源文件
+      })
+    );
   },
 };

@@ -2,11 +2,14 @@ import axios from "axios";
 import { Toast } from "vant";
 
 console.log(process.env.VUE_APP_BASE_API_LQ_URL, process.env.VUE_APP_MOCK_API_URL);
+console.log(process.env.VUE_APP_ENV)
+console.log(process.env.NODE_ENV)
 const instance = axios.create({
   baseURL:
     process.env.VUE_APP_ENV === "dev" ? "" : process.env.VUE_APP_BASE_API_LQ_URL,
   timeout: 20000,
 });
+console.log(instance)
 instance.interceptors.request.use(
   (config: any) => {
     console.log(config);

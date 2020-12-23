@@ -70,6 +70,7 @@
             v-for="item in companyList"
             :key="item.id"
             :info="item"
+            :searchVal="searchValue"
           />
         </ul>
         <ul class="position-list" v-else>
