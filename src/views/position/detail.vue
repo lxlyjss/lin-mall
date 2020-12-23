@@ -79,8 +79,8 @@
       </div>
     </div>
     <div class="bottom-container">
-      <van-button plain>立即沟通</van-button>
-      <van-button type="danger">更多优质课程</van-button>
+      <van-button plain><a href="tel:010-53387898">立即沟通</a></van-button>
+      <van-button type="danger" @click="toMoreLesson">更多优质课程</van-button>
     </div>
   </div>
 </template>
@@ -137,13 +137,17 @@ export default {
         }
       })
     }
+    const toMoreLesson = () => {
+      location.href = "http://www.zhongminzhihui.cn"
+    }
     onMounted(() => {
       console.log("dd");
     });
     getPositionData();
     return {
       ...toRefs(state),
-      toCompanyDetail
+      toCompanyDetail,
+      toMoreLesson
     };
   },
 };

@@ -1,17 +1,40 @@
 <!DOCTYPE html>
 <html lang="en" style="font-size: 37.5px;">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0, user-scalable=no">
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1.0, user-scalable=no"
+    />
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
     <title>中民知慧</title>
   </head>
   <body>
     <noscript>
-      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+      <strong
+        >We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work
+        properly without JavaScript enabled. Please enable it to
+        continue.</strong
+      >
     </noscript>
-    <script type="text/javascript" src="https://webapi.amap.com/maps?v=2.0&key=5e1f2cd09ac0ca9dc6e6c38aa2c4c263"></script>
+    <script
+      type="text/javascript"
+      src="https://webapi.amap.com/maps?v=2.0&key=5e1f2cd09ac0ca9dc6e6c38aa2c4c263"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://s9.cnzz.com/z_stat.php?id=1279555348&web_id=1279555348"
+    ></script>
+    <script>
+      // 去除站长统计字
+      var aTag = document.getElementsByTagName("a");
+      for (var i = 0; i < aTag.length; i++) {
+        if (aTag[i].innerHTML.indexOf("站长统计") > -1) {
+          aTag[i].style.display = "none"
+        }
+      }
+    </script>
     <div id="app"></div>
     <script>
       // 设置 rem 函数
@@ -27,7 +50,6 @@
           // 设置根元素字体大小
           htmlDom.style.fontSize = htmlWidth / 10 + "px";
         }
-        
       };
       // 初始化
       setRem();
