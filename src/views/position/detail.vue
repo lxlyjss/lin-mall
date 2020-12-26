@@ -75,7 +75,11 @@
     <div class="lesson-container">
       <p class="line-title">职场课程</p>
       <div class="lesson-list">
-        <lessonItem v-for="(item, key) in lessonList" :key="key" />
+        <lessonItem
+          v-for="(item) in lessonList"
+          :info="item"
+          :key="item.id"
+        />
       </div>
     </div>
     <div class="bottom-container">
@@ -110,11 +114,7 @@ export default {
       company: {
         tags: [],
       },
-      lessonList: [
-        {
-          title: "kjkjkjkk",
-        },
-      ],
+      lessonList: [],
     });
     const getPositionData = async () => {
       const id: number = +route.query.id || 0;
@@ -128,18 +128,22 @@ export default {
       console.log(data);
       state.position = data;
       state.company = data.company;
+      if (data.courses.totalCount !== 0) {
+        state.lessonList = data.courses.result.list;
+        console.log(state.lessonList);
+      }
     };
     const toCompanyDetail = () => {
       router.push({
         path: "/company",
         query: {
-          id: state.company.id
-        }
-      })
-    }
+          id: state.company.id,
+        },
+      });
+    };
     const toMoreLesson = () => {
-      location.href = "http://www.zhongminzhihui.cn"
-    }
+      location.href = "http://www.zhongminzhihui.cn";
+    };
     onMounted(() => {
       console.log("dd");
     });
@@ -147,7 +151,7 @@ export default {
     return {
       ...toRefs(state),
       toCompanyDetail,
-      toMoreLesson
+      toMoreLesson,
     };
   },
 };

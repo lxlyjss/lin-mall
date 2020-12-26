@@ -130,4 +130,10 @@ export interface getPositionRes {
   money_end: number;
   is_recommend: number;
   company: company;
+  courses: {
+    totalCount: number;
+    result: {
+      list: any[];
+    }
+  }
 }

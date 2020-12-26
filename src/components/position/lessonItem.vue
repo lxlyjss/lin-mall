@@ -1,16 +1,16 @@
 <template>
   <div class="lesson-item">
     <div class="lesson-left">
-      <van-image src="" />
+      <van-image :src="info.photoUrl" />
     </div>
     <div class="lesson-info">
-      <p class="lesson-title">
-        案例打扫房间拉时间段发了多少放家里卡萨丁发了就拉开京东方
+      <p class="lesson-title van-multi-ellipsis--l2">
+        {{ info.shortName }}
       </p>
-      <p class="subtitle">111人次学习-8课时</p>
+      <p class="subtitle">111人次学习-{{ info.lessonCount }}课时</p>
       <p class="money">
-        <span>￥34</span>
-        <span>原价￥34</span>
+        <span>￥{{ info.price }}</span>
+        <span>原价￥{{ info.totalPrice }}</span>
       </p>
     </div>
   </div>
@@ -54,6 +54,7 @@ export default {
     }
   }
   .lesson-info {
+    flex: 0 0 230px;
     .lesson-title {
       font-size: 14px;
       font-weight: 400;
