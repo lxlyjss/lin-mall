@@ -1,5 +1,5 @@
 <template>
-  <div class="lesson-item">
+  <div class="lesson-item" @click="toLessonPage">
     <div class="lesson-left">
       <van-image :src="info.photoUrl" />
     </div>
@@ -25,12 +25,10 @@ export default {
       default: () => {},
     },
   },
-  setup() {
+  setup(props: any) {
     const router = useRouter();
     const toLessonPage = () => {
-      router.push({
-        path: "/company",
-      });
+      location.href = "http://www.zhongminzhihui.cn/wap/course/detail/" + props.info.courseId
     };
     return {
       toLessonPage,
