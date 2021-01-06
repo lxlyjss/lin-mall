@@ -81,8 +81,12 @@
           />
         </ul>
         <van-empty
-          v-if="positionList.length == 0 && dataReady && !loading"
-          :description="currentTab == 1 ? '暂无匹配的公司' : '暂无匹配的职位'"
+          v-if="currentTab == 0 && positionList.length == 0 && dataReady && !loading"
+          description="暂无匹配的职位"
+        ></van-empty>
+        <van-empty
+          v-if="currentTab == 1 && companyList.length == 0 && dataReady && !loading"
+          description="暂无匹配的公司"
         ></van-empty>
       </van-list>
     </div>
@@ -159,7 +163,7 @@ export default {
     console.log(route.query);
     const state: State = reactive({
       searchValue: "",
-      page: 1,
+      page: 0,
       hasSearched: false,
       activeTag: "不限",
       loading: false,
@@ -234,8 +238,8 @@ export default {
           return;
         }
         state.dataReady = true;
-        state.companyList = flag
-          ? state.companyList.concat(data.data)
+        state.positionList = flag
+          ? state.positionList.concat(data.data)
           : data.data;
         state.finished = !data.next_page_url;
       } catch (err) {
@@ -322,9 +326,6 @@ export default {
     }
     const onSearch = debounce(onRefresh, 1000);
     state.searchValue = route.query.searchVal as string;
-    if (state.searchValue) {
-      onRefresh();
-    }
     getFilterPersonData()
     return {
       ...toRefs(state),

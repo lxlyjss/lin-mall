@@ -1,6 +1,6 @@
 <template>
   <div class="company-item">
-    <div class="company-content">
+    <div class="company-content" @click="toCompanyPage">
       <div class="content-left">
         <van-image :src="info.logo" />
       </div>
@@ -46,6 +46,9 @@ export default {
     const toCompanyPage = () => {
       router.push({
         path: "/company",
+        query: {
+          id: props.info.id
+        }
       });
     };
     onMounted(() => {

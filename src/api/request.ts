@@ -12,7 +12,6 @@ const instance = axios.create({
 console.log(instance)
 instance.interceptors.request.use(
   (config: any) => {
-    console.log(config);
     // 如果接口地址包含mock字段，则走mock地址
     if (config.url && config.url.indexOf("mock") > -1) {
       instance.defaults.baseURL = `${process.env.VUE_APP_MOCK_API_URL}/api`;
