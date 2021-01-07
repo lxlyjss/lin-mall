@@ -32,10 +32,7 @@ interface State {
   categories: getCategoryRes["categories"];
   show: boolean;
   activeKey: string;
-  tagList: {
-    name: string;
-    id: number;
-  }[];
+  tagList: string[];
   jobCate: string;
 }
 export default {
@@ -75,7 +72,7 @@ export default {
       const categories = data.categories || [];
       state.categories = state.categories.concat(categories);
       state.categories[0].children = data.hot_jobs;
-      state.tagList = state.categories[0].children.map((item: any) => item.name);
+      state.tagList = state.categories[0].children;
     };
     const onTagChange = (data: any) => {
       console.log(data);
@@ -89,7 +86,7 @@ export default {
     };
     const onSideChange = (value: number) => {
       console.log(value);
-      state.tagList = state.categories[value].children.map((item: any) => item.name);
+      state.tagList = state.categories[value].children;
       state.jobCate = state.categories[value].name;
     }
     onMounted(() => {
