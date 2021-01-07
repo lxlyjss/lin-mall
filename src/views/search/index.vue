@@ -94,8 +94,8 @@ export default {
         Toast("数据错误");
         return;
       }
-      state.hotJobs = data.hot_jobs.map((item: any) => item.name)
-      state.hotCompany = data.hot_companies.map((item: any) => item.simple_name)
+      state.hotJobs = data.hot_jobs
+      state.hotCompany = data.hot_companies
     };
     const setHistoryData = () => {
       let historyData = getHistoryData();

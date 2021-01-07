@@ -12,12 +12,6 @@ export interface getCategoryRes {
       id: number;
     }[];
   }[];
-  hot_jobs: {
-    name: string;
-    id: number;
-  }[];
-  hot_companies: {
-    simple_name: string;
-    id: number;
-  }[];
+  hot_jobs: string[];
+  hot_companies: string[];
 }

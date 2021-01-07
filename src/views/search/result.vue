@@ -231,7 +231,6 @@ export default {
           office_worker_num: state.filterCompany[0],
           financing_level: state.filterCompany[1],
         });
-        console.log(data);
         if (code !== 200) {
           Toast("数据错误");
           state.error = true;
