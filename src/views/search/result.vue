@@ -27,7 +27,9 @@
         </div>
         <div class="filter-right">
           <span class="van-ellipsis" @click="showFilterCity">
-            <span class="has-text" v-if="filterCity.length">{{ filterCity[2] }}</span>
+            <span class="has-text" v-if="filterCity.length">{{
+              filterCity[2]
+            }}</span>
             <span v-else>地区</span>
           </span>
           <span
@@ -78,14 +80,19 @@
             v-for="item in positionList"
             :key="item.id"
             :info="item"
+            type="search"
           />
         </ul>
         <van-empty
-          v-if="currentTab == 0 && positionList.length == 0 && dataReady && !loading"
+          v-if="
+            currentTab == 0 && positionList.length == 0 && dataReady && !loading
+          "
           description="暂无匹配的职位"
         ></van-empty>
         <van-empty
-          v-if="currentTab == 1 && companyList.length == 0 && dataReady && !loading"
+          v-if="
+            currentTab == 1 && companyList.length == 0 && dataReady && !loading
+          "
           description="暂无匹配的公司"
         ></van-empty>
       </van-list>
@@ -180,14 +187,14 @@ export default {
       positionList: [],
       companyList: [],
       dataReady: false,
-      requirements: {}
+      requirements: {},
     });
     onMounted(() => {
       console.log("dd");
     });
     const filterTagsNames: any = computed(() => {
-      return state.filterTags.map((item: any) => item.name)
-    })
+      return state.filterTags.map((item: any) => item.name);
+    });
     const getCompanyList = async (flag?: boolean) => {
       try {
         const {
@@ -236,6 +243,29 @@ export default {
           state.error = true;
           return;
         }
+        /**
+         * <div class="company-info" @click="toCompanyPage">
+          <div class="logo">
+            <van-image :src="info.company.logo" />
+          </div>
+          <div class="right-info">
+            <p>{{ info.company.name }}</p>
+            <p class="c-999">
+              {{ info.company.financing_level }} | {{ info.company.office_worker_num }} |
+              {{ info.company.tags.join("，") }}
+            </p>
+          </div>
+         */
+        // @ts-ignore
+        data.data.forEach((item) => {
+          item.company = {
+            logo: item.logo,
+            name: item.simple_name,
+            financing_level: item.financing_level,
+            office_worker_num: item.office_worker_num,
+            tags: item.company_tags,
+          };
+        });
         state.dataReady = true;
         state.positionList = flag
           ? state.positionList.concat(data.data)
@@ -284,7 +314,7 @@ export default {
       } else {
         state.filterCompany = value;
       }
-      onRefresh()
+      onRefresh();
     };
     const onCitySubmit = (value: string[]) => {
       console.log(value);
@@ -322,10 +352,10 @@ export default {
       state.loading = true;
       await getData();
       state.loading = false;
-    }
+    };
     const onSearch = debounce(onRefresh, 1000);
     state.searchValue = route.query.searchVal as string;
-    getFilterPersonData()
+    getFilterPersonData();
     return {
       ...toRefs(state),
       showFilterCompany,

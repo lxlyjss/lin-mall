@@ -42,10 +42,15 @@ export default {
       type: Object,
       default: () => {},
     },
+    type: String
   },
   setup(props: any) {
     const router = useRouter();
     const toCompanyPage = () => {
+      if (props.type == "search") {
+        toPositionDetail();
+        return;
+      }
       router.push({
         path: "/company",
         query: {

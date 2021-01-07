@@ -32,7 +32,10 @@ interface State {
   categories: getCategoryRes["categories"];
   show: boolean;
   activeKey: string;
-  tagList: string[];
+  tagList: {
+    name: string;
+    id: number;
+  }[];
   jobCate: string;
 }
 export default {
@@ -57,7 +60,7 @@ export default {
           sort: 0,
         },
       ],
-      jobCate: "热门职位"
+      jobCate: "热门职位",
     });
     state.show = props.value;
     const getCategoryData = async () => {
@@ -71,8 +74,12 @@ export default {
       }
       const categories = data.categories || [];
       state.categories = state.categories.concat(categories);
-      state.categories[0].children = data.hot_jobs;
-      state.tagList = state.categories[0].children;
+      state.categories[0].children = data.hot_jobs.map((item) => {
+        return { name: item, id: Math.random() * 100000 };
+      });
+      state.tagList = state.categories[0].children.map(
+        (item: any) => item.name
+      );
     };
     const onTagChange = (data: any) => {
       console.log(data);
@@ -86,9 +93,11 @@ export default {
     };
     const onSideChange = (value: number) => {
       console.log(value);
-      state.tagList = state.categories[value].children;
+      state.tagList = state.categories[value].children.map(
+        (item: any) => item.name
+      );
       state.jobCate = state.categories[value].name;
-    }
+    };
     onMounted(() => {
       console.log("onMounted");
       getCategoryData();
@@ -97,7 +106,7 @@ export default {
       ...toRefs(state),
       getCategoryData,
       onTagChange,
-      onSideChange
+      onSideChange,
     };
   },
 };

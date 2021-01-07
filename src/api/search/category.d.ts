@@ -7,7 +7,10 @@ export interface getCategoryRes {
   categories: {
     name: string;
     id: number;
-    children: string[];
+    children: {
+      name: string;
+      id: number;
+    }[];
   }[];
   hot_jobs: string[];
   hot_companies: string[];
