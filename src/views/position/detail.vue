@@ -20,16 +20,17 @@
     <div class="body">
       <section>
         <p class="title">职位亮点</p>
-        <p class="desc">{{ position.job_content }}</p>
+        <p class="desc">{{ position.job_light }}</p>
       </section>
       <section v-if="position.tags">
         <p class="title">职位描述</p>
-        <van-tag
+        <p class="desc">{{ position.job_content }}</p>
+        <!-- <van-tag
           v-for="tag in position.tags.split(',')"
           :key="tag"
           type="default"
           >{{ tag }}</van-tag
-        >
+        > -->
       </section>
       <section>
         <p class="title">岗位职责</p>
