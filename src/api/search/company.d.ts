@@ -20,8 +20,10 @@ export interface getCompanyRes {
 export interface getCompanyParams {
   page: number;
   per_page: number;
-  city_name: string;
+  work_city: string;
   keyword: string;
+  work_province: string;
+  work_space: string;
 }
 export interface getCompanyDetailRes {}
 export interface getCompanyPositionRes {}

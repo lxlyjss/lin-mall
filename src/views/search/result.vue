@@ -29,7 +29,7 @@
         <div class="filter-right">
           <span class="van-ellipsis" @click="showFilterCity">
             <span class="has-text" v-if="filterCity.length">{{
-              filterCity[2]
+              filterCity[2] || filterCity[1] || filterCity[0] || 地区
             }}</span>
             <span v-else>地区</span>
           </span>
@@ -198,7 +198,11 @@ export default {
       return state.filterTags.map((item: any) => item.name);
     });
     const onCancel: Function = () => {
-      router.replace("/home")
+      router.replace("/home");
+    };
+    const getCityName: any = function(cityName: string) {
+      console.log(/[北京市|天津市|重庆市|上海市]/g.test(cityName))
+      return /[北京|天津|重庆|上海]/g.test(cityName) ? "市辖区" : cityName;
     }
     const getCompanyList = async (flag?: boolean) => {
       try {
@@ -206,7 +210,9 @@ export default {
           data: { data, code },
         } = await getCompany({
           keyword: state.searchValue,
-          city_name: state.filterCity[2],
+          work_city: getCityName(state.filterCity[1]),
+          work_province: state.filterCity[0],
+          work_space: state.filterCity[2],
           page: state.page,
           per_page: 10,
         });
@@ -234,7 +240,9 @@ export default {
           name: state.searchValue,
           page: state.page,
           per_page: 10,
-          work_city: state.filterCity[2],
+          work_city: getCityName(state.filterCity[1]),
+          work_province: state.filterCity[0],
+          work_space: state.filterCity[2],
           tag_id: state.activeTag,
           money: state.filterPerson[0],
           work_time: state.filterPerson[1],
@@ -310,6 +318,10 @@ export default {
     };
     const changeTag = (val: number) => {
       state.currentTab = val;
+      state.filterCompany = [];
+      state.filterPerson = [];
+      state.filterCity = [];
+      state.filterTags = [];
       onRefresh();
     };
     const onCompanySubmit = (value: string[]) => {
@@ -336,7 +348,11 @@ export default {
       onRefresh();
     };
     const selectTag = (val: string) => {
-      state.activeTag = val;
+      if (state.activeTag == val) {
+        state.activeTag = "";
+      } else {
+        state.activeTag = val;
+      }
       onRefresh();
     };
     const getData = async (flag?: boolean) => {
@@ -375,7 +391,7 @@ export default {
       onSearch,
       selectTag,
       onLoad,
-      onCancel
+      onCancel,
     };
   },
 };

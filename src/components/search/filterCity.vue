@@ -33,7 +33,7 @@
       </div>
       <div class="bottom-btn">
         <van-button plain @click="reset">重置</van-button>
-        <van-button type="danger" @click="submit" :disabled="!getDisabledStatus"
+        <van-button type="danger" @click="submit"
           >确定</van-button
         >
       </div>
@@ -128,14 +128,21 @@ export default {
       });
       return list;
     });
+    // 是否重置了。
+    // const isEmpty: any = computed(() => {
+    //   return !state.address.province.length &&
+    //     !state.address.city.length &&
+    //     !state.address.county.length
+    // })
     // 是否可以点击确定按钮
-    const getDisabledStatus: any = computed(() => {
-      return (
-        state.address.province[0] &&
-        state.address.city[0] &&
-        state.address.county[0]
-      );
-    });
+    // const getDisabledStatus: any = computed(() => {
+    //   return (
+    //     isEmpty || 
+    //     state.address.province[0] &&
+    //     state.address.city[0] &&
+    //     state.address.county[0]
+    //   );
+    // });
     watch(
       () => props.value,
       (n: any, o: any) => {
@@ -172,12 +179,15 @@ export default {
       state.address.county = [county.name];
     };
     const reset = () => {
+      state.address.province = [];
       state.address.city = [];
       state.address.county = [];
       state.currentCountyList = [];
     };
     const submit = () => {
-      ctx.emit("complete", Object.keys(state.address).map((item: any) => state.address[item][0]))
+      let list: string[] = [];
+      Object.keys(state.address).map((item: any) => state.address[item][0] && list.push(state.address[item][0]));
+      ctx.emit("complete", list)
       onClose();
     };
     const onClose = () => {
@@ -194,7 +204,6 @@ export default {
       onCountyChange,
       reset,
       submit,
-      getDisabledStatus,
     };
   },
 };

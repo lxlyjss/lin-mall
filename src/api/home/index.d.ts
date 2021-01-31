@@ -63,6 +63,14 @@ export interface gerPositionListParams {
    * 工作城市.
    */
   work_city: string;
+  /**
+   * 工作省份.
+   */
+  work_province: string;
+  /**
+   * 工作区县.
+   */
+  work_space: string;
 
   /**
    * 标签id，五险一金。 多个id，英文逗号分隔。
