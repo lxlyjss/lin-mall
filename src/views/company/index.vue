@@ -34,10 +34,11 @@
           tag
         }}</van-tag>
       </div>
-      <div class="intro">{{ company.content }}</div>
+      <div class="intro">{{ company.content || "这个公司暂未留下任何信息" }}</div>
       <p class="title">公司官网</p>
       <p class="company-link">
-        <a :href="company.home_url">{{ company.home_url }}</a>
+        <a v-if="company.home_url" :href="company.home_url">{{ company.home_url }}</a>
+        <span v-else class="empty">暂无</span>
       </p>
       <p class="title">公司地址</p>
       <div class="company-map" v-if="dataReady">
@@ -70,7 +71,7 @@ import { useRouter, useRoute } from "vue-router";
 import positionItem from "@/components/home/positionItem.vue";
 import { getCompanyDetail } from "@/api/search/company";
 import * as TYPES from "@/api/home/index.d";
-import { client } from "@/utils/utils";
+import { client, setTitle } from "@/utils/utils";
 import { ImagePreview } from "vant";
 import AMap from "@/components/common/AMap.vue";
 
@@ -109,12 +110,13 @@ export default {
       } = await getCompanyDetail(id);
       state.company = data;
       state.dataReady = true;
+      setTitle(state.company.simple_name);
     };
     const toSearch = () => {
       router.push("/search");
     };
     const toPositionList = () => {
-      router.push({
+      router.replace({
         path: "/company-position",
         query: {
           id: state.company.id

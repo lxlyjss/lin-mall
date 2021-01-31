@@ -22,16 +22,16 @@
         <p class="title">职位亮点</p>
         <p class="desc">{{ position.job_light }}</p>
       </section>
-      <section v-if="position.tags">
+      <!-- <section v-if="position.tags">
         <p class="title">职位描述</p>
-        <p class="desc">{{ position.job_content }}</p>
+        <p class="desc">{{ position.job_content }}</p> -->
         <!-- <van-tag
           v-for="tag in position.tags.split(',')"
           :key="tag"
           type="default"
           >{{ tag }}</van-tag
         > -->
-      </section>
+      <!-- </section> -->
       <section>
         <p class="title">岗位职责</p>
         <p class="desc" v-html="position.job_duty"></p>
@@ -95,6 +95,7 @@ import lessonItem from "@/components/position/lessonItem.vue";
 import { getPositionDetail } from "@/api/home/index";
 import { useRoute, useRouter } from "vue-router";
 import { Toast } from "vant";
+import { setTitle } from "@/utils/utils";
 
 interface State {
   searchValue: string;
@@ -129,10 +130,12 @@ export default {
       console.log(data);
       state.position = data;
       state.company = data.company;
+      document.title
       if (data.courses.totalCount !== 0) {
         state.lessonList = data.courses.result.list;
         console.log(state.lessonList);
       }
+      setTitle(state.position.name);
     };
     const toCompanyDetail = () => {
       router.push({

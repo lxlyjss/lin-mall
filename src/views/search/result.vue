@@ -8,6 +8,7 @@
           show-action
           placeholder="请输入搜索关键词"
           @input="onSearch"
+          @cancel="onCancel"
         />
       </div>
       <div class="search-filter">
@@ -167,6 +168,7 @@ export default {
   },
   setup() {
     const route = useRoute();
+    const router = useRouter();
     console.log(route.query);
     const state: State = reactive({
       searchValue: "",
@@ -195,6 +197,9 @@ export default {
     const filterTagsNames: any = computed(() => {
       return state.filterTags.map((item: any) => item.name);
     });
+    const onCancel: Function = () => {
+      router.replace("/home")
+    }
     const getCompanyList = async (flag?: boolean) => {
       try {
         const {
@@ -370,6 +375,7 @@ export default {
       onSearch,
       selectTag,
       onLoad,
+      onCancel
     };
   },
 };

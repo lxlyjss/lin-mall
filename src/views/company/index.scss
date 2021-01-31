@@ -2,6 +2,7 @@
   background-color: $gray-1;
   position: relative;
   min-height: 100vh;
+  padding-bottom: 40px;
   .header-container {
     position: relative;
     .image-count {
@@ -91,6 +92,9 @@
       font-weight: 400;
       color: #2a54dd;
       line-height: 24px;
+      .empty {
+        color: #ccc;
+      }
     }
     .company-map {
       width: 335px;
@@ -123,6 +127,11 @@
     }
     .bottom-btn {
       margin-top: 38px;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 375px;
+      z-index: 999;
       .van-button {
         width: 100%;
         border: none;

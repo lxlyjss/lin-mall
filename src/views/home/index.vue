@@ -1,7 +1,7 @@
 <template>
   <div class="home-page">
     <div class="header-box" :style="getStyle(headerOpacity)">
-      <div class="header-left" :style="getTextStyle(headerOpacity)">
+      <div class="header-left" :style="getTextStyle(headerOpacity)" @click="toZhongMinHome">
         <van-icon name="wap-home" />
         中民知慧教育
       </div>
@@ -10,7 +10,7 @@
           shape="round"
           readonly
           v-model="searchValue"
-          placeholder="请输入搜索关键词"
+          placeholder="职位搜索"
         />
       </div>
     </div>
@@ -87,6 +87,9 @@ export default {
       state.jobList = data.jobs;
       console.log(data);
     };
+    const toZhongMinHome: Function = () => {
+      location.href = "http://www.zhongminzhihui.cn";
+    }
     const toSearch = () => {
       router.push("/search-index");
     };
@@ -135,6 +138,7 @@ export default {
       toCategoryPage,
       locationHref,
       onTabChange,
+      toZhongMinHome
     };
   },
 };

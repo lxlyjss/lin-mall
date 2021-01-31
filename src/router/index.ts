@@ -19,5 +19,8 @@ const router = createRouter({
 router.beforeEach((to) => {
   document.title = to.meta.title || "默认title"
 })
+router.afterEach((to) => {
+  window.scroll(0, 0);
+})
 
 export default router

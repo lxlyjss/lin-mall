@@ -11,7 +11,7 @@ export default [
     name: "home",
     component: home,
     meta: {
-      title: "首页"
+      title: "热门职位"
     }
   }
 ];

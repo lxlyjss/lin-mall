@@ -62,3 +62,17 @@ export const throttle = function(fn: Function, delay: number) {
     }, delay);
   };
 };
+/**
+ * 设置页面title，ios防止动态改编title不刷新
+ */
+export const setTitle = function (title: string) {
+  document.title = title;
+  if (client.ios && client.weixinwebview) {
+    let iframe = document.createElement("iframe");
+    iframe.src = location.href;
+    iframe.style.display = "none";
+    iframe.title = title;
+    document.body.appendChild(iframe);
+    document.body.removeChild(iframe);
+  }
+}

@@ -7,6 +7,7 @@
         show-action
         placeholder="请输入搜索关键词"
         @search="onSearch"
+        @cancel="onCancel"
       />
     </div>
     <div class="search-category">
@@ -85,6 +86,9 @@ export default {
       });
       setHistoryData();
     };
+    const onCancel: Function = () => {
+      router.replace("/home")
+    }
     const getCategoryData = async () => {
       let {
         data: { data, code },
@@ -130,6 +134,7 @@ export default {
       toCategoryPage,
       onSearch,
       selectTag,
+      onCancel
     };
   },
 };
