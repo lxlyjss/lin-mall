@@ -103,6 +103,7 @@
       v-model:value="filterCompanyShow"
       @onclose="onClose"
       @complete="onCompanySubmit"
+      ref="filterCompanyDom"
     />
     <!-- 筛选地区 -->
     <filter-city
@@ -120,7 +121,7 @@
   </div>
 </template>
 <script lang="ts">
-import { reactive, toRefs, onMounted, computed } from "vue";
+import { reactive, toRefs, onMounted, computed, ref } from "vue";
 import { Tag, Search, Popup, Toast } from "vant";
 import positionItem from "@/components/home/positionItem.vue";
 import companyItem from "@/components/home/companyItem.vue";
@@ -169,6 +170,7 @@ export default {
   setup() {
     const route = useRoute();
     const router = useRouter();
+    const filterCompanyDom = ref(null);
     console.log(route.query);
     const state: State = reactive({
       searchValue: "",
@@ -202,7 +204,13 @@ export default {
       console.log(/[北京市|天津市|重庆市|上海市]/g.test(cityName))
       return /[北京|天津|重庆|上海]/g.test(cityName) ? "市辖区" : cityName;
     }
+    const getFilterId = (name: string) => {
+      console.log('333333', filterCompanyDom.value)
+      // @ts-ignore
+      return filterCompanyDom.value.getAreaId(name);
+    }
     const getCompanyList = async (flag?: boolean) => {
+      console.log(getFilterId(state.filterCompany[2]).join(","))
       try {
         const {
           data: { data, code },
@@ -213,6 +221,9 @@ export default {
           work_space: state.filterCity[2],
           page: state.page,
           per_page: 10,
+          industry_attribute: getFilterId(state.filterCompany[2]).join(","),
+          financing_level: state.filterCompany[1],
+          office_worker_num: state.filterCompany[0]
         });
         console.log(data);
         if (code !== 200) {
@@ -248,6 +259,7 @@ export default {
           work_nature: state.filterPerson[3],
           office_worker_num: state.filterCompany[0],
           financing_level: state.filterCompany[1],
+          industry_attribute: getFilterId(state.filterCompany[2]).join(",")
         });
         if (code !== 200) {
           Toast("数据错误");
@@ -391,6 +403,8 @@ export default {
       selectTag,
       onLoad,
       onCancel,
+      getFilterId,
+      filterCompanyDom
     };
   },
 };

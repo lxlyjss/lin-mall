@@ -24,6 +24,9 @@ export interface getCompanyParams {
   keyword: string;
   work_province: string;
   work_space: string;
+  industry_attribute: string;
+  financing_level: string;
+  office_worker_num: string;
 }
 export interface getCompanyDetailRes {}
 export interface getCompanyPositionRes {}

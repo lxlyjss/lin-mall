@@ -43,6 +43,7 @@ import { Toast } from "vant";
 
 interface State {
   show: boolean;
+  dataList: any;
   scaleList: string[];
   financingList: string[];
   areaList: string[];
@@ -62,6 +63,7 @@ export default {
   setup(props: any, ctx: any) {
     const state: State = reactive({
       show: false,
+      dataList: [],
       scaleList: [],
       financingList: [],
       areaList: [],
@@ -86,10 +88,24 @@ export default {
         Toast("接收数据失败！");
         return;
       }
+      state.dataList = data;
       state.scaleList = data.office_worker_num.map((item: any) => item.name);
       state.financingList = data.financing_level.map((item: any) => item.name);
       state.areaList = data.industry_attribute.map((item: any) => item.name);
     };
+    const getAreaId = (nameStr: string) => {
+      if (!nameStr) return [];
+      console.log(nameStr)
+      const areaList = state.dataList.industry_attribute;
+      const result = areaList.filter((item: any) => {
+        return item.name === nameStr;
+      });
+      if (result.length > 0) {
+        return result.map((item: any) => item.id);
+      } else {
+        return [];
+      }
+    }
     const onScaleChange = (value: string[]) => {
       console.log(value);
       state.currentScale = value;
@@ -140,6 +156,7 @@ export default {
       onAreaChange,
       reset,
       submit,
+      getAreaId
     };
   },
 };

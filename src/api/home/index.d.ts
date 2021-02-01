@@ -106,6 +106,7 @@ export interface gerPositionListParams {
    * 融资轮。eg:A轮
    */
   financing_level: string;
+  industry_attribute: string;
 }
 export interface getPositionListRes {
   data: {
