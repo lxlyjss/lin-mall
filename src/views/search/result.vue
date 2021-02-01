@@ -192,6 +192,7 @@ export default {
       requirements: {},
     });
     const filterTagsNames: any = computed(() => {
+      console.log('3333', state.filterTags);
       return state.filterTags.map((item: any) => item.name);
     });
     const onCancel: Function = () => {
@@ -318,7 +319,7 @@ export default {
       state.filterCompany = [];
       state.filterPerson = [];
       state.filterCity = [];
-      state.filterTags = [];
+      state.activeTag = "";
       onRefresh();
     };
     const onCompanySubmit = (value: string[]) => {
@@ -403,8 +404,7 @@ export default {
   .search-header {
     position: fixed;
     top: 0;
-    width: 100%;
-    left: 0;
+    width: 375px;
     background-color: #fff;
     z-index: 99;
   }
