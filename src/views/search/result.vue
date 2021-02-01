@@ -191,9 +191,6 @@ export default {
       dataReady: false,
       requirements: {},
     });
-    onMounted(() => {
-      console.log("dd");
-    });
     const filterTagsNames: any = computed(() => {
       return state.filterTags.map((item: any) => item.name);
     });
@@ -356,6 +353,7 @@ export default {
       onRefresh();
     };
     const getData = async (flag?: boolean) => {
+      if (!state.searchValue) return;
       if (state.currentTab == 0) {
         await getPositionListData(flag);
       } else {
