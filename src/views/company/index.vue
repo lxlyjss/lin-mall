@@ -20,7 +20,7 @@
         <div class="info-left">
           <p class="info-title">{{ company.simple_name }}</p>
           <p class="subtitle">
-            {{ company.city_name }} | {{ company.financing_level }} |
+            {{ company.work_city }} | {{ company.financing_level }} |
             {{ company.office_worker_num }} | {{ company.tags.join("、") }}
           </p>
         </div>
@@ -34,7 +34,7 @@
           tag
         }}</van-tag>
       </div>
-      <div class="intro">{{ company.content || "这个公司暂未留下任何信息" }}</div>
+      <div class="intro" v-html="company.content || '这个公司暂未留下任何信息'"></div>
       <p class="title">公司官网</p>
       <p class="company-link">
         <a v-if="company.home_url" :href="company.home_url">{{ company.home_url }}</a>
@@ -109,6 +109,7 @@ export default {
         data: { code, data },
       } = await getCompanyDetail(id);
       state.company = data;
+      state.company.content = state.company.content.replace(/\n/g, '<br />');
       state.dataReady = true;
       setTitle(state.company.simple_name);
     };

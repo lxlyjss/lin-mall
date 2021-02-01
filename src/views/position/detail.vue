@@ -20,7 +20,7 @@
     <div class="body">
       <section>
         <p class="title">职位亮点</p>
-        <p class="desc">{{ position.job_light }}</p>
+        <p class="desc" v-html="position.job_light"></p>
       </section>
       <!-- <section v-if="position.tags">
         <p class="title">职位描述</p>
@@ -129,6 +129,9 @@ export default {
       }
       console.log(data);
       state.position = data;
+      state.position.job_duty = state.position.job_duty.replace(/\n/g, '<br />');
+      state.position.job_requirement = state.position.job_requirement.replace(/\n/g, '<br />');
+      state.position.job_light = state.position.job_light.replace(/\n/g, '<br />');
       state.company = data.company;
       document.title
       if (data.courses.totalCount !== 0) {
