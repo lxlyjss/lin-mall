@@ -62,6 +62,7 @@ interface State {
   provinceList: any;
   cityList: any;
   countyList: any;
+  isReset: boolean;
 }
 export default {
   components: {
@@ -90,6 +91,7 @@ export default {
       provinceList: area.province_list,
       cityList: area.city_list,
       countyList: area.county_list,
+      isReset: true
     });
     state.show = props.value;
     // 省列表
@@ -160,6 +162,7 @@ export default {
       state.address.province = [province.name];
       state.address.city = [];
       state.address.county = [];
+      state.isReset = false;
     };
     // 城市改变
     const onCityChange = (value: string) => {
@@ -171,23 +174,26 @@ export default {
         (item: any) => item.code.slice(0, 4) == cityCode
       );
       state.address.city = [city.name];
+      state.isReset = false;
     };
     const onCountyChange = (value: string) => {
       const county: any = countyList.value.filter(
         (item: any) => item.name == value[0]
       )[0];
       state.address.county = [county.name];
+      state.isReset = false;
     };
     const reset = () => {
-      state.address.province = [];
+      // state.address.province = [];
       state.address.city = [];
       state.address.county = [];
       state.currentCountyList = [];
+      state.isReset = true;
     };
     const submit = () => {
       let list: string[] = [];
       Object.keys(state.address).map((item: any) => state.address[item][0] && list.push(state.address[item][0]));
-      ctx.emit("complete", list)
+      ctx.emit("complete", state.isReset ? [] : list)
       onClose();
     };
     const onClose = () => {
