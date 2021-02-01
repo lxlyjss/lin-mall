@@ -149,7 +149,7 @@ export default {
       });
     };
     const toMoreLesson = () => {
-      location.href = "http://www.zhongminzhihui.cn";
+      location.href = `http://www.zhongminzhihui.cn/wap/schoolCourseList?orgId=38879&categoryId=${state.position.course_id}&toCourseList=true`;
     };
     onMounted(() => {
       console.log("dd");
