@@ -1,4 +1,5 @@
 const CompressionPlugin = require("compression-webpack-plugin");
+const UglifyPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = {
   lintOnSave: false,
@@ -77,5 +78,17 @@ module.exports = {
         deleteOriginalAssets: false, // 不删除源文件
       })
     );
+    config.plugin("uglifyPlugin").use(
+      new UglifyPlugin({
+        uglifyOptions: {
+          warnings: false,
+          compress: {
+            drop_console: true, 
+            drop_debugger: false,
+            pure_funcs: ['console.log'] 
+          }
+        }
+     })
+    )
   },
 };
