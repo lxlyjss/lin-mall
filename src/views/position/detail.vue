@@ -25,7 +25,7 @@
       <!-- <section v-if="position.tags">
         <p class="title">职位描述</p>
         <p class="desc">{{ position.job_content }}</p> -->
-        <!-- <van-tag
+      <!-- <van-tag
           v-for="tag in position.tags.split(',')"
           :key="tag"
           type="default"
@@ -76,11 +76,7 @@
     <div class="lesson-container">
       <p class="line-title">职场课程</p>
       <div class="lesson-list">
-        <lessonItem
-          v-for="(item) in lessonList"
-          :info="item"
-          :key="item.id"
-        />
+        <lessonItem v-for="item in lessonList" :info="item" :key="item.id" />
       </div>
     </div>
     <div class="bottom-container">
@@ -96,6 +92,7 @@ import { getPositionDetail } from "@/api/home/index";
 import { useRoute, useRouter } from "vue-router";
 import { Toast } from "vant";
 import { setTitle } from "@/utils/utils";
+import { setWechatShareInfo } from "@/utils/utils";
 
 interface State {
   searchValue: string;
@@ -129,16 +126,33 @@ export default {
       }
       console.log(data);
       state.position = data;
-      state.position.job_duty = state.position.job_duty.replace(/\n/g, '<br />');
-      state.position.job_requirement = state.position.job_requirement.replace(/\n/g, '<br />');
-      state.position.job_light = state.position.job_light.replace(/\n/g, '<br />');
+      state.position.job_duty = state.position.job_duty.replace(
+        /\n/g,
+        "<br />"
+      );
+      state.position.job_requirement = state.position.job_requirement.replace(
+        /\n/g,
+        "<br />"
+      );
+      state.position.job_light = state.position.job_light.replace(
+        /\n/g,
+        "<br />"
+      );
       state.company = data.company;
-      document.title
+      document.title;
       if (data.courses.totalCount !== 0) {
         state.lessonList = data.courses.result.list;
         console.log(state.lessonList);
       }
       setTitle(state.position.name);
+      setWechatShareInfo({
+        title: `${state.company.name}正在招聘${state.position.name}，速来！`,
+        desc: `${state.company.name}${state.position.job_light}`,
+        link: location.href,
+        imgUrl:
+          state.company.logo ||
+          "https://asset.txqn.huohua.cn/assets/28f7639f-be0a-423c-8ca8-23e3b352110e.png",
+      });
     };
     const toCompanyDetail = () => {
       router.push({

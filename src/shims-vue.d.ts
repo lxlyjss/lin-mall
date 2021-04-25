@@ -4,6 +4,7 @@ declare module '*.vue' {
   export default component
 }
 declare var AMap;
+declare module 'weixin-js-sdk';
 declare global {
   interface Window {
     AMap: any;

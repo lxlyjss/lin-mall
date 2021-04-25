@@ -1,7 +1,11 @@
 <template>
   <div class="home-page">
     <div class="header-box" :style="getStyle(headerOpacity)">
-      <div class="header-left" :style="getTextStyle(headerOpacity)" @click="toZhongMinHome">
+      <div
+        class="header-left"
+        :style="getTextStyle(headerOpacity)"
+        @click="toZhongMinHome"
+      >
         <van-icon name="wap-home" />
         中民知慧教育
       </div>
@@ -38,12 +42,19 @@
         </van-tabs>
       </div>
     </div>
-    <ul class="info-list">
-      <position-item v-for="item in jobList" :key="item.id" :info="item" />
-    </ul>
+    <van-list
+      v-model:loading="loading"
+      :finished="finished"
+      :finished-text="jobList.length > 0 ? '没有更多了' : ''"
+      @load="onLoadMore"
+    >
+      <ul class="info-list">
+        <position-item v-for="item in jobList" :key="item.id" :info="item" />
+      </ul>
+    </van-list>
     <div class="bottom-container">
-      <van-button type="danger" round @click="toSearch">更多职位</van-button>
-      <p>已经到底啦~看看别的吧</p>
+      <!-- <van-button type="danger" round @click="toSearch">更多职位</van-button>
+      <p>已经到底啦~看看别的吧</p> -->
     </div>
     <return-top />
   </div>
@@ -55,6 +66,7 @@ import positionItem from "@/components/home/positionItem.vue";
 import { getHomeDataInfo } from "@/api/home/index";
 import * as TYPES from "@/api/home/index.d";
 import ReturnTop from "@/components/common/returnTop.vue";
+import { setWechatShareInfo } from "@/utils/utils";
 
 interface State {
   tabActive: number;
@@ -62,6 +74,9 @@ interface State {
   swipeList: TYPES.banners[];
   jobList: any[];
   headerOpacity: number;
+  page: number;
+  loading: boolean;
+  finished: boolean;
 }
 export default {
   components: {
@@ -76,6 +91,9 @@ export default {
       swipeList: [],
       jobList: [],
       headerOpacity: 0,
+      page: 0,
+      loading: true,
+      finished: false,
     });
     const getHomeData = async () => {
       const {
@@ -84,12 +102,42 @@ export default {
         keyword: state.tabActive == 0 ? 1 : 2,
       });
       state.swipeList = data.banners;
-      state.jobList = data.jobs;
+      // state.jobList = data.jobs;
       console.log(data);
     };
+    const onLoadList = async (flag: boolean) => {
+      const {
+        data: { data },
+      } = await getHomeDataInfo({
+        keyword: state.tabActive == 0 ? 1 : 2,
+        page: state.page,
+        page_num: 5,
+      });
+      flag
+        ? (state.jobList = state.jobList.concat(data.jobs.data))
+        : (state.jobList = data.jobs.data);
+      data?.jobs?.next_page_url
+        ? (state.finished = false)
+        : (state.finished = true);
+    };
+
+    const onLoadMore = async () => {
+      state.page++;
+      state.loading = true;
+      await onLoadList(true);
+      state.loading = false;
+    }
+    // onLoadList(false);
+    setWechatShareInfo({
+      title: "人民知慧教育一体化人才教育培训服务平台",
+      desc: "N多企业都在人民知慧教育招募小伙伴，机会有限，感兴趣戳",
+      link: location.href,
+      imgUrl:
+        "https://asset.txqn.huohua.cn/assets/28f7639f-be0a-423c-8ca8-23e3b352110e.png",
+    });
     const toZhongMinHome: Function = () => {
       location.href = "http://www.zhongminzhihui.cn";
-    }
+    };
     const toSearch = () => {
       router.push("/search-index");
     };
@@ -121,6 +169,9 @@ export default {
     };
     const onTabChange = () => {
       getHomeData();
+      state.jobList = [];
+      state.page = 0;
+      onLoadMore();
     };
     onMounted(() => {
       window.addEventListener("scroll", onScroll, false);
@@ -138,7 +189,8 @@ export default {
       toCategoryPage,
       locationHref,
       onTabChange,
-      toZhongMinHome
+      toZhongMinHome,
+      onLoadMore
     };
   },
 };

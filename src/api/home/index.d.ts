@@ -2,6 +2,8 @@ import { getPositionList } from ".";
 
 export interface getHomeDataInfoParams {
   keyword: number;
+  page?: number;
+  page_num?: number;
 }
 export interface company {
   id: number;
@@ -28,20 +30,24 @@ export interface banners {
 }
 export interface getHomeDataInfoRes {
   jobs: {
-    id: number;
-    name: string;
-    tags: string[];
-    work_year_tag: string;
-    work_city: string[];
-    work_space: string;
-    school_level: string;
-    job_content: string;
-    company_id: number;
-    money_start: number;
-    money_end: number;
-    is_recommend: number;
-    company: company;
-  }[];
+    total: number;
+    next_page_url: string;
+    data: {
+      id: number;
+      name: string;
+      tags: string[];
+      work_year_tag: string;
+      work_city: string[];
+      work_space: string;
+      school_level: string;
+      job_content: string;
+      company_id: number;
+      money_start: number;
+      money_end: number;
+      is_recommend: number;
+      company: company;
+    }[]
+  };
   banners: banners[];
 }
 
@@ -49,7 +55,7 @@ export interface gerPositionListParams {
   /**
    * 岗位名称。
    */
-  name: string;
+  name?: string;
 
   /**
    * 每页个数。默认10
@@ -62,51 +68,51 @@ export interface gerPositionListParams {
   /**
    * 工作城市.
    */
-  work_city: string;
+  work_city?: string;
   /**
    * 工作省份.
    */
-  work_province: string;
+  work_province?: string;
   /**
    * 工作区县.
    */
-  work_space: string;
+  work_space?: string;
 
   /**
    * 标签id，五险一金。 多个id，英文逗号分隔。
    */
-  tag_id: string;
+  tag_id?: string;
 
   /**
    * 岗位工资
    */
-  money: string;
+  money?: string;
 
   /**
    * 工作经验。
    */
-  work_time: string;
+  work_time?: string;
 
   /**
    * 学历。
    */
-  school_level: string;
+  school_level?: string;
 
   /**
    * 工作性质。
    */
-  work_nature: string;
+  work_nature?: string;
 
   /**
    * 公司规模。
    */
-  office_worker_num: string;
+  office_worker_num?: string;
 
   /**
    * 融资轮。eg:A轮
    */
-  financing_level: string;
-  industry_attribute: string;
+  financing_level?: string;
+  industry_attribute?: string;
 }
 export interface getPositionListRes {
   data: {
@@ -145,4 +151,11 @@ export interface getPositionRes {
       list: any[];
     }
   }
+}
+
+export interface getWechatConfigRes {
+  appId: string;
+  nonceStr: string;
+  timestamp: number;
+  signature: string;
 }

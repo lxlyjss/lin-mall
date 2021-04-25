@@ -34,10 +34,15 @@
           tag
         }}</van-tag>
       </div>
-      <div class="intro" v-html="company.content || '这个公司暂未留下任何信息'"></div>
+      <div
+        class="intro"
+        v-html="company.content || '这个公司暂未留下任何信息'"
+      ></div>
       <p class="title">公司官网</p>
       <p class="company-link">
-        <a v-if="company.home_url" :href="company.home_url">{{ company.home_url }}</a>
+        <a v-if="company.home_url" :href="company.home_url">{{
+          company.home_url
+        }}</a>
         <span v-else class="empty">暂无</span>
       </p>
       <p class="title">公司地址</p>
@@ -52,10 +57,18 @@
       </div>
       <p class="title">工商信息</p>
       <div class="company-bussiness">
-        <p><span>公司全称</span><span>{{ company.name }}</span></p>
-        <p><span>成立时间</span><span>{{ company.build_date }}</span></p>
-        <p><span>注册资金</span><span>{{ company.regiter_money }}万</span></p>
-        <p><span>法人代表</span><span>{{ company.law_people }}</span></p>
+        <p>
+          <span>公司全称</span><span>{{ company.name }}</span>
+        </p>
+        <p>
+          <span>成立时间</span><span>{{ company.build_date }}</span>
+        </p>
+        <p>
+          <span>注册资金</span><span>{{ company.regiter_money }}万</span>
+        </p>
+        <p>
+          <span>法人代表</span><span>{{ company.law_people }}</span>
+        </p>
       </div>
       <div class="bottom-btn">
         <van-button type="danger" @click="toPositionList"
@@ -74,6 +87,7 @@ import * as TYPES from "@/api/home/index.d";
 import { client, setTitle } from "@/utils/utils";
 import { ImagePreview } from "vant";
 import AMap from "@/components/common/AMap.vue";
+import { setWechatShareInfo } from "@/utils/utils";
 
 interface State {
   tabActive: number;
@@ -98,9 +112,9 @@ export default {
       swipeList: [],
       company: {
         images: [],
-        tags: []
+        tags: [],
       },
-      dataReady: false
+      dataReady: false,
     });
     const AMapRef = ref(null);
     const getCompanyInfo = async () => {
@@ -109,9 +123,16 @@ export default {
         data: { code, data },
       } = await getCompanyDetail(id);
       state.company = data;
-      state.company.content = state.company.content.replace(/\n/g, '<br />');
+      state.company.content = state.company.content.replace(/\n/g, "<br />");
       state.dataReady = true;
       setTitle(state.company.simple_name);
+      setWechatShareInfo({
+        title: `不来后悔，${state.company.simple_name}值得加入！`,
+        desc: `我们正在人民知慧教育招募小伙伴，机会有限，感兴趣戳`,
+        link: location.href,
+        imgUrl:
+          "https://asset.txqn.huohua.cn/assets/28f7639f-be0a-423c-8ca8-23e3b352110e.png",
+      });
     };
     const toSearch = () => {
       router.push("/search");
@@ -120,8 +141,8 @@ export default {
       router.replace({
         path: "/company-position",
         query: {
-          id: state.company.id
-        }
+          id: state.company.id,
+        },
       });
     };
     const previewImage = (index: number) => {
@@ -151,8 +172,8 @@ export default {
         path: "/company-location",
         query: {
           location: state.company.location,
-          address: state.company.address
-        }
+          address: state.company.address,
+        },
       });
     };
     const onAMapComplete = () => {
@@ -161,7 +182,7 @@ export default {
       (AMapRef.value as any).openInfoWindow({
         anchor: "top-center",
         content: `<p style='font-size: 12px;'>${state.company.address}</p>`,
-        position: [location[0], location[1]]
+        position: [location[0], location[1]],
       });
       (AMapRef.value as any).addMarker({
         position: [location[0], location[1]],

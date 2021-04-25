@@ -78,17 +78,17 @@ module.exports = {
         deleteOriginalAssets: false, // 不删除源文件
       })
     );
-    config.plugin("uglifyPlugin").use(
-      new UglifyPlugin({
-        uglifyOptions: {
-          warnings: false,
-          compress: {
-            drop_console: true, 
-            drop_debugger: false,
-            pure_funcs: ['console.log'] 
-          }
-        }
-     })
-    )
+    // config.plugin("uglifyPlugin").use(
+    //   new UglifyPlugin({
+    //     uglifyOptions: {
+    //       warnings: false,
+    //       compress: {
+    //         drop_console: true, 
+    //         drop_debugger: false,
+    //         pure_funcs: ['console.log'] 
+    //       }
+    //     }
+    //  })
+    // )
   },
 };

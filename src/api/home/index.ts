@@ -9,20 +9,31 @@ import { RES, PAGE } from "@/api/base";
  */
 export const getHomeDataInfo = async (params: TYPES.getHomeDataInfoParams) => {
   return await request.get<RES<TYPES.getHomeDataInfoRes>>("/api/h5/home", {
-    params
-  })
-}
+    params,
+  });
+};
 /**
  * 获取职位列表
  */
 export const getPositionList = async (params: TYPES.gerPositionListParams) => {
   return await request.get<RES<PAGE<TYPES.getPositionListRes>>>("/api/h5/job", {
-    params
-  })
-}
+    params,
+  });
+};
 /**
  * 获取职位详情
  */
 export const getPositionDetail = async (id: number) => {
-  return await request.get<RES<TYPES.getPositionRes>>("/api/h5/job/" + id)
-}
+  return await request.get<RES<TYPES.getPositionRes>>("/api/h5/job/" + id);
+};
+
+/**
+ * 获取职位详情
+ */
+export const getWechatConfig = async ({ url }: any) => {
+  return await request.get<RES<TYPES.getWechatConfigRes>>("/api/h5/jsconfig", {
+    params: {
+      url
+    }
+  });
+};
