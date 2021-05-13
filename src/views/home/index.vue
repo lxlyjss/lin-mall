@@ -129,7 +129,7 @@ export default {
     }
     // onLoadList(false);
     setWechatShareInfo({
-      title: "人民知慧教育一体化人才教育培训服务平台",
+      title: "【人民智慧教育招聘】人民知慧教育一体化人才教育培训服务平台",
       desc: "N多企业都在人民知慧教育招募小伙伴，机会有限，感兴趣戳",
       link: location.href,
       imgUrl:

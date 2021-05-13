@@ -90,10 +90,10 @@ export const setWechatShareInfo = async (options: any) => {
       jsApiList.forEach((item: string) => {
         try {
           wx[item] && wx[item]({
-            title: options.shareTitle,
-            desc: options.shareDesc,
-            link: options.shareUrl,
-            imgUrl: options.shareImg,
+            title: options.title,
+            desc: options.desc,
+            link: options.link,
+            imgUrl: options.imgUrl,
           });
         } catch (err) {
           console.log(err);
@@ -110,7 +110,7 @@ export const setWechatShareInfo = async (options: any) => {
       url,
     });
     wx.config({
-      debug: true,
+      debug: false,
       appId: data.appId,
       timestamp: data.timestamp,
       nonceStr: data.nonceStr,

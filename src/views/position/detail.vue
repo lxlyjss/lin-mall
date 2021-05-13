@@ -126,33 +126,38 @@ export default {
       }
       console.log(data);
       state.position = data;
-      state.position.job_duty = state.position.job_duty.replace(
+      state.position.job_duty = state.position.job_duty?.replace(
         /\n/g,
         "<br />"
       );
-      state.position.job_requirement = state.position.job_requirement.replace(
+      state.position.job_requirement = state.position.job_requirement?.replace(
         /\n/g,
         "<br />"
       );
-      state.position.job_light = state.position.job_light.replace(
+      state.position.job_light = state.position.job_light?.replace(
         /\n/g,
         "<br />"
       );
       state.company = data.company;
       document.title;
-      if (data.courses.totalCount !== 0) {
+      console.log(data.courses);
+      if (data.courses.totalCount && data.courses.totalCount !== 0) {
         state.lessonList = data.courses.result.list;
         console.log(state.lessonList);
       }
       setTitle(state.position.name);
-      setWechatShareInfo({
-        title: `${state.company.name}正在招聘${state.position.name}，速来！`,
-        desc: `${state.company.name}${state.position.job_light}`,
-        link: location.href,
-        imgUrl:
-          state.company.logo ||
-          "https://asset.txqn.huohua.cn/assets/28f7639f-be0a-423c-8ca8-23e3b352110e.png",
-      });
+      try {
+        setWechatShareInfo({
+          title: `【人民智慧教育招聘】${state?.company?.name}正在招聘${state?.position?.name}，速来！`,
+          desc: `${state?.company?.name}${state?.position?.job_light}`,
+          link: location.href,
+          imgUrl:
+            state.company.logo ||
+            "https://asset.txqn.huohua.cn/assets/28f7639f-be0a-423c-8ca8-23e3b352110e.png",
+        });
+      } catch (err) {
+        console.log(err);
+      }
     };
     const toCompanyDetail = () => {
       router.push({

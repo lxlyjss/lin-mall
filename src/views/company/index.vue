@@ -127,7 +127,7 @@ export default {
       state.dataReady = true;
       setTitle(state.company.simple_name);
       setWechatShareInfo({
-        title: `不来后悔，${state.company.simple_name}值得加入！`,
+        title: `【人民智慧教育招聘】不来后悔，${state.company.simple_name}值得加入！`,
         desc: `我们正在人民知慧教育招募小伙伴，机会有限，感兴趣戳`,
         link: location.href,
         imgUrl:
